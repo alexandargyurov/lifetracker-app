@@ -1,30 +1,23 @@
 import React from "react";
 import Slider from "react-native-slider";
 import {TouchableHighlight, StyleSheet, View, Text} from "react-native";
+import { SQLite } from "expo-sqlite";
 
+const db = SQLite.openDatabase("db.db");
 
 export default class MoodScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
-    
+
     state = {
         value: 0.5,
         switchValue: true
     };
 
-    _handleToggleSwitch = () =>
-        this.setState(state => ({
-            switchValue: !state.switchValue,
-        }));
-
-    _onPressButton() {
-        alert('You tapped the button!')
-    }
-
-    _onPressReason(e) {
-        console.log(e)
-    }
+    _buttonSubmit() {
+        this.props.navigation.push('Reasons')
+      }
 
     render() {
         return (
@@ -55,7 +48,7 @@ export default class MoodScreen extends React.Component {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableHighlight onPress={() => this.props.navigation.push('Reasons')} underlayColor="white">
+                        <TouchableHighlight onPress={() => this._buttonSubmit()} underlayColor="white">
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Next</Text>
                             </View>
