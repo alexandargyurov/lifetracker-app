@@ -1,11 +1,15 @@
 import React from "react"
-import { ScrollView, Text, View, TouchableHighlight } from "react-native"
+import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native"
 import styled, { css } from "@emotion/native"
 import ReasonsIcon from "../components/ReasonIcon"
 
 import t from "../assets/tachyons.css";
 
-class ReasonsScreen extends React.Component {
+export default class ReasonsScreen extends React.Component {
+    static navigationOptions = {
+        header: null
+    }
+
     constructor(props) {
         super(props)
         this.state = {reasons: [
@@ -51,7 +55,7 @@ class ReasonsScreen extends React.Component {
         return (
             <ScrollView>
                 <Container>
-                    <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt3]}>Why's that?</Text>
+                    <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>Why's that?</Text>
 
                     <Reasons>
                         {this.state.reasons.map((reason, key) =>
@@ -59,19 +63,17 @@ class ReasonsScreen extends React.Component {
                         )}
                     </Reasons>
 
-                    <TouchableHighlight style={{}} onPress={() => this.props.navigation.navigate('Mood')} underlayColor="white">
+                    <TouchableNativeFeedback style={t.pb3} onPress={() => this.props.navigation.navigate('Common')} underlayColor="white">
                             <Next>
                                 <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
                             </Next>
-                    </TouchableHighlight>
+                    </TouchableNativeFeedback>
 
                 </Container>
             </ScrollView>
         )
     }
 }
-
-export default ReasonsScreen;
 
 const Container = styled.View`
     flex: 1;
@@ -98,4 +100,5 @@ const Next = styled.View`
     padding-bottom: 25px;
     padding-left: 50px;
     padding-right: 50px;
+    margin: 30px;
 `

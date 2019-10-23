@@ -5,6 +5,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import MoodScreen from "./pages/Mood";
 import ReasonsScreen from "./pages/Reasons";
+import CommonScreen from "./pages/Common";
 
 class HomeScreen extends React.Component {
     render() {
@@ -13,7 +14,7 @@ class HomeScreen extends React.Component {
           <Text>Home Screen</Text>
           <Button
             title="Go to Mood"
-            onPress={() => this.props.navigation.navigate('Mood')}
+            onPress={() => this.props.navigation.push('Mood')}
           />
         </View>
       );
@@ -22,11 +23,19 @@ class HomeScreen extends React.Component {
 
 const AppNavigator = createStackNavigator(
   {
-    Mood: MoodScreen,
-    Reasons: ReasonsScreen,
+    Mood: {
+      screen: MoodScreen
+    },
+    Reasons: {
+      screen: ReasonsScreen,
+      header: null,
+    },
+    Common: {
+      screen: CommonScreen
+    }
   },
   {
-    initialRouteName: 'Reasons',
+    initialRouteName: 'Mood',
   }
 );
 

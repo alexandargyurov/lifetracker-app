@@ -4,6 +4,10 @@ import {TouchableHighlight, StyleSheet, View, Text} from "react-native";
 
 
 export default class MoodScreen extends React.Component {
+    static navigationOptions = {
+        header: null
+    }
+    
     state = {
         value: 0.5,
         switchValue: true
@@ -51,7 +55,7 @@ export default class MoodScreen extends React.Component {
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableHighlight onPress={() => this.props.navigation.navigate('Reasons')} underlayColor="white">
+                        <TouchableHighlight onPress={() => this.props.navigation.push('Reasons')} underlayColor="white">
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Next</Text>
                             </View>
