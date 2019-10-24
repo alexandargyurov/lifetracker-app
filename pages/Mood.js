@@ -16,6 +16,17 @@ export default class MoodScreen extends React.Component {
     };
 
     _buttonSubmit() {
+        db.transaction(
+            tx => {
+              tx.executeSql(`INSERT INTO moods (mood) VALUES (?);`, [
+                this.state.value
+              ]);
+              tx.executeSql("select * from moods", [], (_, { rows }) =>
+                console.log(JSON.stringify(rows))
+              );
+            }
+          )
+
         this.props.navigation.push('Reasons')
       }
 

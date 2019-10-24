@@ -5,6 +5,9 @@ import ReasonsIcon from "../components/ReasonIcon"
 
 import t from "../assets/tachyons.css";
 
+import { SQLite } from "expo-sqlite";
+const db = SQLite.openDatabase("db.db");
+
 export default class ReasonsScreen extends React.Component {
     static navigationOptions = {
         header: null
@@ -41,7 +44,19 @@ export default class ReasonsScreen extends React.Component {
             ]
         }
     }
-    
+
+    componentDidMount() {
+
+        db.transaction(
+            tx => {
+                tx.executeSql("select * from moods", [], (trans, result) => {
+                    console.log("hello")
+                    console.log(trans, result)
+                });
+            }
+          )
+    }
+
     render() {
         function convertToSlug(Text)
         {
