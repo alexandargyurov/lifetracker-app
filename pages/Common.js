@@ -16,22 +16,27 @@ export default class CommonScreen extends React.Component {
 
     constructor(props) {
         super(props)
+        this.calendarPhaser = this.calendarPhaser.bind(this);
         this.state = {
             dates: {
-                '2019-10-22 14:45:52': {selected: true, marked: true},
-                '2019-10-24': {selected: true, marked: true, dotColor: 'green'},
-                '2019-10-25': {marked: true, dotColor: 'red'},
-                '2019-10-27': {disabled: true, activeOpacity: 0}
+                '2019-10-22': {selected: true},
               }
         }
     }
     
+    calendarPhaser (data) {
+        data.forEach(function(element) {
+            date = element.timestamp.split(" ")[0]
+            
+          })
+    }
+
     componentDidMount() {
         db.transaction(tx => {
             tx.executeSql(
                 `select * from moods;`,
                 [],
-                (_, { rows: { _array } }) => console.log(_array)
+                (_, { rows: { _array } }) => this.calendarPhaser(_array)
               );
           });
     }

@@ -21,7 +21,7 @@ const AppNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: 'Mood',
+    initialRouteName: 'Common',
   }
 );
 
