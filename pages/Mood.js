@@ -3,38 +3,103 @@ import Slider from "react-native-slider";
 import {TouchableHighlight, StyleSheet, View, Text} from "react-native";
 import { SQLite } from "expo-sqlite";
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase("database.db");
 
 export default class MoodScreen extends React.Component {
     static navigationOptions = {
         header: null
     }
 
-    state = {
-        value: 0.5,
-        switchValue: true
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            value: 0.5,
+            moodId: 0,
+            switchValue: true
+        }
+
+    }
+
+    componentDidMount() {  
+        db.transaction(
+        tx => {
+          tx.executeSql(
+            "create table if not exists mood_reasons (id integer primary key not null, mood_id int, reason_id int);"
+          );
+  
+          tx.executeSql(
+            "create table if not exists reasons (id integer primary key not null, label text, UNIQUE(label));"
+          );
+
+          tx.executeSql(
+            "create table if not exists moods (id integer primary key not null, mood int, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);"
+          );
+
+          tx.executeSql(
+            `INSERT OR IGNORE INTO reasons (label) values 
+            ('friends'),
+            ('family'),
+            ('walking'),
+            ('exercise'),
+            ('travel'),
+            ('alcohol'),
+            ('dancing'),
+            ('work'),
+            ('colleagues'),
+            ('movies'),
+            ('business'),
+            ('reading'),
+            ('music'),
+            ('concert'),
+            ('gig'),
+            ('driving'),
+            ('eating-out'),
+            ('tea'),
+            ('coffee'),
+            ('home'),
+            ('love'),
+            ('meditation'),
+            ('yoga'),
+            ('video-games'),
+            ('board-games');
+            `
+          );
+
+        })
+      }
 
     _buttonSubmit() {
         db.transaction(
             tx => {
               tx.executeSql(`INSERT INTO moods (mood) VALUES (?);`, [
                 this.state.value
-              ]);
-              tx.executeSql("select * from moods", [], (_, { rows }) =>
-                console.log(JSON.stringify(rows))
-              );
+              ], (tx, result) => this.setState({moodId: result.insertId})
+              )
             }
           )
 
-        this.props.navigation.push('Reasons')
+        console.log(this.state.moodId)  
+        this.props.navigation.push('Reasons', {
+            moodId: this.state.moodId
+          });
       }
+
+    _buttonReset() {
+        db.transaction(
+            tx => {
+                tx.executeSql(`DROP TABLE moods;`)
+                tx.executeSql(`DROP TABLE mood_reasons;`)
+                tx.executeSql(`DROP TABLE reasons;`)
+            }
+        )
+        console.log("DATABASE DROPPED")
+    }
 
     render() {
         return (
             <View>
                 <View style={styles.heading}>
-                    <Text style={styles.title}>Life Journal</Text>
+                    <Text style={styles.title}>Life Tracker</Text>
                 </View>
 
                 <View style={styles.moodContainer}>
@@ -62,6 +127,12 @@ export default class MoodScreen extends React.Component {
                         <TouchableHighlight onPress={() => this._buttonSubmit()} underlayColor="white">
                             <View style={styles.button}>
                                 <Text style={styles.buttonText}>Next</Text>
+                            </View>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight onPress={() => this._buttonReset()} underlayColor="white">
+                            <View style={styles.button}>
+                                <Text style={styles.buttonText}>RESET</Text>
                             </View>
                         </TouchableHighlight>
                     </View>

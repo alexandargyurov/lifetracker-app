@@ -6,7 +6,7 @@ import ReasonsIcon from "../components/ReasonIcon"
 import t from "../assets/tachyons.css";
 
 import { SQLite } from "expo-sqlite";
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase("database.db");
 
 export default class ReasonsScreen extends React.Component {
     static navigationOptions = {
@@ -15,58 +15,50 @@ export default class ReasonsScreen extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {reasons: [
-            "friends",
-            "family",
-            "walking",
-            "exercise",
-            "travel",
-            "alcohol",
-            "dancing",
-            "work",
-            "colleagues",
-            "movies",
-            "business",
-            "reading",
-            "music",
-            "concert",
-            "gig",
-            "driving",
-            "eating-out",
-            "tea",
-            "coffee",
-            "home",
-            "love",
-            "meditation",
-            "yoga",
-            "video-games",
-            "board-games"
-            ]
+        this.state = {
+            reasons: [],
+            selected: []
+        }
+        
+    }
+
+    _buttonSubmit() {
+        this.props.navigation.push('Common')
+      }
+
+    reasonCallback = (reasonId, selected) => {
+        const { navigation } = this.props;
+        if (selected === true) {
+            db.transaction(
+                tx => {
+                  tx.executeSql(`INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`, [
+                    JSON.stringify(navigation.getParam('moodId', null)), reasonId
+                  ])
+                }
+              )
+        } else if (selected === false) {
+            db.transaction(
+                tx => {
+                  tx.executeSql(`DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`, [
+                    JSON.stringify(navigation.getParam('moodId', null)), reasonId
+                  ])
+                }
+              )
         }
     }
 
     componentDidMount() {
-
-        db.transaction(
-            tx => {
-                tx.executeSql("select * from moods", [], (trans, result) => {
-                    console.log("hello")
-                    console.log(trans, result)
-                });
-            }
-          )
+        db.transaction(tx => {
+            tx.executeSql(
+                `select * from reasons;`,
+                [],
+                (_, { rows: { _array } }) => this.setState({reasons: _array})
+              );
+          });
     }
 
     render() {
-        function convertToSlug(Text)
-        {
-            return Text
-                .toLowerCase()
-                .replace(/[^\w ]+/g,'')
-                .replace(/ +/g,'-')
-                ;
-        }
-
+        const { navigation } = this.props;
         return (
             <ScrollView>
                 <Container>
@@ -74,11 +66,11 @@ export default class ReasonsScreen extends React.Component {
 
                     <Reasons>
                         {this.state.reasons.map((reason, key) =>
-                            <ReasonsIcon reason={reason} key={key}/>
+                            <ReasonsIcon reason={reason.label} reasonId={reason.id} reasonCallback={this.reasonCallback} key={key} />
                         )}
                     </Reasons>
 
-                    <TouchableNativeFeedback style={t.pb3} onPress={() => this.props.navigation.navigate('Common')} underlayColor="white">
+                    <TouchableNativeFeedback style={t.pb3} onPress={() => this._buttonSubmit()} underlayColor="white">
                             <Next>
                                 <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
                             </Next>

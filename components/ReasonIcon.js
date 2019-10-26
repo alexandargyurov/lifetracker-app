@@ -12,8 +12,10 @@ class ReasonIcon extends React.Component {
     onPress = () => {
         if (this.state.selected === false) {
             this.setState({colour: "#EA8F66", selected: true});
+            this.props.reasonCallback(this.props.reasonId, true)
         } else {
             this.setState({colour: "#D97D54", selected: false}); 
+            this.props.reasonCallback(this.props.reasonId, false)
         }
       };
 
