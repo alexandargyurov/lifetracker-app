@@ -1,10 +1,7 @@
 import React from "react"
 import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native"
 import styled, { css } from "@emotion/native"
-import ReasonsIcon from "../components/ReasonIcon"
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-
-import t from "../assets/tachyons.css";
+import {CalendarList} from 'react-native-calendars';
 
 import { SQLite } from "expo-sqlite";
 const db = SQLite.openDatabase("database.db");
@@ -17,18 +14,46 @@ export default class CommonScreen extends React.Component {
     constructor(props) {
         super(props)
         this.calendarPhaser = this.calendarPhaser.bind(this);
+        this.moodToColour = this.moodToColour.bind(this);
         this.state = {
-            dates: {
-                '2019-10-22': {selected: true},
-              }
+            calendarDates: {}
         }
     }
     
     calendarPhaser (data) {
+        dates = {}
+
         data.forEach(function(element) {
             date = element.timestamp.split(" ")[0]
-            
+            mood = element.mood
+
+            if (mood <= 20) {
+                this.colour = "#7E57C2"
+            } else if (mood <= 40) {
+                this.colour = "#5C6BC0"
+            } else if (mood <= 60) {
+                this.colour = "#00BCD4"
+            } else if (mood <= 80) {
+                this.colour = "#9CCC65"
+            } else if (mood <= 100) {
+                this.colour = "#4CAF50"
+            }
+
+            dates[date] = {
+                customStyles: {
+                  container: {
+                    backgroundColor: this.colour,
+                    borderRadius: 0
+                  },
+                  text: {
+                    color: 'white',
+                  }
+                },
+                selected: true
+            }
           })
+
+        this.setState({calendarDates: dates})
     }
 
     componentDidMount() {
@@ -47,7 +72,8 @@ export default class CommonScreen extends React.Component {
                 <Container>
                     <CalendarList horizontal={true} pagingEnabled={true} current={Date()}
                       markingType={'custom'}
-                      markedDates={this.state.dates}
+                      markedDates={this.state.calendarDates}
+                      onDayPress={(day) => {console.log('selected day', day)}}
                     />
                 </Container>
             </ScrollView>
