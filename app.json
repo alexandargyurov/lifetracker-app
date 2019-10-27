@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "slug": "AwesomeProject",
+    "name": "LifeTracker",
+    "slug": "lifetracker",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
@@ -11,11 +11,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/turtle.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffff22"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -28,7 +28,16 @@
     },
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "css"]
+      "sourceExts": [
+        "js",
+        "jsx",
+        "css"
+      ]
+    },
+    "description": "Track your feeling each day",
+    "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
+    "android": {
+      "package": "com.alexandargyurov.lifetracker"
     }
   }
 }
