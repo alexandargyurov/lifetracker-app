@@ -19,16 +19,15 @@ export default class MoodScreen extends React.Component {
     };
   }
 
-  _buttonSubmit() {
+  _buttonSubmit(moodValue) {
     db.transaction(tx => {
       tx.executeSql(
         `INSERT INTO moods (mood) VALUES (?);`,
-        [this.state.value],
+        [moodValue],
         (tx, result) => this.setState({ moodId: result.insertId })
       );
     });
 
-    console.log(this.state.moodId);
     this.props.navigation.push("Reasons", {
       moodId: this.state.moodId
     });
@@ -70,7 +69,7 @@ export default class MoodScreen extends React.Component {
 
           <View style={styles.buttonContainer}>
             <TouchableHighlight
-              onPress={() => this._buttonSubmit()}
+              onPress={() => this._buttonSubmit(this.state.value)}
               underlayColor="white"
             >
               <View style={styles.button}>

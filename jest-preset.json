@@ -1,0 +1,6 @@
+{
+    "name": "life-tracker",
+    "jest": {
+      "verbose": true
+    }
+  }

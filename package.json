@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.17",
-    
     "@emotion/native": "^10.0.14",
     "@react-native-community/slider": "^2.0.0",
     "expo": "^34.0.1",
@@ -38,7 +37,9 @@
     "babel-plugin-react-native-platform-specific-extensions": "^1.1.1",
     "babel-preset-expo": "^6.0.0",
     "jest-expo": "^35.0.0",
-    "react-native-css-transformer": "^1.2.4"
+    "react-native-css-transformer": "^1.2.4",
+    "react-native-testing-library": "^1.11.1",
+    "react-test-renderer": "16.8"
   },
   "jest": {
     "preset": "jest-expo"

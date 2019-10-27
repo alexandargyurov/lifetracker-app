@@ -14,7 +14,6 @@ export default class CommonScreen extends React.Component {
   constructor(props) {
     super(props);
     this.calendarPhaser = this.calendarPhaser.bind(this);
-    this.moodToColour = this.moodToColour.bind(this);
     this.state = {
       calendarDates: {}
     };
@@ -74,9 +73,6 @@ export default class CommonScreen extends React.Component {
             current={Date()}
             markingType={"custom"}
             markedDates={this.state.calendarDates}
-            onDayPress={day => {
-              console.log("selected day", day);
-            }}
           />
         </Container>
       </ScrollView>
