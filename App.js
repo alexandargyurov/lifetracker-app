@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import * as React from "react";
+import { Button, View, Text, StyleSheet } from "react-native";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 
 import MoodScreen from "./pages/Mood";
 import ReasonsScreen from "./pages/Reasons";
@@ -17,23 +17,22 @@ const AppNavigator = createStackNavigator(
     },
     Reasons: {
       screen: ReasonsScreen,
-      header: null,
+      header: null
     },
     Common: {
       screen: CommonScreen
     }
   },
   {
-    initialRouteName: 'Common',
+    initialRouteName: "Common"
   }
 );
 
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
-  componentDidMount() {  
-    db.transaction(
-    tx => {
+  componentDidMount() {
+    db.transaction(tx => {
       tx.executeSql(
         "create table if not exists mood_reasons (id integer primary key not null, mood_id int, reason_id int);"
       );
@@ -75,8 +74,7 @@ export default class App extends React.Component {
         ('board-games');
         `
       );
-
-    })
+    });
   }
 
   render() {
