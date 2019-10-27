@@ -33,7 +33,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/alexandargyurov/life-tracker-mobile/tags). 
+[SemVer](http://semver.org/) is used for versioning. For the versions available, see the [tags on this repository](https://github.com/alexandargyurov/life-tracker-mobile/tags). 
 
 ## License
 
