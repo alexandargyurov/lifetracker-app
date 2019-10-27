@@ -1,12 +1,40 @@
-# Life Journal / Tracker
+# Life Tracker
 
-### WORK IN PROGRESS - v0.1
+Life Tracker is a mobile app that helps you keep track of how you're feeling each day. 
 
-Features:
-- Track your mood everyday
-- Select reasons for your mood
-- Add relevent information such as voice diary, written diary, photos, notes
-- Add #hashtags to organise days
+## Getting Started
 
-- View data in a nicely formated way
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
+## Installation
+
+This project uses [Expo](https://expo.io/) and [React Native](https://facebook.github.io/react-native/).
+
+```bash
+git clone https://github.com/alexandargyurov/life-tracker-mobile.git
+yarn install
+```
+
+## Usage
+
+To run the dev environment on a physical device, you can download Expo from Google Play or the App Store.
+Running a device simulator requires some extra steps involving downloading Xcode or Android Studio. 
+
+```bash
+yarn start
+```
+
+## Running the tests
+
+Currently there is no test coverage for this project. 
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/alexandargyurov/life-tracker-mobile/tags). 
+
+## License
+
+This project is licensed under the GNU GPLv3 License - see the [LICENSE.md](LICENSE.md) file for details
