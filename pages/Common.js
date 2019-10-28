@@ -6,6 +6,8 @@ import { CalendarList } from "react-native-calendars";
 import { SQLite } from "expo-sqlite";
 const db = SQLite.openDatabase("database.db");
 
+import t from "../assets/tachyons.css";
+
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -79,6 +81,16 @@ export default class CommonScreen extends React.Component {
             markedDates={this.state.calendarDates}
           />
         </Container>
+
+        <TouchableNativeFeedback
+          style={t.pb3}
+          onPress={() => this.props.navigation.push("Mood")}
+          underlayColor="white"
+        >
+          <Next>
+            <Text style={[t.b, t.tc, t.f5]}>Add entry</Text>
+          </Next>
+        </TouchableNativeFeedback>
       </ScrollView>
     );
   }
@@ -86,4 +98,14 @@ export default class CommonScreen extends React.Component {
 
 const Container = styled.View`
   padding-top: 50px;
+`;
+
+const Next = styled.View`
+  background-color: #7da3f2;
+  border-radius: 9999px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: 30px;
 `;
