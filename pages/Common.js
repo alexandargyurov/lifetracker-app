@@ -14,9 +14,25 @@ export default class CommonScreen extends React.Component {
   constructor(props) {
     super(props);
     this.calendarPhaser = this.calendarPhaser.bind(this);
+    this.moodToColour = this.moodToColour.bind(this);
     this.state = {
-      calendarDates: {}
+      calendarDates: {},
+      colour: ""
     };
+  }
+
+  moodToColour(mood) {
+    if (mood <= 0.2) {
+      return "#7E57C2";
+    } else if (mood <= 0.4) {
+      return "#5C6BC0";
+    } else if (mood <= 0.6) {
+      return "#00BCD4";
+    } else if (mood <= 0.8) {
+      return "#9CCC65";
+    } else if (mood <= 1) {
+      return "#4CAF50";
+    }
   }
 
   calendarPhaser(data) {
@@ -26,22 +42,10 @@ export default class CommonScreen extends React.Component {
       date = element.timestamp.split(" ")[0];
       mood = element.mood;
 
-      if (mood <= 20) {
-        this.colour = "#7E57C2";
-      } else if (mood <= 40) {
-        this.colour = "#5C6BC0";
-      } else if (mood <= 60) {
-        this.colour = "#00BCD4";
-      } else if (mood <= 80) {
-        this.colour = "#9CCC65";
-      } else if (mood <= 100) {
-        this.colour = "#4CAF50";
-      }
-
       dates[date] = {
         customStyles: {
           container: {
-            backgroundColor: this.colour,
+            backgroundColor: this.moodToColour(mood),
             borderRadius: 0
           },
           text: {
@@ -50,7 +54,7 @@ export default class CommonScreen extends React.Component {
         },
         selected: true
       };
-    });
+    }, this);
 
     this.setState({ calendarDates: dates });
   }
