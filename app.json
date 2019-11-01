@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LifeTracker",
-    "slug": "lifetracker",
+    "name": "Life Tracker",
+    "slug": "life-tracker",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
