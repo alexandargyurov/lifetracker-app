@@ -2,44 +2,37 @@ import React from "react";
 import {
   ScrollView,
   Text,
-  View,
+  Image,
   TouchableNativeFeedback,
   TouchableOpacity
 } from "react-native";
 
+import { createDrawerNavigator } from 'react-navigation-drawer';
+
 import styled, { css } from "@emotion/native";
 import { CalendarList } from "react-native-calendars";
-import Drawer from "react-native-drawer";
 
 import { SQLite } from "expo-sqlite";
 const db = SQLite.openDatabase("database.db");
 
 import t from "../assets/tachyons.css";
-import HamburgerMenu from "../components/HamburgerMenu"
+import HamburgerMenu from "../components/SideMenu"
 import createDatabase from "../functions/createDatabase";
 import calendarPhaser from "../functions/calendarPhaser";
+import MoodScreen from "../pages/Mood";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
+    drawerLabel: 'Home',
     header: null
   };
 
   constructor(props) {
     super(props);
-    this.onHamburgerClick = this.onHamburgerClick.bind(this);
-    this.toggleDrawer = this.toggleDrawer.bind(this);
     this.state = {
       calendarDates: {},
-      drawerOpen: false
+      drawerOpen: true
     };
-  }
-
-  onHamburgerClick() {
-    this.toggleDrawer();
-  }
-
-  toggleDrawer() {
-    this.setState({drawerOpen: ! this.state.drawerOpen })
   }
 
   componentDidMount() {
@@ -55,24 +48,9 @@ export default class CommonScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-
-        <Drawer 
-            open={this.state.drawerOpen}
-            type='static'
-            tapToClose={true}
-            openDrawerOffset={0.5}
-            content={<HamburgerMenu/>}
-            tweenHandler={Drawer.tweenPresets.parallax}
-            tweenEasing={"easeInQuad"}
-            tweenDuration={400}
-            onClose={this.closeDrawer}
-            >
-
-        </Drawer>
-
         <Menu>
-          <TouchableOpacity onPress={this.onHamburgerClick}>
-            <Text>Hamburger</Text>
+          <TouchableOpacity style={{paddingLeft: 20}} onPress={this.props.navigation.openDrawer}>
+            <Image style={{width: 30, height: 30}} source={require('../assets/ui/hamburger.png')} />
           </TouchableOpacity>
         </Menu>
 
@@ -101,7 +79,7 @@ export default class CommonScreen extends React.Component {
 }
 
 const Container = styled.View`
-  padding-top: 50px;
+  
 `;
 
 const Menu = styled.View`
