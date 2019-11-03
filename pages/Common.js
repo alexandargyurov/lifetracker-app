@@ -1,12 +1,23 @@
 import React from "react";
-import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  TouchableOpacity
+} from "react-native";
+
 import styled, { css } from "@emotion/native";
 import { CalendarList } from "react-native-calendars";
+import Drawer from "react-native-drawer";
 
 import { SQLite } from "expo-sqlite";
 const db = SQLite.openDatabase("database.db");
 
 import t from "../assets/tachyons.css";
+import HamburgerMenu from "../components/HamburgerMenu"
+import createDatabase from "../functions/createDatabase";
+import calendarPhaser from "../functions/calendarPhaser";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
@@ -15,107 +26,56 @@ export default class CommonScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.calendarPhaser = this.calendarPhaser.bind(this);
-    this.moodToColour = this.moodToColour.bind(this);
+    this.onHamburgerClick = this.onHamburgerClick.bind(this);
+    this.toggleDrawer = this.toggleDrawer.bind(this);
     this.state = {
       calendarDates: {},
-      colour: ""
+      drawerOpen: false
     };
   }
 
-  moodToColour(mood) {
-    if (mood <= 0.2) {
-      return "#7E57C2";
-    } else if (mood <= 0.4) {
-      return "#5C6BC0";
-    } else if (mood <= 0.6) {
-      return "#00BCD4";
-    } else if (mood <= 0.8) {
-      return "#9CCC65";
-    } else if (mood <= 1) {
-      return "#4CAF50";
-    }
+  onHamburgerClick() {
+    this.toggleDrawer();
   }
 
-  calendarPhaser(data) {
-    dates = {};
-
-    data.forEach(function(element) {
-      date = element.timestamp.split(" ")[0];
-      mood = element.mood;
-
-      dates[date] = {
-        customStyles: {
-          container: {
-            backgroundColor: this.moodToColour(mood),
-            borderRadius: 0
-          },
-          text: {
-            color: "white"
-          }
-        },
-        selected: true
-      };
-    }, this);
-
-    this.setState({ calendarDates: dates });
+  toggleDrawer() {
+    this.setState({drawerOpen: ! this.state.drawerOpen })
   }
 
   componentDidMount() {
     db.transaction(tx => {
       tx.executeSql(`select * from moods;`, [], (_, { rows: { _array } }) =>
-        this.calendarPhaser(_array)
+        this.setState({ calendarDates: calendarPhaser(_array) })
       );
     });
 
-    db.transaction(tx => {
-      tx.executeSql(
-        "create table if not exists mood_reasons (id integer primary key not null, mood_id int, reason_id int);"
-      );
-
-      tx.executeSql(
-        "create table if not exists reasons (id integer primary key not null, label text, UNIQUE(label));"
-      );
-
-      tx.executeSql(
-        "create table if not exists moods (id integer primary key not null, mood int, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);"
-      );
-
-      tx.executeSql(
-        `INSERT OR IGNORE INTO reasons (label) values 
-        ('friends'),
-        ('family'),
-        ('walking'),
-        ('exercise'),
-        ('travel'),
-        ('alcohol'),
-        ('dancing'),
-        ('work'),
-        ('colleagues'),
-        ('movies'),
-        ('business'),
-        ('reading'),
-        ('music'),
-        ('concert'),
-        ('gig'),
-        ('driving'),
-        ('eating-out'),
-        ('tea'),
-        ('coffee'),
-        ('home'),
-        ('love'),
-        ('meditation'),
-        ('yoga'),
-        ('video-games'),
-        ('board-games');
-        `
-      );
-    });
+    createDatabase();
   }
 
   render() {
     return (
       <ScrollView>
+
+        <Drawer 
+            open={this.state.drawerOpen}
+            type='static'
+            tapToClose={true}
+            openDrawerOffset={0.5}
+            content={<HamburgerMenu/>}
+            tweenHandler={Drawer.tweenPresets.parallax}
+            tweenEasing={"easeInQuad"}
+            tweenDuration={400}
+            onClose={this.closeDrawer}
+            >
+
+        </Drawer>
+
+        <Menu>
+          <TouchableOpacity onPress={this.onHamburgerClick}>
+            <Text>Hamburger</Text>
+          </TouchableOpacity>
+        </Menu>
+
         <Container>
           <CalendarList
             horizontal={true}
@@ -132,7 +92,7 @@ export default class CommonScreen extends React.Component {
           underlayColor="white"
         >
           <Next>
-            <Text style={[t.b, t.tc, t.f5]}>Add entry</Text>
+            <Text style={[t.b, t.tc, t.f5, t.white]}>Add entry</Text>
           </Next>
         </TouchableNativeFeedback>
       </ScrollView>
@@ -142,6 +102,10 @@ export default class CommonScreen extends React.Component {
 
 const Container = styled.View`
   padding-top: 50px;
+`;
+
+const Menu = styled.View`
+  margin-top: 50px;
 `;
 
 const Next = styled.View`
