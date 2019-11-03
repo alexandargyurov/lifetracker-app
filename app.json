@@ -11,11 +11,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/turtle.png",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffff22"
+      "resizeMode": "cover",
+      "backgroundColor": "#C7EECA"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -34,10 +34,11 @@
         "css"
       ]
     },
-    "description": "Track your feeling each day",
+    "description": "Track your feelings each day",
     "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
     "android": {
-      "package": "com.alexandargyurov.lifetracker"
+      "package": "com.alexandargyurov.lifetracker",
+      "permissions": []
     }
   }
 }

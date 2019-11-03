@@ -76,15 +76,6 @@ export default class MoodScreen extends React.Component {
                 <Text style={styles.buttonText}>Next</Text>
               </View>
             </TouchableHighlight>
-
-            <TouchableHighlight
-              onPress={() => this._buttonReset()}
-              underlayColor="white"
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>RESET</Text>
-              </View>
-            </TouchableHighlight>
           </View>
         </View>
       </View>
