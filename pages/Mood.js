@@ -1,8 +1,8 @@
 import React from "react";
 import Slider from "react-native-slider";
 import { TouchableHighlight, StyleSheet, View, Text } from "react-native";
-import { SQLite } from "expo-sqlite";
 
+import { SQLite } from "expo-sqlite";
 const db = SQLite.openDatabase("database.db");
 
 export default class MoodScreen extends React.Component {
