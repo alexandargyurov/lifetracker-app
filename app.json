@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -38,7 +38,8 @@
     "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
     "android": {
       "package": "com.alexandargyurov.lifetracker",
-      "permissions": []
+      "permissions": [],
+      "versionCode": 2
     }
   }
 }
