@@ -4,13 +4,13 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 
-
 import MoodScreen from "./pages/Mood";
 import ReasonsScreen from "./pages/Reasons";
 import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
 
 import SideMenu from "./components/SideMenu"
+import createDatabase from "./functions/createDatabase";
 
 import { SQLite } from "expo-sqlite";
 import AboutScreen from "./pages/About";
@@ -24,7 +24,6 @@ const StackNavigator = createStackNavigator(
     },
     Reasons: {
       screen: ReasonsScreen,
-      header: null
     },
     Common: {
       screen: CommonScreen
@@ -37,7 +36,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "About"
+    initialRouteName: "Common"
   }
 );
 
@@ -50,6 +49,10 @@ const AppNavigator = createDrawerNavigator({
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
+  componentDidMount () {
+    createDatabase();
+  }
+
   render() {
     return <AppContainer />;
   }
