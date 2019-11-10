@@ -10,12 +10,11 @@ import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
 
 import SideMenu from "./components/SideMenu"
-import createDatabase from "./functions/createDatabase";
 
 import { SQLite } from "expo-sqlite";
 import AboutScreen from "./pages/About";
 
-const db = SQLite.openDatabase("database.db");
+import Database from "./Database"
 
 const StackNavigator = createStackNavigator(
   {
@@ -50,7 +49,7 @@ const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
   componentDidMount () {
-    createDatabase();
+    new Database().fetchDatabase()
   }
 
   render() {
