@@ -9,12 +9,13 @@ import ReasonsScreen from "./pages/Reasons";
 import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
 
-import SideMenu from "./components/SideMenu"
+import SideMenu from "./components/SideMenu";
 
 import { SQLite } from "expo-sqlite";
 import AboutScreen from "./pages/About";
+import DayScreen from "./pages/Day";
 
-import Database from "./Database"
+import Database from "./Database";
 
 const StackNavigator = createStackNavigator(
   {
@@ -22,7 +23,7 @@ const StackNavigator = createStackNavigator(
       screen: MoodScreen
     },
     Reasons: {
-      screen: ReasonsScreen,
+      screen: ReasonsScreen
     },
     Common: {
       screen: CommonScreen
@@ -32,6 +33,9 @@ const StackNavigator = createStackNavigator(
     },
     About: {
       screen: AboutScreen
+    },
+    Day: {
+      screen: DayScreen
     }
   },
   {
@@ -39,17 +43,20 @@ const StackNavigator = createStackNavigator(
   }
 );
 
-const AppNavigator = createDrawerNavigator({
-  Home: StackNavigator,
-}, {
-  contentComponent: SideMenu,
-});
+const AppNavigator = createDrawerNavigator(
+  {
+    Home: StackNavigator
+  },
+  {
+    contentComponent: SideMenu
+  }
+);
 
 const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
-  componentDidMount () {
-    new Database().fetchDatabase()
+  componentDidMount() {
+    new Database().fetchDatabase();
   }
 
   render() {

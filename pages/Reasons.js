@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native";
 import styled, { css } from "@emotion/native";
 import ReasonsIcon from "../components/ReasonIcon";
+import { StackActions, NavigationActions } from 'react-navigation'
 
 import t from "../assets/tachyons.css";
 
@@ -20,13 +21,20 @@ export default class ReasonsScreen extends React.Component {
       selected: []
     };
   }
-
+  
   _buttonSubmit() {
-    this.props.navigation.push("Common");
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'Common' })],
+    });
+
+    this.props.navigation.dispatch(resetAction)
   }
 
   reasonCallback = (reasonId, selected) => {
     const { navigation } = this.props;
+    mood_id = navigation.getParam("moodId", null)
+
     if (selected === true) {
       db.transaction(tx => {
         tx.executeSql(
@@ -46,7 +54,7 @@ export default class ReasonsScreen extends React.Component {
 
   componentDidMount() {
     db.transaction(tx => {
-      tx.executeSql(`select * from reasons;`, [], (_, { rows: { _array } }) =>
+      tx.executeSql(`SELECT * FROM reasons;`, [], (_, { rows: { _array } }) =>
         this.setState({ reasons: _array })
       );
     });
@@ -65,6 +73,7 @@ export default class ReasonsScreen extends React.Component {
                 reason={reason.label}
                 reasonId={reason.id}
                 reasonCallback={this.reasonCallback}
+                viewOnly={false}
                 key={key}
               />
             ))}

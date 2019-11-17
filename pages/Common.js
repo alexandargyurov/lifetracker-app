@@ -12,14 +12,10 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import styled, { css } from "@emotion/native";
 import { CalendarList } from "react-native-calendars";
 
-import { SQLite } from "expo-sqlite";
-const db = SQLite.openDatabase("database.db");
-
 import t from "../assets/tachyons.css";
-import HamburgerMenu from "../components/SideMenu";
 import calendarPhaser from "../functions/calendarPhaser";
-import MoodScreen from "../pages/Mood";
 import Database from "../Database";
+import moment from "moment";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
@@ -36,19 +32,30 @@ export default class CommonScreen extends React.Component {
     };
   }
 
+  specificDay(data, timestamp) {
+    if (data.length != 0) {
+      this.props.navigation.push("Day", {moodId: data[0]['id'], date: moment(timestamp).format("dddd Do YYYY")})
+    }
+  }
+
   timestampPhaser(timestamp) {
-    console.log(timestamp);
-    console.log(timestamp.format("dd.mm.yyyy hh:MM:ss"));
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM moods WHERE timestamp = ?;`,
+        [moment(timestamp).format("YYYY-MM-DD")],
+        (_, { rows: { _array } }) => this.specificDay(_array, timestamp)
+      );
+    });
   }
 
   componentDidMount() {
+    this.database.fetchDatabase();
+
     this.database.db.transaction(tx => {
-      tx.executeSql(`select * from moods;`, [], (_, { rows: { _array } }) =>
+      tx.executeSql(`SELECT * FROM moods;`, [], (_, { rows: { _array } }) =>
         this.setState({ calendarDates: calendarPhaser(_array) })
       );
     });
-
-    this.database.fetchDatabase();
   }
 
   render() {
@@ -74,7 +81,7 @@ export default class CommonScreen extends React.Component {
             markingType={"custom"}
             markedDates={this.state.calendarDates}
             onDayPress={day => {
-              this.timestampPhaser(day["timestamp"]);
+              this.timestampPhaser(day['dateString']);
             }}
           />
         </Container>
