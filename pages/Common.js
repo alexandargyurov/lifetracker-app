@@ -32,12 +32,18 @@ export default class CommonScreen extends React.Component {
     };
   }
 
+  specificDay(data, timestamp) {
+    if (data.length != 0) {
+      this.props.navigation.push("Day", {moodId: data[0]['id'], date: moment(timestamp).format("dddd Do YYYY")})
+    }
+  }
+
   timestampPhaser(timestamp) {
     this.database.db.transaction(tx => {
       tx.executeSql(
         `SELECT * FROM moods WHERE timestamp = ?;`,
         [moment(timestamp).format("YYYY-MM-DD")],
-        (_, { rows: { _array } }) => this.props.navigation.push("Day", {moodId: _array[0]['id']})
+        (_, { rows: { _array } }) => this.specificDay(_array, timestamp)
       );
     });
   }

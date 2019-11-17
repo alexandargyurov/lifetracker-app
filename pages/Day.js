@@ -5,10 +5,11 @@ import ReasonsIcon from "../components/ReasonIcon";
 
 import t from "../assets/tachyons.css";
 import Database from "../Database";
+import moodToColour from "../functions/moodToColour";
 
 export default class DayScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -16,7 +17,7 @@ export default class DayScreen extends React.Component {
     this.database = new Database();
     this.state = {
       reasons: [],
-      selected: []
+      mood: {}
     };
   }
 
@@ -45,26 +46,51 @@ export default class DayScreen extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null)
+    mood_id = navigation.getParam("moodId", null);
 
-    this.database.db.transaction(tx => {
-      tx.executeSql(
-        `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
-        [mood_id],
-        (_, { rows: { _array } }) => this.setState({ reasons: _array })
-      );
-    }, function(err) {
-        console.log(err)
-    });
+    this.database.db.transaction(
+      tx => {
+        tx.executeSql(
+          `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
+          [mood_id],
+          (_, { rows: { _array } }) => this.setState({ reasons: _array })
+        );
+
+        tx.executeSql(
+          `SELECT mood FROM moods WHERE id = ?;`,
+          [mood_id],
+          (_, { rows: { _array } }) =>
+            this.setState({ mood: moodToColour(_array[0]["mood"]) })
+        );
+      },
+      function(err) {
+        console.log(err);
+      }
+    );
   }
 
   render() {
     const { navigation } = this.props;
     return (
-      <ScrollView>
+      <ScrollView style={{flex: 1, backgroundColor: '#7da3f2'}}>
         <Container>
-          <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>
-            Yo yo whats up?
+          <Text style={[t.tc, t.white, t.fw5, t.f3, t.mt2, t.mb2, t.pa2]}>
+            You were feeling
+            <Text
+              style={{
+                color: this.state.mood["colour"],
+                textShadowColor: "white",
+                textShadowOffset: { width: 0, height: 0 },
+                textShadowRadius: 10
+              }}
+            >
+              {" "}
+              {this.state.mood["feeling"]}{" "}
+            </Text>
+            <Text>
+              on {"\n"}
+              {navigation.getParam("date", null)}.
+            </Text>
           </Text>
 
           <Reasons>
@@ -86,20 +112,16 @@ export default class DayScreen extends React.Component {
 
 const Container = styled.View`
   flex: 1;
-  background-color: #7aa9ff;
-`;
-const Reasons = styled.View`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
+  background-color: #7da3f2;
+  padding-top: 40px;
 `;
 
-const Icon = styled.View`
+const Reasons = styled.View`
   display: flex;
-  width: 33%;
-  padding: 5px;
-  align-items: center;
+  flex-direction: row;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 50px;
 `;
 
 const Next = styled.View`
