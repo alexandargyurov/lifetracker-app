@@ -7,9 +7,9 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import { createDrawerNavigator } from "react-navigation-drawer";
+import styled from "@emotion/native";
+import { ActionButton } from "../css/design-system-css"
 
-import styled, { css } from "@emotion/native";
 import { CalendarList } from "react-native-calendars";
 
 import t from "../assets/tachyons.css";
@@ -34,7 +34,10 @@ export default class CommonScreen extends React.Component {
 
   specificDay(data, timestamp) {
     if (data.length != 0) {
-      this.props.navigation.push("Day", {moodId: data[0]['id'], date: moment(timestamp).format("dddd Do YYYY")})
+      this.props.navigation.push("Day", {
+        moodId: data[0]["id"],
+        date: moment(timestamp).format("dddd Do YYYY")
+      });
     }
   }
 
@@ -81,7 +84,7 @@ export default class CommonScreen extends React.Component {
             markingType={"custom"}
             markedDates={this.state.calendarDates}
             onDayPress={day => {
-              this.timestampPhaser(day['dateString']);
+              this.timestampPhaser(day["dateString"]);
             }}
           />
         </Container>
@@ -91,9 +94,9 @@ export default class CommonScreen extends React.Component {
           onPress={() => this.props.navigation.push("Mood")}
           underlayColor="white"
         >
-          <Next>
+          <ActionButton>
             <Text style={[t.b, t.tc, t.f5, t.white]}>Add entry</Text>
-          </Next>
+          </ActionButton>
         </TouchableNativeFeedback>
       </ScrollView>
     );
@@ -106,12 +109,3 @@ const Menu = styled.View`
   margin-top: 50px;
 `;
 
-const Next = styled.View`
-  background-color: #7da3f2;
-  border-radius: 9999px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 50px;
-  padding-right: 50px;
-  margin: 30px;
-`;

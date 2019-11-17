@@ -9,17 +9,13 @@ export default class SideMenu extends React.Component {
             <Drawer>
                 <Menu>
                     <Text style={[t.b, t.tc, t.f3, t.pa2]}>Life Tracker</Text>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Roadmap")}>
-                        <Text style={[t.tc, t.f5, t.mt2]}>Roadmap</Text>
-                    </TouchableOpacity>
-
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("About")}>
                         <Text style={[t.tc, t.f5, t.mt2]}>About</Text>
                     </TouchableOpacity>
 
                     <Footer>
                         <Text>An Open Source Project</Text>
-                        <Text>v0.1.0</Text>
+                        <Text>v0.1.1</Text>
                     </Footer>
                     
                 </Menu>
