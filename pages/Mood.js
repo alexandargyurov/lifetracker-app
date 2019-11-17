@@ -2,8 +2,7 @@ import React from "react";
 import Slider from "react-native-slider";
 import { TouchableHighlight, StyleSheet, View, Text } from "react-native";
 
-import { SQLite } from "expo-sqlite";
-const db = SQLite.openDatabase("database.db");
+import Database from "../Database";
 
 export default class MoodScreen extends React.Component {
   static navigationOptions = {
@@ -12,34 +11,27 @@ export default class MoodScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.database = new Database();
     this.state = {
       value: 0.5,
-      moodId: 0,
       switchValue: true
     };
   }
 
   _buttonSubmit(moodValue) {
-    db.transaction(tx => {
-      tx.executeSql(
-        `INSERT INTO moods (mood) VALUES (?);`,
-        [moodValue],
-        (tx, result) => this.setState({ moodId: result.insertId })
-      );
+    return new Promise((resolve, reject) => {
+      this.database.db.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO moods (mood) VALUES (?);`,
+          [moodValue],
+          (tx, result) => {
+            this.props.navigation.push("Reasons", {
+              moodId: result.insertId
+            });
+          }
+        );
+      });
     });
-
-    this.props.navigation.push("Reasons", {
-      moodId: this.state.moodId
-    });
-  }
-
-  _buttonReset() {
-    db.transaction(tx => {
-      tx.executeSql(`DROP TABLE moods;`);
-      tx.executeSql(`DROP TABLE mood_reasons;`);
-      tx.executeSql(`DROP TABLE reasons;`);
-    });
-    console.log("DATABASE DROPPED");
   }
 
   render() {
@@ -63,8 +55,6 @@ export default class MoodScreen extends React.Component {
               value={this.state.value}
               onValueChange={value => this.setState({ value })}
             />
-
-            <Text>Value: {this.state.value}</Text>
           </View>
 
           <View style={styles.buttonContainer}>

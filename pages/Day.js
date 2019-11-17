@@ -4,17 +4,16 @@ import styled, { css } from "@emotion/native";
 import ReasonsIcon from "../components/ReasonIcon";
 
 import t from "../assets/tachyons.css";
+import Database from "../Database";
 
-import { SQLite } from "expo-sqlite";
-const db = SQLite.openDatabase("database.db");
-
-export default class ReasonsScreen extends React.Component {
+export default class DayScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
 
   constructor(props) {
     super(props);
+    this.database = new Database();
     this.state = {
       reasons: [],
       selected: []
@@ -27,17 +26,15 @@ export default class ReasonsScreen extends React.Component {
 
   reasonCallback = (reasonId, selected) => {
     const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null)
-
     if (selected === true) {
-      db.transaction(tx => {
+      this.database.db.transaction(tx => {
         tx.executeSql(
           `INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`,
           [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
         );
       });
     } else if (selected === false) {
-      db.transaction(tx => {
+      this.database.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
           [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
@@ -47,10 +44,17 @@ export default class ReasonsScreen extends React.Component {
   };
 
   componentDidMount() {
-    db.transaction(tx => {
-      tx.executeSql(`SELECT * FROM reasons;`, [], (_, { rows: { _array } }) =>
-        this.setState({ reasons: _array })
+    const { navigation } = this.props;
+    mood_id = navigation.getParam("moodId", null)
+
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
+        [mood_id],
+        (_, { rows: { _array } }) => this.setState({ reasons: _array })
       );
+    }, function(err) {
+        console.log(err)
     });
   }
 
@@ -59,7 +63,9 @@ export default class ReasonsScreen extends React.Component {
     return (
       <ScrollView>
         <Container>
-          <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>Why's that?</Text>
+          <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>
+            Yo yo whats up?
+          </Text>
 
           <Reasons>
             {this.state.reasons.map((reason, key) => (
@@ -67,21 +73,11 @@ export default class ReasonsScreen extends React.Component {
                 reason={reason.label}
                 reasonId={reason.id}
                 reasonCallback={this.reasonCallback}
-                viewOnly={false}
+                viewOnly={true}
                 key={key}
               />
             ))}
           </Reasons>
-
-          <TouchableNativeFeedback
-            style={t.pb3}
-            onPress={() => this._buttonSubmit()}
-            underlayColor="white"
-          >
-            <Next>
-              <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
-            </Next>
-          </TouchableNativeFeedback>
         </Container>
       </ScrollView>
     );
@@ -90,7 +86,7 @@ export default class ReasonsScreen extends React.Component {
 
 const Container = styled.View`
   flex: 1;
-  background-color: #d97d54;
+  background-color: #7aa9ff;
 `;
 const Reasons = styled.View`
   display: flex;

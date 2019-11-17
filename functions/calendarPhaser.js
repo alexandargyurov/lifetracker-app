@@ -1,3 +1,5 @@
+import moment from "moment";
+
 function moodToColour(mood) {
     if (mood <= 0.2) {
       return "#7E57C2";
@@ -16,7 +18,7 @@ export default function calendarPhaser(data) {
   dates = {};
 
   data.forEach(function(element) {
-    date = element.timestamp.split(" ")[0];
+    date = moment(element.timestamp).format("YYYY-MM-DD")
     mood = element.mood;
 
     dates[date] = {
@@ -31,7 +33,7 @@ export default function calendarPhaser(data) {
       },
       selected: true
     };
-  }, this);
+  });
 
   return dates;
 }
