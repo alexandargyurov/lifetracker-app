@@ -47,7 +47,7 @@ export default class MoodScreen extends React.Component {
             <Text styles={{ width: 20 }}>Sad</Text>
             <Text styles={{ width: 20 }}>OK</Text>
             <Text styles={{ width: 20 }}>Happy</Text>
-            <Text styles={{ width: 20 }}>Amazed</Text>
+            <Text styles={{ width: 20 }}>Amazing</Text>
           </View>
 
           <View style={styles.slider}>

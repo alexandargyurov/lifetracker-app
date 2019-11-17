@@ -1,13 +1,13 @@
 import React from "react";
-import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native";
-import styled, { css } from "@emotion/native";
+import { ScrollView, Text, TouchableNativeFeedback } from "react-native";
+import styled from "@emotion/native";
+import { NextButton } from "../css/design-system-css"
+
 import ReasonsIcon from "../components/ReasonIcon";
 import { StackActions, NavigationActions } from 'react-navigation'
 
 import t from "../assets/tachyons.css";
-
-import { SQLite } from "expo-sqlite";
-const db = SQLite.openDatabase("database.db");
+import Database from "../Database"
 
 export default class ReasonsScreen extends React.Component {
   static navigationOptions = {
@@ -16,6 +16,7 @@ export default class ReasonsScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.database = new Database()
     this.state = {
       reasons: [],
       selected: []
@@ -36,14 +37,14 @@ export default class ReasonsScreen extends React.Component {
     mood_id = navigation.getParam("moodId", null)
 
     if (selected === true) {
-      db.transaction(tx => {
+      this.database.db.transaction(tx => {
         tx.executeSql(
           `INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`,
           [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
         );
       });
     } else if (selected === false) {
-      db.transaction(tx => {
+      this.database.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
           [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
@@ -53,7 +54,7 @@ export default class ReasonsScreen extends React.Component {
   };
 
   componentDidMount() {
-    db.transaction(tx => {
+    this.database.db.transaction(tx => {
       tx.executeSql(`SELECT * FROM reasons;`, [], (_, { rows: { _array } }) =>
         this.setState({ reasons: _array })
       );
@@ -61,7 +62,6 @@ export default class ReasonsScreen extends React.Component {
   }
 
   render() {
-    const { navigation } = this.props;
     return (
       <ScrollView>
         <Container>
@@ -84,9 +84,9 @@ export default class ReasonsScreen extends React.Component {
             onPress={() => this._buttonSubmit()}
             underlayColor="white"
           >
-            <Next>
+            <NextButton>
               <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
-            </Next>
+            </NextButton>
           </TouchableNativeFeedback>
         </Container>
       </ScrollView>
@@ -112,12 +112,4 @@ const Icon = styled.View`
   align-items: center;
 `;
 
-const Next = styled.View`
-  background-color: white;
-  border-radius: 9999px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 50px;
-  padding-right: 50px;
-  margin: 30px;
-`;
+

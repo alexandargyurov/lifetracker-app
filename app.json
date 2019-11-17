@@ -39,7 +39,7 @@
     "android": {
       "package": "com.alexandargyurov.lifetracker",
       "permissions": [],
-      "versionCode": 2
+      "versionCode": 3
     }
   }
 }
