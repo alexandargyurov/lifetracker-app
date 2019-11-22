@@ -2,7 +2,7 @@ import React from "react";
 import { SQLite } from "expo-sqlite";
 import * as FileSystem from "expo-file-system";
 
-const CURRENT_SCHEMA_VERSION = 1; 
+const CURRENT_SCHEMA_VERSION = 2; 
 
 export default class Database {
   constructor() {
@@ -11,6 +11,7 @@ export default class Database {
 
   _migrate() {
       import("./migrations/1573213877_initialise_tables").then(m => m.default())
+      import("./migrations/1574432118_alter_timestamp").then(m => m.default())
   }
 
   checkDatabase() {

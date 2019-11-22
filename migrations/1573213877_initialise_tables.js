@@ -1,5 +1,5 @@
 import { SQLite } from "expo-sqlite";
-import { DATABASE_URI } from 'react-native-dotenv'
+import { DATABASE_URI } from "react-native-dotenv";
 const db = SQLite.openDatabase(DATABASE_URI);
 
 export default function initialiseTables() {
@@ -15,7 +15,7 @@ export default function initialiseTables() {
         );
 
         tx.executeSql(
-          "CREATE TABLE IF NOT EXISTS moods (id INTEGER PRIMARY KEY NOT NULL, mood INT, timestamp DATETIME DEFAULT (strftime('%Y-%m-%d', 'now', 'localtime')) NOT NULL);"
+          "CREATE TABLE IF NOT EXISTS moods (id INTEGER PRIMARY KEY NOT NULL, mood INT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL);"
         );
 
         tx.executeSql(
