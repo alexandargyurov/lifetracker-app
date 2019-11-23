@@ -21,6 +21,17 @@ export default class DayScreen extends React.Component {
       mood: {},
       editable: false
     };
+    this.addReason = this.addReason.bind(this);
+  }
+
+  addReason() {
+    const { navigation } = this.props;
+    mood_id = navigation.getParam("moodId", null);
+
+    this.props.navigation.push("Reasons", {
+      moodId: mood_id,
+      viewOnly: false
+    });
   }
 
   toggleEdit() {
@@ -28,14 +39,18 @@ export default class DayScreen extends React.Component {
   }
 
   removeReason = reasonId => {
+    console.log(reasonId);
+
     const { navigation } = this.props;
     mood_id = navigation.getParam("moodId", null);
 
-    this.database.db.transaction(tx => {
-      tx.executeSql(
-        `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-        [mood_id, reasonId]
-      );
+    return new Promise((resolve, reject) => {
+      this.database.db.transaction(tx => {
+        tx.executeSql(
+          `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
+          [mood_id, reasonId]
+        );
+      });
     });
   };
 
@@ -114,7 +129,7 @@ export default class DayScreen extends React.Component {
             {this.state.reasons.map((reason, key) => (
               <ReasonsIcon
                 reason={reason.label}
-                reasonId={reason.id}
+                reasonId={reason.reason_id}
                 reasonCallback={this.removeReason}
                 viewOnly={true}
                 editable={this.state.editable}
@@ -147,8 +162,6 @@ const Reasons = styled.View`
 const AddButton = styled.View`
   display: flex;
   width: 33%;
-  margin-right: 10px;
-  margin-left: 10px;
   padding-top: 50px;
   align-items: center;
 `;
@@ -159,4 +172,4 @@ const EditButton = styled.View`
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-` 
+`;
