@@ -1,11 +1,12 @@
 import React from "react";
-import { ScrollView, Text, View, TouchableNativeFeedback } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styled, { css } from "@emotion/native";
 import ReasonsIcon from "../components/ReasonIcon";
 
 import t from "../assets/tachyons.css";
 import Database from "../Database";
 import moodToColour from "../functions/moodToColour";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 
 export default class DayScreen extends React.Component {
   static navigationOptions = {
@@ -17,25 +18,24 @@ export default class DayScreen extends React.Component {
     this.database = new Database();
     this.state = {
       reasons: [],
-      mood: {}
+      mood: {},
+      editable: false
     };
   }
 
-  _buttonSubmit() {
-    this.props.navigation.push("Common");
+  toggleEdit() {
+    this.setState({ editable: !this.state.editable });
   }
 
   removeReason = reasonId => {
     const { navigation } = this.props;
     mood_id = navigation.getParam("moodId", null);
 
-    return new Promise((resolve, reject) => {
-      this.database.db.transaction(tx => {
-        tx.executeSql(
-          `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-          [mood_id, reasonId]
-        );
-      });
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
+        [mood_id, reasonId]
+      );
     });
   };
 
@@ -66,6 +66,18 @@ export default class DayScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
+    let addButton;
+
+    if (this.state.editable) {
+      addButton = (
+        <AddButton>
+          <TouchableOpacity onPress={this.addReason}>
+            <Feather name="plus-circle" size={36} color="white" />
+          </TouchableOpacity>
+        </AddButton>
+      );
+    }
+
     return (
       <ScrollView style={{ flex: 1, backgroundColor: "#7da3f2" }}>
         <Container>
@@ -88,6 +100,16 @@ export default class DayScreen extends React.Component {
             </Text>
           </Text>
 
+          <EditButton>
+            <TouchableOpacity style={t.ma3} onPress={() => this.toggleEdit()}>
+              <MaterialCommunityIcons
+                name="circle-edit-outline"
+                size={30}
+                color="white"
+              />
+            </TouchableOpacity>
+          </EditButton>
+
           <Reasons>
             {this.state.reasons.map((reason, key) => (
               <ReasonsIcon
@@ -95,9 +117,11 @@ export default class DayScreen extends React.Component {
                 reasonId={reason.id}
                 reasonCallback={this.removeReason}
                 viewOnly={true}
+                editable={this.state.editable}
                 key={key}
               />
             ))}
+            {addButton}
           </Reasons>
         </Container>
       </ScrollView>
@@ -120,12 +144,19 @@ const Reasons = styled.View`
   margin-bottom: 50px;
 `;
 
-const Next = styled.View`
-  background-color: white;
-  border-radius: 9999px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-  padding-left: 50px;
-  padding-right: 50px;
-  margin: 30px;
+const AddButton = styled.View`
+  display: flex;
+  width: 33%;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding-top: 50px;
+  align-items: center;
 `;
+
+const EditButton = styled.View`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+` 

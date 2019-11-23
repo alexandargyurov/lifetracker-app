@@ -30,7 +30,7 @@ class ReasonIcon extends React.Component {
   render() {
     let removeButton;
 
-    if (this.props.viewOnly) {
+    if (this.props.viewOnly && this.props.editable) {
       removeButton = (
         <RemoveButton>
           <TouchableOpacity onPress={this.removeReason}>
