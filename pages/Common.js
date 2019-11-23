@@ -44,7 +44,7 @@ export default class CommonScreen extends React.Component {
   timestampPhaser(timestamp) {
     this.database.db.transaction(tx => {
       tx.executeSql(
-        `SELECT * FROM moods WHERE timestamp = ?;`,
+        `SELECT * FROM moods WHERE timestamp = ? ORDER BY id DESC;`,
         [moment(timestamp).format("YYYY-MM-DD")],
         (_, { rows: { _array } }) => this.specificDay(_array, timestamp)
       );

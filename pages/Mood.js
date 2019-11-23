@@ -26,7 +26,8 @@ export default class MoodScreen extends React.Component {
           [moodValue],
           (tx, result) => {
             this.props.navigation.push("Reasons", {
-              moodId: result.insertId
+              moodId: result.insertId,
+              viewOnly: false
             });
           }
         );

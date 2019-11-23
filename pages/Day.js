@@ -9,7 +9,7 @@ import moodToColour from "../functions/moodToColour";
 
 export default class DayScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
 
   constructor(props) {
@@ -25,23 +25,18 @@ export default class DayScreen extends React.Component {
     this.props.navigation.push("Common");
   }
 
-  reasonCallback = (reasonId, selected) => {
+  removeReason = reasonId => {
     const { navigation } = this.props;
-    if (selected === true) {
-      this.database.db.transaction(tx => {
-        tx.executeSql(
-          `INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`,
-          [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
-        );
-      });
-    } else if (selected === false) {
+    mood_id = navigation.getParam("moodId", null);
+
+    return new Promise((resolve, reject) => {
       this.database.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-          [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
+          [mood_id, reasonId]
         );
       });
-    }
+    });
   };
 
   componentDidMount() {
@@ -72,7 +67,7 @@ export default class DayScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     return (
-      <ScrollView style={{flex: 1, backgroundColor: '#7da3f2'}}>
+      <ScrollView style={{ flex: 1, backgroundColor: "#7da3f2" }}>
         <Container>
           <Text style={[t.tc, t.white, t.fw5, t.f3, t.mt2, t.mb2, t.pa2]}>
             You were feeling
@@ -98,7 +93,7 @@ export default class DayScreen extends React.Component {
               <ReasonsIcon
                 reason={reason.label}
                 reasonId={reason.id}
-                reasonCallback={this.reasonCallback}
+                reasonCallback={this.removeReason}
                 viewOnly={true}
                 key={key}
               />
@@ -119,6 +114,7 @@ const Container = styled.View`
 const Reasons = styled.View`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 50px;

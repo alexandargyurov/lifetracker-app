@@ -2,11 +2,12 @@ import React from "react";
 import styled from "@emotion/native";
 import { Text, Image, TouchableOpacity } from "react-native";
 import t from "../assets/tachyons.css";
+import { Ionicons } from "@expo/vector-icons";
 
 class ReasonIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { colour: "", selected: false };
+    this.state = { display: "flex", colour: "", selected: false };
   }
 
   onPress = () => {
@@ -21,10 +22,27 @@ class ReasonIcon extends React.Component {
     }
   };
 
+  removeReason = () => {
+    this.setState({ display: "none" });
+    this.props.reasonCallback(this.props.reasonId);
+  };
+
   render() {
+    let removeButton;
+
+    if (this.props.viewOnly) {
+      removeButton = (
+        <RemoveButton>
+          <TouchableOpacity onPress={this.removeReason}>
+            <Ionicons name="md-close-circle" size={28} color="red" />
+          </TouchableOpacity>
+        </RemoveButton>
+      );
+    }
+
     return (
-      <Icon style={{ backgroundColor: this.state.colour }}>
-        <TouchableOpacity onPress={this.onPress}>
+      <Icon style={{ backgroundColor: this.state.colour, display: this.state.display }}>
+        <TouchableOpacity onPress={this.onPress} disabled={this.props.viewOnly}>
           <Image
             style={{ width: 75, height: 75 }}
             source={{
@@ -38,6 +56,7 @@ class ReasonIcon extends React.Component {
             {this.props.reason}
           </Text>
         </TouchableOpacity>
+        {removeButton}
       </Icon>
     );
   }
@@ -50,4 +69,9 @@ let Icon = styled.View`
   width: 33%;
   padding: 20px;
   align-items: center;
+`;
+
+let RemoveButton = styled.View`
+  position: absolute;
+  right: 0px;
 `;
