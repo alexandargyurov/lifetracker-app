@@ -1,6 +1,4 @@
-import React from "react";
 import { SQLite } from "expo-sqlite";
-import * as FileSystem from "expo-file-system";
 
 const CURRENT_SCHEMA_VERSION = 2; 
 

@@ -2,7 +2,7 @@ import { SQLite } from "expo-sqlite";
 import { DATABASE_URI } from "react-native-dotenv";
 const db = SQLite.openDatabase(DATABASE_URI);
 
-export default function initialiseTables() {
+export default function AlterTimestamps() {
   return new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql("ALTER TABLE moods RENAME TO tmp;");
