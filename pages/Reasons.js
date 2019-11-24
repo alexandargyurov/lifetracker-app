@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Text, TouchableNativeFeedback } from "react-native";
 import styled from "@emotion/native";
-import { NextButton } from "../css/design-system-css"
+import { NextButton } from "../css/designSystem"
 
 import ReasonsIcon from "../components/ReasonIcon";
 import { StackActions, NavigationActions } from 'react-navigation'

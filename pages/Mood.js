@@ -3,6 +3,7 @@ import Slider from "react-native-slider";
 import { TouchableHighlight, StyleSheet, View, Text } from "react-native";
 
 import Database from "../Database";
+import { HeadingMain } from "../css/designSystem";
 
 export default class MoodScreen extends React.Component {
   static navigationOptions = {
@@ -39,7 +40,7 @@ export default class MoodScreen extends React.Component {
     return (
       <View>
         <View style={styles.heading}>
-          <Text style={styles.title}>Life Tracker</Text>
+            <HeadingMain>How are you feeling today?</HeadingMain>
         </View>
 
         <View style={styles.moodContainer}>
@@ -116,11 +117,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#8134e5",
     marginRight: 20
-  },
-  title: {
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center"
   },
   moodContainer: {
     flex: 1,
