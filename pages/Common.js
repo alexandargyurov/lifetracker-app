@@ -7,12 +7,9 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import styled from "@emotion/native";
-import { ActionButton, ButtonText } from "../css/designSystem";
-
 import Database from "../Database";
 
-import { Section, Header, HeadingMain, CardSquare } from "../css/designSystem";
+import { Screen, Header, HeadingMain, CardSquare } from "../css/designSystem";
 import CalendarView from "../components/CalendarView";
 import { Entypo } from "@expo/vector-icons";
 
@@ -35,7 +32,7 @@ export default class CommonScreen extends React.Component {
 
   render() {
     return (
-      <Section>
+      <Screen>
         <Header>
           <Entypo
             name="menu"
@@ -53,21 +50,7 @@ export default class CommonScreen extends React.Component {
         </Header>
 
         <CalendarView navigation={this.props.navigation} />
-
-        <TouchableOpacity
-          onPress={() => this.props.navigation.push("Mood")}
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            flexDirection: "row",
-            margin: 15
-          }}
-        >
-          <ActionButton>
-            <ButtonText>New Record</ButtonText>
-          </ActionButton>
-        </TouchableOpacity>
-      </Section>
+      </Screen>
     );
   }
 }

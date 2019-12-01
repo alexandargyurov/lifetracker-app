@@ -9,11 +9,11 @@ import MoodScreen from "./pages/Mood";
 import ReasonsScreen from "./pages/Reasons";
 import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
-
-import SideMenu from "./components/SideMenu";
-
 import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
+
+import SideMenu from "./components/SideMenu";
+import Header from "./components/Header";
 
 import Database from "./Database";
 
@@ -36,10 +36,13 @@ const StackNavigator = createStackNavigator(
     },
     Day: {
       screen: DayScreen
+    },
+    Header: {
+      screen: Header 
     }
   },
   {
-    initialRouteName: "Common"
+    initialRouteName: "Mood"
   }
 );
 

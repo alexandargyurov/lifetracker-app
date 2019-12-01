@@ -1,13 +1,14 @@
 import React from "react";
 import { ScrollView, Text, TouchableNativeFeedback } from "react-native";
 import styled from "@emotion/native";
-import { NextButton } from "../css/designSystem"
 
 import ReasonsIcon from "../components/ReasonIcon";
 import { StackActions, NavigationActions } from 'react-navigation'
 
 import t from "../assets/tachyons.css";
 import Database from "../Database"
+
+import { Screen } from "../css/designSystem"
 
 export default class ReasonsScreen extends React.Component {
   static navigationOptions = {
@@ -64,7 +65,9 @@ export default class ReasonsScreen extends React.Component {
   render() {
     return (
       <ScrollView>
-        <Container>
+
+
+        {/* <Container>
           <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>Why's that?</Text>
 
           <Reasons>
@@ -84,11 +87,10 @@ export default class ReasonsScreen extends React.Component {
             onPress={() => this._buttonSubmit()}
             underlayColor="white"
           >
-            <NextButton>
               <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
-            </NextButton>
+
           </TouchableNativeFeedback>
-        </Container>
+        </Container> */}
       </ScrollView>
     );
   }
