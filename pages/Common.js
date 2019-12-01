@@ -1,17 +1,10 @@
 import React from "react";
-import {
-  ScrollView,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  TouchableOpacity
-} from "react-native";
-
 import Database from "../Database";
 
-import { Screen, Header, HeadingMain, CardSquare } from "../css/designSystem";
+import { Screen } from "../css/designSystem";
+import Header from "../components/Header";
+import ActionButton from "../components/ActionButton";
 import CalendarView from "../components/CalendarView";
-import { Entypo } from "@expo/vector-icons";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
@@ -33,23 +26,10 @@ export default class CommonScreen extends React.Component {
   render() {
     return (
       <Screen>
-        <Header>
-          <Entypo
-            name="menu"
-            size={32}
-            color="#1B4751"
-            style={{ width: "20%" }}
-          />
-          <HeadingMain style={{ width: "60%" }}>Overview</HeadingMain>
-          <Entypo
-            name="menu"
-            size={32}
-            color="#FEF1E0"
-            style={{ width: "20%" }}
-          />
-        </Header>
+        <Header title={"Overview"} />
 
         <CalendarView navigation={this.props.navigation} />
+        <ActionButton buttonText={"New Record"} navigateTo={"Mood"}/>
       </Screen>
     );
   }

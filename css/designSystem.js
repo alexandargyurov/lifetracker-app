@@ -56,6 +56,13 @@ export const ButtonText = styled.Text`
   color: #F2F1E7;
 `
 
+export const ReasonIconText = styled.Text`
+  text-align: center;
+  font-size: 14px;
+  font-family: 'europaBold';
+  color: #1B4751;
+`
+
 // SLIDER
 
 export const SliderThumb = styled.View`

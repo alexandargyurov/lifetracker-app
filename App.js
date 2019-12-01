@@ -42,7 +42,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Mood"
+    initialRouteName: "Common"
   }
 );
 

@@ -1,14 +1,15 @@
 import React from "react";
-import { ScrollView, Text, TouchableNativeFeedback } from "react-native";
+import { ScrollView } from "react-native";
+import { StackActions, NavigationActions } from "react-navigation";
 import styled from "@emotion/native";
 
+import Header from "../components/Header"
+import ActionButton from "../components/ActionButton"
 import ReasonsIcon from "../components/ReasonIcon";
-import { StackActions, NavigationActions } from 'react-navigation'
 
-import t from "../assets/tachyons.css";
-import Database from "../Database"
+import Database from "../Database";
 
-import { Screen } from "../css/designSystem"
+import { Screen } from "../css/designSystem";
 
 export default class ReasonsScreen extends React.Component {
   static navigationOptions = {
@@ -17,25 +18,26 @@ export default class ReasonsScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.database = new Database()
+    this.database = new Database();
+    this.buttonSubmit = this.buttonSubmit.bind(this)
     this.state = {
       reasons: [],
       selected: []
     };
   }
-  
-  _buttonSubmit() {
+
+  buttonSubmit() {
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'Common' })],
+      actions: [NavigationActions.navigate({ routeName: "Common" })]
     });
 
-    this.props.navigation.dispatch(resetAction)
+    this.props.navigation.dispatch(resetAction);
   }
 
   reasonCallback = (reasonId, selected) => {
     const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null)
+    mood_id = navigation.getParam("moodId", null);
 
     if (selected === true) {
       this.database.db.transaction(tx => {
@@ -64,11 +66,9 @@ export default class ReasonsScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView>
-
-
-        {/* <Container>
-          <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>Why's that?</Text>
+      <Screen>
+        <ScrollView>
+          <Header title={"Why's that?"}/>
 
           <Reasons>
             {this.state.reasons.map((reason, key) => (
@@ -82,36 +82,16 @@ export default class ReasonsScreen extends React.Component {
             ))}
           </Reasons>
 
-          <TouchableNativeFeedback
-            style={t.pb3}
-            onPress={() => this._buttonSubmit()}
-            underlayColor="white"
-          >
-              <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
-
-          </TouchableNativeFeedback>
-        </Container> */}
-      </ScrollView>
+          <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit}/>
+        </ScrollView>
+      </Screen>
     );
   }
 }
 
-const Container = styled.View`
-  flex: 1;
-  background-color: #d97d54;
-`;
 const Reasons = styled.View`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
 `;
-
-const Icon = styled.View`
-  display: flex;
-  width: 33%;
-  padding: 5px;
-  align-items: center;
-`;
-
-
