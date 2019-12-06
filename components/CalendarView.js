@@ -64,7 +64,6 @@ export default class CalendarView extends React.Component {
           justifyContent: "center"
         }}
       >
-        <BoxShadow setting={shadowStyle}>
           <CalendarList
             style={style}
             theme={theme}
@@ -76,11 +75,10 @@ export default class CalendarView extends React.Component {
             }}
             pagingEnabled={true}
             scrollEnabled={true}
-            pastScrollRange={2}
-            futureScrollRange={1}
+            pastScrollRange={0}
+            futureScrollRange={0}
             horizontal={true}
           />
-        </BoxShadow>
       </View>
     );
   }

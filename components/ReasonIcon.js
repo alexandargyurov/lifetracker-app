@@ -8,7 +8,7 @@ import { ReasonIconText } from "../css/designSystem";
 export default class ReasonIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { display: "flex", colour: "", selected: this.props.selected };
+    this.state = { display: "flex", colour: "", selected: this.props.selected || false };
   }
 
   onPress = () => {

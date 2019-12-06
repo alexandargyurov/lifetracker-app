@@ -46,8 +46,6 @@ export default class DayScreen extends React.Component {
   }
 
   removeReason = reasonId => {
-    console.log(reasonId);
-
     const { navigation } = this.props;
     mood_id = navigation.getParam("moodId", null);
 
@@ -58,6 +56,12 @@ export default class DayScreen extends React.Component {
           [mood_id, reasonId]
         );
       });
+
+      let filtered = this.state.reasons.filter(function(reason) {
+          return reason.reason_id != reasonId;
+      })
+
+      this.setState({reasons: filtered})
     });
   };
 
