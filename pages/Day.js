@@ -35,7 +35,9 @@ export default class DayScreen extends React.Component {
 
     this.props.navigation.push("Reasons", {
       moodId: mood_id,
-      viewOnly: false
+      viewOnly: false,
+      edit: true,
+      selected: this.state.reasons
     });
   }
 

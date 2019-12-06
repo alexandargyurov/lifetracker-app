@@ -25,7 +25,7 @@ class Header extends React.Component {
     let button;
 
     if (this.props.backButton) {
-      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" />
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
     } else {
       button = <Entypo name="menu" size={32} color="#1B4751" />
     }

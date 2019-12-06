@@ -76,7 +76,7 @@ export default class CalendarView extends React.Component {
             }}
             pagingEnabled={true}
             scrollEnabled={true}
-            pastScrollRange={1}
+            pastScrollRange={2}
             futureScrollRange={1}
             horizontal={true}
           />
