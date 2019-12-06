@@ -1,13 +1,15 @@
 import React from "react";
-import { ScrollView, Text, TouchableNativeFeedback } from "react-native";
+import { ScrollView } from "react-native";
+import { StackActions, NavigationActions } from "react-navigation";
 import styled from "@emotion/native";
-import { NextButton } from "../css/design-system-css"
 
+import Header from "../components/Header";
+import ActionButton from "../components/ActionButton";
 import ReasonsIcon from "../components/ReasonIcon";
-import { StackActions, NavigationActions } from 'react-navigation'
 
-import t from "../assets/tachyons.css";
-import Database from "../Database"
+import Database from "../Database";
+
+import { Screen } from "../css/designSystem";
 
 export default class ReasonsScreen extends React.Component {
   static navigationOptions = {
@@ -16,25 +18,27 @@ export default class ReasonsScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.database = new Database()
+    this.database = new Database();
+    this.buttonSubmit = this.buttonSubmit.bind(this);
+    this.findSelected = this.findSelected.bind(this);
     this.state = {
       reasons: [],
       selected: []
     };
   }
-  
-  _buttonSubmit() {
+
+  buttonSubmit() {
     const resetAction = StackActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'Common' })],
+      actions: [NavigationActions.navigate({ routeName: "Common" })]
     });
 
-    this.props.navigation.dispatch(resetAction)
+    this.props.navigation.dispatch(resetAction);
   }
 
   reasonCallback = (reasonId, selected) => {
     const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null)
+    mood_id = navigation.getParam("moodId", null);
 
     if (selected === true) {
       this.database.db.transaction(tx => {
@@ -53,7 +57,20 @@ export default class ReasonsScreen extends React.Component {
     }
   };
 
+  findSelected() {
+    this.state.reasons.filter(function(reason) {
+      selectedReasons.map(function(selectedReason) {
+        if (reason.id == selectedReason.reason_id) {
+          reason.selected = true;
+        }
+      });
+    });
+  }
+
   componentDidMount() {
+    const { navigation } = this.props;
+    selectedReasons = navigation.getParam("selected", []);
+
     this.database.db.transaction(tx => {
       tx.executeSql(`SELECT * FROM reasons;`, [], (_, { rows: { _array } }) =>
         this.setState({ reasons: _array })
@@ -62,10 +79,19 @@ export default class ReasonsScreen extends React.Component {
   }
 
   render() {
+    let button;
+
+    if (this.props.navigation.getParam("edit", false)) {
+      button = <ActionButton buttonText={"Back"} onPress={this.props.navigation.goBack}/>
+    } else {
+      button = <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
+    }
+
+    this.findSelected()
     return (
-      <ScrollView>
-        <Container>
-          <Text style={[t.tc, t.white, t.fw5, t.f2, t.mt4]}>Why's that?</Text>
+      <Screen>
+        <ScrollView>
+          <Header title={"Why's that?"} backButton={true} />
 
           <Reasons>
             {this.state.reasons.map((reason, key) => (
@@ -74,42 +100,22 @@ export default class ReasonsScreen extends React.Component {
                 reasonId={reason.id}
                 reasonCallback={this.reasonCallback}
                 viewOnly={false}
+                selected={reason.selected}
                 key={key}
               />
             ))}
           </Reasons>
 
-          <TouchableNativeFeedback
-            style={t.pb3}
-            onPress={() => this._buttonSubmit()}
-            underlayColor="white"
-          >
-            <NextButton>
-              <Text style={[t.b, t.tc, t.f5]}>NEXT</Text>
-            </NextButton>
-          </TouchableNativeFeedback>
-        </Container>
-      </ScrollView>
+          {button}
+        </ScrollView>
+      </Screen>
     );
   }
 }
 
-const Container = styled.View`
-  flex: 1;
-  background-color: #d97d54;
-`;
 const Reasons = styled.View`
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
 `;
-
-const Icon = styled.View`
-  display: flex;
-  width: 33%;
-  padding: 5px;
-  align-items: center;
-`;
-
-

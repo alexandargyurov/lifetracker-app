@@ -3,20 +3,21 @@ import styled from "@emotion/native";
 import { Text, Image, TouchableOpacity } from "react-native";
 import t from "../assets/tachyons.css";
 import { Ionicons } from "@expo/vector-icons";
+import { ReasonIconText } from "../css/designSystem";
 
-class ReasonIcon extends React.Component {
+export default class ReasonIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { display: "flex", colour: "", selected: false };
+    this.state = { display: "flex", colour: "", selected: this.props.selected || false };
   }
 
   onPress = () => {
     if (this.props.viewOnly == false) {
       if (this.state.selected === false) {
-        this.setState({ colour: "#EA8F66", selected: true });
+        this.setState({ colour: "#FFE6C1", selected: true });
         this.props.reasonCallback(this.props.reasonId, true);
       } else {
-        this.setState({ colour: "#D97D54", selected: false });
+        this.setState({ colour: "#FEF1E0", selected: false });
         this.props.reasonCallback(this.props.reasonId, false);
       }
     }
@@ -26,6 +27,10 @@ class ReasonIcon extends React.Component {
     this.setState({ display: "none" });
     this.props.reasonCallback(this.props.reasonId);
   };
+
+  componentDidMount() {
+    if (this.props.selected) this.setState({colour: '#FFE6C1'})
+  }
 
   render() {
     let removeButton;
@@ -41,7 +46,12 @@ class ReasonIcon extends React.Component {
     }
 
     return (
-      <Icon style={{ backgroundColor: this.state.colour, display: this.state.display }}>
+      <Icon
+        style={{
+          backgroundColor: this.state.colour,
+          display: this.state.display
+        }}
+      >
         <TouchableOpacity onPress={this.onPress} disabled={this.props.viewOnly}>
           <Image
             style={{ width: 75, height: 75 }}
@@ -52,17 +62,15 @@ class ReasonIcon extends React.Component {
                 ".png"
             }}
           />
-          <Text style={[t.tc, t.ttc, t.white, t.b, t.pt2]}>
+          <ReasonIconText style={[t.ttc, t.pt2]}>
             {this.props.reason}
-          </Text>
+          </ReasonIconText>
         </TouchableOpacity>
         {removeButton}
       </Icon>
     );
   }
 }
-
-export default ReasonIcon;
 
 let Icon = styled.View`
   display: flex;

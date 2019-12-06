@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/native";
-import { Text, Image, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import t from "../assets/tachyons.css";
 
 export default class SideMenu extends React.Component {
     render() {
         return (
-            <Drawer>
+            <Drawer style={{backgroundColor: '#FFE6C1'}}>
                 <Menu>
                     <Text style={[t.b, t.tc, t.f3, t.pa2]}>Life Tracker</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("About")}>

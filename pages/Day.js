@@ -1,12 +1,16 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styled, { css } from "@emotion/native";
-import ReasonsIcon from "../components/ReasonIcon";
-
 import t from "../assets/tachyons.css";
+
 import Database from "../Database";
 import moodToColour from "../functions/moodToColour";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+
+import { Screen } from "../css/designSystem";
+import Header from "../components/Header";
+import ActionButton from "../components/ActionButton";
+import ReasonsIcon from "../components/ReasonIcon";
 
 export default class DayScreen extends React.Component {
   static navigationOptions = {
@@ -22,6 +26,7 @@ export default class DayScreen extends React.Component {
       editable: false
     };
     this.addReason = this.addReason.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
   }
 
   addReason() {
@@ -30,7 +35,9 @@ export default class DayScreen extends React.Component {
 
     this.props.navigation.push("Reasons", {
       moodId: mood_id,
-      viewOnly: false
+      viewOnly: false,
+      edit: true,
+      selected: this.state.reasons
     });
   }
 
@@ -39,8 +46,6 @@ export default class DayScreen extends React.Component {
   }
 
   removeReason = reasonId => {
-    console.log(reasonId);
-
     const { navigation } = this.props;
     mood_id = navigation.getParam("moodId", null);
 
@@ -51,6 +56,12 @@ export default class DayScreen extends React.Component {
           [mood_id, reasonId]
         );
       });
+
+      let filtered = this.state.reasons.filter(function(reason) {
+          return reason.reason_id != reasonId;
+      })
+
+      this.setState({reasons: filtered})
     });
   };
 
@@ -87,16 +98,18 @@ export default class DayScreen extends React.Component {
       addButton = (
         <AddButton>
           <TouchableOpacity onPress={this.addReason}>
-            <Feather name="plus-circle" size={36} color="white" />
+            <Feather name="plus-circle" size={36} color="#1B4751" />
           </TouchableOpacity>
         </AddButton>
       );
     }
 
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: "#7da3f2" }}>
-        <Container>
-          <Text style={[t.tc, t.white, t.fw5, t.f3, t.mt2, t.mb2, t.pa2]}>
+      <Screen>
+        <ScrollView>
+          <Header title={"Summary"} backButton={true}/>
+
+          <Text style={[t.tc, t.fw5, t.f3, t.mb2, t.pa2]}>
             You were feeling
             <Text
               style={{
@@ -115,16 +128,6 @@ export default class DayScreen extends React.Component {
             </Text>
           </Text>
 
-          <EditButton>
-            <TouchableOpacity style={t.ma3} onPress={() => this.toggleEdit()}>
-              <MaterialCommunityIcons
-                name="circle-edit-outline"
-                size={30}
-                color="white"
-              />
-            </TouchableOpacity>
-          </EditButton>
-
           <Reasons>
             {this.state.reasons.map((reason, key) => (
               <ReasonsIcon
@@ -138,17 +141,14 @@ export default class DayScreen extends React.Component {
             ))}
             {addButton}
           </Reasons>
-        </Container>
-      </ScrollView>
+
+          <ActionButton buttonText={"Edit"} onPress={this.toggleEdit}/>
+
+        </ScrollView>
+      </Screen>
     );
   }
 }
-
-const Container = styled.View`
-  flex: 1;
-  background-color: #7da3f2;
-  padding-top: 40px;
-`;
 
 const Reasons = styled.View`
   display: flex;
@@ -163,13 +163,5 @@ const AddButton = styled.View`
   display: flex;
   width: 33%;
   padding-top: 50px;
-  align-items: center;
-`;
-
-const EditButton = styled.View`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: flex-end;
   align-items: center;
 `;

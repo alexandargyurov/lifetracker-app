@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Button, View, Text, StyleSheet } from "react-native";
+import * as Font from "expo-font";
+
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
@@ -8,12 +9,11 @@ import MoodScreen from "./pages/Mood";
 import ReasonsScreen from "./pages/Reasons";
 import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
-
-import SideMenu from "./components/SideMenu";
-
-import { SQLite } from "expo-sqlite";
 import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
+
+import SideMenu from "./components/SideMenu";
+import Header from "./components/Header";
 
 import Database from "./Database";
 
@@ -36,6 +36,9 @@ const StackNavigator = createStackNavigator(
     },
     Day: {
       screen: DayScreen
+    },
+    Header: {
+      screen: Header 
     }
   },
   {
@@ -52,14 +55,28 @@ const AppNavigator = createDrawerNavigator(
   }
 );
 
-const AppContainer = createAppContainer(AppNavigator);
 
 export default class App extends React.Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    this.state = { fontLoaded: false };
+
+  }
+
+  async componentDidMount() {
     new Database().fetchDatabase();
+
+    await Font.loadAsync({
+      europaBold: require("./assets/fonts/europa-bold-webfont.ttf"),
+      europaLight: require("./assets/fonts/europa-light-webfont.ttf"),
+      europaRegular: require("./assets/fonts/europa-regular-webfont.ttf")
+    });
+
+    this.setState({ fontLoaded: true });
   }
 
   render() {
-    return <AppContainer />;
+    const AppContainer = createAppContainer(AppNavigator);
+    return this.state.fontLoaded ? <AppContainer />  : null
   }
 }
