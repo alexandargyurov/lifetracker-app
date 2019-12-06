@@ -1,20 +1,54 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { SectionHeader, BigHeading } from "../css/designSystem";
-import { withNavigation } from 'react-navigation';
-import { Entypo } from "@expo/vector-icons";
+import { withNavigation } from "react-navigation";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
-function Header(props) {
-  return (
-    <SectionHeader>
-      <TouchableOpacity style={{ width: "20%" }} onPress={props.navigation.openDrawer}>
-        <Entypo name="menu" size={32} color="#1B4751" />
-      </TouchableOpacity>
+class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.buttonAction = this.buttonAction.bind(this);
+    this.state = {
+      goingTo: null
+    }
+  }
 
-      <BigHeading style={{ width: "60%" }}>{props.title}</BigHeading>
-      <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "20%" }} />
-    </SectionHeader>
-  );
+  buttonAction() {
+    if (this.props.backButton) {
+      return this.props.navigation.goBack()
+    } else {
+      return this.props.navigation.openDrawer()
+    }
+  }
+
+  render() {
+    let button;
+
+    if (this.props.backButton) {
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" />
+    } else {
+      button = <Entypo name="menu" size={32} color="#1B4751" />
+    }
+
+    return (
+      <SectionHeader>
+        <TouchableOpacity
+          style={{ width: "20%" }}
+          onPress={this.buttonAction.bind()}
+        >
+          {button}
+        </TouchableOpacity>
+
+        <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>
+        <Entypo
+          name="menu"
+          size={32}
+          color="#FEF1E0"
+          style={{ width: "20%" }}
+        />
+      </SectionHeader>
+    );
+  }
 }
 
 export default withNavigation(Header);
