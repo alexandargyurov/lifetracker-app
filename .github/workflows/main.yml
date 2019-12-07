@@ -20,4 +20,4 @@ jobs:
       - run: npm install
       - run: npm ci
       - run: expo publish
-      - run: expo build:android -t app-bundle
+      - run: expo build:android -t app-bundle --no-wait
