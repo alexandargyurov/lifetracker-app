@@ -1,6 +1,7 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import styled, { css } from "@emotion/native";
+import * as Animatable from "react-native-animatable";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
+import styled from "@emotion/native";
 import t from "../assets/tachyons.css";
 
 import Database from "../Database";
@@ -23,18 +24,18 @@ export default class DayScreen extends React.Component {
     this.state = {
       reasons: [],
       mood: {},
-      editable: false
+      mood_id: this.props.navigation.getParam("moodId", null),
+      editable: false,
+      showEditButton: false
     };
     this.addReason = this.addReason.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.renderEditButton = this.renderEditButton.bind(this);
   }
 
   addReason() {
-    const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null);
-
     this.props.navigation.push("Reasons", {
-      moodId: mood_id,
+      moodId: this.state.mood_id,
       viewOnly: false,
       edit: true,
       selected: this.state.reasons
@@ -46,40 +47,28 @@ export default class DayScreen extends React.Component {
   }
 
   removeReason = reasonId => {
-    const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null);
-
     return new Promise((resolve, reject) => {
       this.database.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-          [mood_id, reasonId]
+          [this.state.mood_id, reasonId]
         );
       });
 
       let filtered = this.state.reasons.filter(function(reason) {
-          return reason.reason_id != reasonId;
-      })
+        return reason.reason_id != reasonId;
+      });
 
-      this.setState({reasons: filtered})
+      this.setState({ reasons: filtered });
     });
   };
 
   componentDidMount() {
-    const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null);
-
     this.database.db.transaction(
       tx => {
         tx.executeSql(
-          `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
-          [mood_id],
-          (_, { rows: { _array } }) => this.setState({ reasons: _array })
-        );
-
-        tx.executeSql(
           `SELECT mood FROM moods WHERE id = ?;`,
-          [mood_id],
+          [this.state.mood_id],
           (_, { rows: { _array } }) =>
             this.setState({ mood: moodToColour(_array[0]["mood"]) })
         );
@@ -90,13 +79,30 @@ export default class DayScreen extends React.Component {
     );
   }
 
+  renderReasons(endState) {
+    if (endState) {
+      this.database.db.transaction(tx => {
+        tx.executeSql(
+          `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
+          [this.state.mood_id],
+          (_, { rows: { _array } }) => this.setState({ reasons: _array })
+        );
+      });
+    }
+  }
+
+  renderEditButton() {
+    this.setState({showEditButton: true})
+  }
+
   render() {
     const { navigation } = this.props;
     let addButton;
+    let editButton;
 
     if (this.state.editable) {
       addButton = (
-        <AddButton>
+        <AddButton animation="fadeIn">
           <TouchableOpacity onPress={this.addReason}>
             <Feather name="plus-circle" size={36} color="#1B4751" />
           </TouchableOpacity>
@@ -104,12 +110,21 @@ export default class DayScreen extends React.Component {
       );
     }
 
+    if (this.state.showEditButton) {
+      editButton = <ActionButton buttonText={"Edit"} onPress={this.toggleEdit} />
+    } 
+
     return (
       <Screen>
         <ScrollView>
-          <Header title={"Summary"} backButton={true}/>
+          <Header title={"Summary"} backButton={true} />
 
-          <Text style={[t.tc, t.fw5, t.f3, t.mb2, t.pa2]}>
+          <Animatable.Text
+            style={[t.tc, t.fw5, t.f3, t.mb2, t.pa2]}
+            animation="fadeInUp"
+            easing='ease-out-quad'
+            onAnimationEnd={endState => this.renderReasons(endState)}
+          >
             You were feeling
             <Text
               style={{
@@ -126,7 +141,7 @@ export default class DayScreen extends React.Component {
               on {"\n"}
               {navigation.getParam("date", null)}.
             </Text>
-          </Text>
+          </Animatable.Text>
 
           <Reasons>
             {this.state.reasons.map((reason, key) => (
@@ -136,14 +151,16 @@ export default class DayScreen extends React.Component {
                 reasonCallback={this.removeReason}
                 viewOnly={true}
                 editable={this.state.editable}
+                position={key}
+                reasonsLength={this.state.reasons.length}
+                buttonCallback={this.renderEditButton}
                 key={key}
               />
             ))}
             {addButton}
           </Reasons>
 
-          <ActionButton buttonText={"Edit"} onPress={this.toggleEdit}/>
-
+          {editButton}
         </ScrollView>
       </Screen>
     );
@@ -159,9 +176,9 @@ const Reasons = styled.View`
   margin-bottom: 50px;
 `;
 
-const AddButton = styled.View`
+const AddButton = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   width: 33%;
   padding-top: 50px;
   align-items: center;
-`;
+`);

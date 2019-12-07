@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { withNavigation } from "react-navigation";
 import { ButtonMain, ButtonText } from "../css/designSystem";
+import * as Animatable from "react-native-animatable";
 
 class ActionButton extends React.Component {
   constructor(props) {
@@ -21,19 +22,21 @@ class ActionButton extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity
-        onPress={() => this.buttonAction()}
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          flexDirection: "row",
-          margin: 20
-        }}
-      >
-        <ButtonMain>
-          <ButtonText>{this.props.buttonText}</ButtonText>
-        </ButtonMain>
-      </TouchableOpacity>
+      <Animatable.View animation='fadeIn' easing='ease-in-out'>
+        <TouchableOpacity
+          onPress={() => this.buttonAction()}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            flexDirection: "row",
+            margin: 20
+          }}
+        >
+          <ButtonMain>
+            <ButtonText>{this.props.buttonText}</ButtonText>
+          </ButtonMain>
+        </TouchableOpacity>
+      </Animatable.View>
     );
   }
 }

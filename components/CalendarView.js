@@ -1,11 +1,11 @@
 import React from "react";
 import { CalendarList } from "react-native-calendars";
-import { BoxShadow } from "react-native-shadow";
 import { View } from "react-native";
 import { style, theme } from "../css/calendarStyles";
 import calendarPhaser from "../functions/calendarPhaser";
 import Database from "../Database";
 import moment from "moment";
+import * as Animatable from "react-native-animatable";
 
 const shadowStyle = {
   width: 350,
@@ -56,7 +56,7 @@ export default class CalendarView extends React.Component {
 
   render() {
     return (
-      <View
+      <Animatable.View animation='fadeIn'
         style={{
           display: "flex",
           flexDirection: "row",
@@ -79,7 +79,7 @@ export default class CalendarView extends React.Component {
             futureScrollRange={0}
             horizontal={true}
           />
-      </View>
+      </Animatable.View>
     );
   }
 }

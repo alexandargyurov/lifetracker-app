@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/native";
-import { Text, Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
+import * as Animatable from "react-native-animatable";
 import t from "../assets/tachyons.css";
 import { Ionicons } from "@expo/vector-icons";
 import { ReasonIconText } from "../css/designSystem";
@@ -8,7 +9,12 @@ import { ReasonIconText } from "../css/designSystem";
 export default class ReasonIcon extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { display: "flex", colour: "", selected: this.props.selected || false };
+    this.buttonCallBack = this.buttonCallBack.bind(this)
+    this.state = {
+      display: "flex",
+      colour: "",
+      selected: this.props.selected || false
+    };
   }
 
   onPress = () => {
@@ -28,8 +34,14 @@ export default class ReasonIcon extends React.Component {
     this.props.reasonCallback(this.props.reasonId);
   };
 
+  buttonCallBack = () => {
+      if (this.props.reasonsLength == this.props.position + 1)  {
+        this.props.buttonCallback()
+      }
+  };
+
   componentDidMount() {
-    if (this.props.selected) this.setState({colour: '#FFE6C1'})
+    if (this.props.selected) this.setState({ colour: "#FFE6C1" });
   }
 
   render() {
@@ -37,7 +49,7 @@ export default class ReasonIcon extends React.Component {
 
     if (this.props.viewOnly && this.props.editable) {
       removeButton = (
-        <RemoveButton>
+        <RemoveButton animation="fadeIn">
           <TouchableOpacity onPress={this.removeReason}>
             <Ionicons name="md-close-circle" size={28} color="red" />
           </TouchableOpacity>
@@ -47,6 +59,10 @@ export default class ReasonIcon extends React.Component {
 
     return (
       <Icon
+        animation="fadeIn"
+        easing="ease-in-out"
+        onAnimationEnd={endState => this.buttonCallBack()}
+        delay={this.props.position * 250}
         style={{
           backgroundColor: this.state.colour,
           display: this.state.display
@@ -72,14 +88,14 @@ export default class ReasonIcon extends React.Component {
   }
 }
 
-let Icon = styled.View`
+const Icon = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   width: 33%;
   padding: 20px;
   align-items: center;
-`;
+`);
 
-let RemoveButton = styled.View`
+let RemoveButton = Animatable.createAnimatableComponent(styled.View`
   position: absolute;
   right: 0px;
-`;
+`);

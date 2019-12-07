@@ -31,7 +31,7 @@ class Header extends React.Component {
     }
 
     return (
-      <SectionHeader>
+      <SectionHeader animation='fadeIn'>
         <TouchableOpacity
           style={{ width: "20%" }}
           onPress={this.buttonAction.bind()}
