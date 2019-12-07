@@ -5,6 +5,7 @@ import { SliderThumb } from "../css/designSystem";
 import ActionButton from "../components/ActionButton";
 import Database from "../Database";
 import { withNavigation } from 'react-navigation';
+import * as Animatable from "react-native-animatable"
 
 class SliderView extends React.Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class SliderView extends React.Component {
 
   render() {
     return (
-      <View style={{ borderRadius: 30 }}>
+      <Animatable.View animation='fadeIn' style={{ borderRadius: 30 }}>
         <ImageBackground
           source={require("../assets/gradientslider.jpg")}
           style={{ width: null, height: null, borderRadius: 30 }}
@@ -74,7 +75,7 @@ class SliderView extends React.Component {
           />
         </ImageBackground>
         <ActionButton buttonText="Next" onPress={this.buttonSubmit} />
-      </View>
+      </Animatable.View>
     );
   }
 }

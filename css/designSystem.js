@@ -1,4 +1,5 @@
 import styled from "@emotion/native";
+import * as Animatable from "react-native-animatable";
 
 // SECTIONS
 
@@ -10,12 +11,12 @@ export const Screen = styled.View`
   paddingTop: 45px;
 `
 
-export const SectionHeader = styled.View`
+export const SectionHeader = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-bottom: 50px;
-`
+`)
 
 // CARDS
 
