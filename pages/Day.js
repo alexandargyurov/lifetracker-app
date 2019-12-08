@@ -54,6 +54,15 @@ export default class DayScreen extends React.Component {
         [this.state.mood_id, reasonId]
       );
     });
+
+    let newReasons = [];
+    this.state.reasons.map(function(reason) {
+      if (reason.reason_id != reasonId) {
+        newReasons.push(reason)
+      }
+    })
+
+    this.setState({reasons: newReasons})
   };
 
   componentDidMount() {
