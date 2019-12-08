@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, BackHandler } from "react-native";
 import { StackActions, NavigationActions } from "react-navigation";
 import styled from "@emotion/native";
 
@@ -21,9 +21,10 @@ export default class ReasonsScreen extends React.Component {
     this.database = new Database();
     this.buttonSubmit = this.buttonSubmit.bind(this);
     this.findSelected = this.findSelected.bind(this);
+    this.goBack = this.goBack.bind(this);
     this.state = {
       reasons: [],
-      selected: []
+      mood_id: this.props.navigation.getParam("moodId", null)
     };
   }
 
@@ -37,61 +38,76 @@ export default class ReasonsScreen extends React.Component {
   }
 
   reasonCallback = (reasonId, selected) => {
-    const { navigation } = this.props;
-    mood_id = navigation.getParam("moodId", null);
-
     if (selected === true) {
       this.database.db.transaction(tx => {
         tx.executeSql(
           `INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`,
-          [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
+          [this.state.mood_id, reasonId]
         );
       });
     } else if (selected === false) {
       this.database.db.transaction(tx => {
         tx.executeSql(
           `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-          [JSON.stringify(navigation.getParam("moodId", null)), reasonId]
+          [this.state.mood_id, reasonId]
         );
       });
     }
   };
 
+
   findSelected() {
+    let selectedReasons = this.props.navigation.getParam("selected", [])
+
     this.state.reasons.filter(function(reason) {
       selectedReasons.map(function(selectedReason) {
         if (reason.id == selectedReason.reason_id) {
-          reason.selected = true;
+          reason.selected = selectedReason.selected;
         }
       });
     });
+
   }
 
   componentDidMount() {
-    const { navigation } = this.props;
-    selectedReasons = navigation.getParam("selected", []);
-
     this.database.db.transaction(tx => {
       tx.executeSql(`SELECT * FROM reasons;`, [], (_, { rows: { _array } }) =>
         this.setState({ reasons: _array })
       );
     });
+
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+  }
+
+  goBack() {
+    const { navigation } = this.props;
+    reasonsCallback = navigation.getParam("reasonsCallback", null);
+
+    reasonsCallback();
+    this.props.navigation.goBack();
+    return true;
   }
 
   render() {
     let button;
 
     if (this.props.navigation.getParam("edit", false)) {
-      button = <ActionButton buttonText={"Back"} onPress={this.props.navigation.goBack}/>
+      button = <ActionButton buttonText={"Back"} onPress={this.goBack} />;
     } else {
-      button = <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
+      button = (
+        <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
+      );
     }
 
-    this.findSelected()
+    this.findSelected();
     return (
       <Screen>
         <ScrollView>
-          <Header title={"Why's that?"} backButton={true} />
+          <Header title={"Why's that?"} customBack={this.goBack} />
 
           <Reasons>
             {this.state.reasons.map((reason, key) => (

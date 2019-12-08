@@ -32,6 +32,8 @@ export default class DayScreen extends React.Component {
     this.removeReason = this.removeReason.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.renderEditButton = this.renderEditButton.bind(this);
+    this.updateReasons = this.updateReasons.bind(this);
+    this.deleteReasons = this.deleteReasons.bind(this);
   }
 
   addReason() {
@@ -39,8 +41,18 @@ export default class DayScreen extends React.Component {
       moodId: this.state.mood_id,
       viewOnly: false,
       edit: true,
-      selected: this.state.reasons
+      selected: this.state.reasons,
+      reasonsCallback: this.updateReasons
     });
+  }
+
+  deleteReasons() {
+    
+  }
+
+  updateReasons() {
+    this.toggleEdit()
+    this.renderReasons(true)
   }
 
   toggleEdit() {
@@ -55,14 +67,13 @@ export default class DayScreen extends React.Component {
       );
     });
 
-    let newReasons = [];
-    this.state.reasons.map(function(reason) {
-      if (reason.reason_id != reasonId) {
-        newReasons.push(reason)
-      }
-    })
+    this.state.reasons.filter(function(reason) {
+        if (reason.reason_id == reasonId) {
+          reason.selected = false;
+        }
+    });
 
-    this.setState({reasons: newReasons})
+    console.log(this.state.reasons)
   };
 
   componentDidMount() {
@@ -84,11 +95,17 @@ export default class DayScreen extends React.Component {
           [this.state.mood_id],
           (_, { rows: { _array } }) => {
             if (_array.length == 0) this.setState({ showEditButton: true });
+            _array.map(function(reason) {
+              reason.selected = true;
+            })
+
+            console.log(_array)
             this.setState({ reasons: _array });
           }
         );
       });
     }
+
   }
 
   renderEditButton() {
