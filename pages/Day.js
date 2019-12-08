@@ -46,13 +46,11 @@ export default class DayScreen extends React.Component {
     });
   }
 
-  deleteReasons() {
-    
-  }
+  deleteReasons() {}
 
   updateReasons() {
-    this.toggleEdit()
-    this.renderReasons(true)
+    this.toggleEdit();
+    this.renderReasons(true);
   }
 
   toggleEdit() {
@@ -68,12 +66,10 @@ export default class DayScreen extends React.Component {
     });
 
     this.state.reasons.filter(function(reason) {
-        if (reason.reason_id == reasonId) {
-          reason.selected = false;
-        }
+      if (reason.reason_id == reasonId) {
+        reason.selected = false;
+      }
     });
-
-    console.log(this.state.reasons)
   };
 
   componentDidMount() {
@@ -97,15 +93,13 @@ export default class DayScreen extends React.Component {
             if (_array.length == 0) this.setState({ showEditButton: true });
             _array.map(function(reason) {
               reason.selected = true;
-            })
+            });
 
-            console.log(_array)
             this.setState({ reasons: _array });
           }
         );
       });
     }
-
   }
 
   renderEditButton() {
