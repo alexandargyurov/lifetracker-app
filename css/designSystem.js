@@ -15,7 +15,7 @@ export const SectionHeader = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 `)
 
 // CARDS
