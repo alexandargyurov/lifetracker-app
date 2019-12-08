@@ -43,7 +43,6 @@ export default class ReasonIcon extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.selected)
     if (this.props.selected) this.setState({ colour: "#FFE6C1" });
   }
 

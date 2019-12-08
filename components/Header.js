@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import { SectionHeader, BigHeading } from "../css/designSystem";
+import { SectionHeader, BigHeading, MedHeading } from "../css/designSystem";
 import { withNavigation } from "react-navigation";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 
@@ -25,6 +25,7 @@ class Header extends React.Component {
 
   render() {
     let button;
+    let header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>;
 
     if (this.props.backButton) {
       button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
@@ -34,6 +35,9 @@ class Header extends React.Component {
       button = <Entypo name="menu" size={32} color="#1B4751" />
     }
 
+    if (this.props.size == 'big') header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>
+    if (this.props.size == 'med') header = <MedHeading style={{ width: "60%" }}>{this.props.title}</MedHeading>
+
     return (
       <SectionHeader animation='fadeIn'>
         <TouchableOpacity
@@ -42,8 +46,7 @@ class Header extends React.Component {
         >
           {button}
         </TouchableOpacity>
-
-        <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>
+        {header}
         <Entypo
           name="menu"
           size={32}

@@ -2,6 +2,8 @@ import React from "react";
 import { ScrollView, Text, View, Image, TouchableOpacity } from "react-native";
 import t from "../assets/tachyons.css";
 import styled from "@emotion/native";
+import { Screen } from "../css/designSystem";
+import Header from "../components/Header"
 
 export default class AboutScreen extends React.Component {
   static navigationOptions = {
@@ -10,10 +12,10 @@ export default class AboutScreen extends React.Component {
 
   render() {
     return (
-      <Container>
-        <ScrollView>
-          <Text style={[t.b, t.tc, t.f4, t.white]}>What is Life Tracker?</Text>
-          <Text style={[t.tc, t.f5, t.mb4, t.pl3, t.pr3, t.white]}>
+      <Screen>
+          <Header title={"What is Life Tracker?"} backButton={true} size='med'/>
+
+          <Text style={[t.tc, t.f5, t.mb4, t.pl3, t.pr3]}>
             Life Tacker is a way to keep track of your feelings and emotions. It
             is a tool to understand more about yourself and how your mind works!
           </Text>
@@ -25,10 +27,8 @@ export default class AboutScreen extends React.Component {
                 source={require("../assets/ui/psychology.png")}
               />
               <SectionDetails>
-                <Text style={[t.b, t.f4, t.white]}>
-                  1. Always have a record.
-                </Text>
-                <Text style={[t.white]}>
+                <Text style={[t.b, t.f4]}>1. Always have a record.</Text>
+                <Text>
                   Keeping a diary on how your feeling can be very useful, you
                   can always look back and remember those special days and bring
                   memories you would of forgot otherwise.
@@ -38,10 +38,8 @@ export default class AboutScreen extends React.Component {
 
             <Section>
               <SectionDetails>
-                <Text style={[t.b, t.f4, t.white]}>
-                  2. Learn about yourself
-                </Text>
-                <Text style={[t.white]}>
+                <Text style={[t.b, t.f4]}>2. Learn about yourself</Text>
+                <Text>
                   Tracking your mood and feelings means you can start learning
                   more about yourself! What are some of the reasons why you’re
                   sad? Are you more happy on weekends? You can use this app to
@@ -60,28 +58,19 @@ export default class AboutScreen extends React.Component {
                 source={require("../assets/ui/brain.png")}
               />
               <SectionDetails style={[t.pl3]}>
-                <Text style={[t.b, t.f4, t.white]}>
-                  3. Keep a healthy mind{" "}
-                </Text>
-                <Text style={[t.white]}>
+                <Text style={[t.b, t.f4]}>3. Keep a healthy mind </Text>
+                <Text style={[t.mb3]}>
                   The more you know your mind the more it knows you :) Keeping a
-                  health mind is important for ourselves and is linked with many
+                  healthy mind is important for ourselves and is linked with many
                   benefits.
                 </Text>
               </SectionDetails>
             </Section>
           </Reasons>
-        </ScrollView>
-      </Container>
+      </Screen>
     );
   }
 }
-
-const Container = styled.View`
-  flex: 1;
-  background-color: #d97d54;
-  padding-top: 40px;
-`;
 
 const Section = styled.View`
   flex: 1;
