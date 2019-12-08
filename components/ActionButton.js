@@ -22,7 +22,7 @@ class ActionButton extends React.Component {
 
   render() {
     return (
-      <Animatable.View animation='fadeIn' easing='ease-in-out'>
+      <Animatable.View animation='fadeIn' easing='ease-in-out' duration={500}>
         <TouchableOpacity
           onPress={() => this.buttonAction()}
           style={{

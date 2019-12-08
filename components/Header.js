@@ -16,6 +16,8 @@ class Header extends React.Component {
   buttonAction() {
     if (this.props.backButton) {
       return this.props.navigation.goBack()
+    } else if (this.props.customBack) {
+      return this.props.customBack()
     } else {
       return this.props.navigation.openDrawer()
     }
@@ -25,6 +27,8 @@ class Header extends React.Component {
     let button;
 
     if (this.props.backButton) {
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
+    } else if (this.props.customBack) {
       button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
     } else {
       button = <Entypo name="menu" size={32} color="#1B4751" />

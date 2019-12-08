@@ -7,6 +7,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { ReasonIconText } from "../css/designSystem";
 
 export default class ReasonIcon extends React.Component {
+  handleViewRef = ref => this.view = ref;
+
   constructor(props) {
     super(props);
     this.buttonCallBack = this.buttonCallBack.bind(this)
@@ -30,7 +32,7 @@ export default class ReasonIcon extends React.Component {
   };
 
   removeReason = () => {
-    this.setState({ display: "none" });
+    this.view.fadeOut(250)
     this.props.reasonCallback(this.props.reasonId);
   };
 
@@ -41,6 +43,7 @@ export default class ReasonIcon extends React.Component {
   };
 
   componentDidMount() {
+    console.log(this.props.selected)
     if (this.props.selected) this.setState({ colour: "#FFE6C1" });
   }
 
@@ -56,13 +59,14 @@ export default class ReasonIcon extends React.Component {
         </RemoveButton>
       );
     }
-
+    
     return (
       <Icon
         animation="fadeIn"
         easing="ease-in-out"
         onAnimationEnd={endState => this.buttonCallBack()}
         delay={this.props.position * 250}
+        ref={this.handleViewRef}
         style={{
           backgroundColor: this.state.colour,
           display: this.state.display
