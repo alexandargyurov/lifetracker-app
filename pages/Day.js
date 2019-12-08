@@ -29,6 +29,7 @@ export default class DayScreen extends React.Component {
       showEditButton: false
     };
     this.addReason = this.addReason.bind(this);
+    this.removeReason = this.removeReason.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.renderEditButton = this.renderEditButton.bind(this);
   }
@@ -47,36 +48,23 @@ export default class DayScreen extends React.Component {
   }
 
   removeReason = reasonId => {
-    return new Promise((resolve, reject) => {
-      this.database.db.transaction(tx => {
-        tx.executeSql(
-          `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = ?;`,
-          [this.state.mood_id, reasonId]
-        );
-      });
-
-      let filtered = this.state.reasons.filter(function(reason) {
-        return reason.reason_id != reasonId;
-      });
-
-      this.setState({ reasons: filtered });
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM mood_reasons WHERE mood_id = ? AND reason_id = (?);`,
+        [this.state.mood_id, reasonId]
+      );
     });
   };
 
   componentDidMount() {
-    this.database.db.transaction(
-      tx => {
-        tx.executeSql(
-          `SELECT mood FROM moods WHERE id = ?;`,
-          [this.state.mood_id],
-          (_, { rows: { _array } }) =>
-            this.setState({ mood: moodToColour(_array[0]["mood"]) })
-        );
-      },
-      function(err) {
-        console.log(err);
-      }
-    );
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `SELECT mood FROM moods WHERE id = ?;`,
+        [this.state.mood_id],
+        (_, { rows: { _array } }) =>
+          this.setState({ mood: moodToColour(_array[0]["mood"]) })
+      );
+    });
   }
 
   renderReasons(endState) {
@@ -85,14 +73,17 @@ export default class DayScreen extends React.Component {
         tx.executeSql(
           `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
           [this.state.mood_id],
-          (_, { rows: { _array } }) => this.setState({ reasons: _array })
+          (_, { rows: { _array } }) => {
+            if (_array.length == 0) this.setState({ showEditButton: true });
+            this.setState({ reasons: _array });
+          }
         );
       });
     }
   }
 
   renderEditButton() {
-    this.setState({showEditButton: true})
+    this.setState({ showEditButton: true });
   }
 
   render() {
@@ -111,8 +102,10 @@ export default class DayScreen extends React.Component {
     }
 
     if (this.state.showEditButton) {
-      editButton = <ActionButton buttonText={"Edit"} onPress={this.toggleEdit} />
-    } 
+      editButton = (
+        <ActionButton buttonText={"Edit"} onPress={this.toggleEdit} />
+      );
+    }
 
     return (
       <Screen>
@@ -122,7 +115,7 @@ export default class DayScreen extends React.Component {
           <Animatable.Text
             style={[t.tc, t.fw5, t.f3, t.mb2, t.pa2]}
             animation="fadeInUp"
-            easing='ease-out-quad'
+            easing="ease-out-quad"
             onAnimationEnd={endState => this.renderReasons(endState)}
           >
             You were feeling
