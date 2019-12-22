@@ -87,7 +87,10 @@ export default class ReasonsScreen extends React.Component {
     const { navigation } = this.props;
     reasonsCallback = navigation.getParam("reasonsCallback", null);
 
-    reasonsCallback();
+    if (reasonsCallback) {
+      reasonsCallback();
+    }
+   
     this.props.navigation.goBack();
     return true;
   }
