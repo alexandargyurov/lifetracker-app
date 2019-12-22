@@ -11,6 +11,7 @@ import CommonScreen from "./pages/Common";
 import RoadmapScreen from "./pages/Roadmap";
 import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
+import ExtraScreen from "./pages/Extra";
 
 import SideMenu from "./components/SideMenu";
 import Header from "./components/Header";
@@ -25,6 +26,9 @@ const StackNavigator = createStackNavigator(
     Reasons: {
       screen: ReasonsScreen
     },
+    Extra: {
+      screen: ExtraScreen
+    },
     Common: {
       screen: CommonScreen
     },
@@ -38,11 +42,11 @@ const StackNavigator = createStackNavigator(
       screen: DayScreen
     },
     Header: {
-      screen: Header 
+      screen: Header
     }
   },
   {
-    initialRouteName: "Common"
+    initialRouteName: "Extra"
   }
 );
 
@@ -55,12 +59,10 @@ const AppNavigator = createDrawerNavigator(
   }
 );
 
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { fontLoaded: false };
-
   }
 
   async componentDidMount() {
@@ -77,6 +79,6 @@ export default class App extends React.Component {
 
   render() {
     const AppContainer = createAppContainer(AppNavigator);
-    return this.state.fontLoaded ? <AppContainer />  : null
+    return this.state.fontLoaded ? <AppContainer /> : null;
   }
 }

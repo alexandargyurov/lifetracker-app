@@ -6,7 +6,7 @@ import t from "../assets/tachyons.css";
 
 import Database from "../Database";
 import moodToColour from "../functions/moodToColour";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import { Screen } from "../css/designSystem";
 import Header from "../components/Header";

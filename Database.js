@@ -1,6 +1,6 @@
 import { SQLite } from "expo-sqlite";
 
-const CURRENT_SCHEMA_VERSION = 2; 
+const CURRENT_SCHEMA_VERSION = 3; 
 
 export default class Database {
   constructor() {
@@ -10,6 +10,7 @@ export default class Database {
   _migrate() {
       import("./migrations/1573213877_initialise_tables").then(m => m.default())
       import("./migrations/1574432118_alter_timestamp").then(m => m.default())
+      import("./migrations/1577048379_add_notes").then(m => m.default())
   }
 
   checkDatabase() {
