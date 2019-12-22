@@ -4,25 +4,44 @@ import { View, Text, ImageBackground } from "react-native";
 import { SliderThumb } from "../css/designSystem";
 import ActionButton from "../components/ActionButton";
 import Database from "../Database";
-import { withNavigation } from 'react-navigation';
-import * as Animatable from "react-native-animatable"
+import { withNavigation } from "react-navigation";
+import * as Animatable from "react-native-animatable";
 
 class SliderView extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.database = new Database();
     this.buttonSubmit = this.buttonSubmit.bind(this);
     this.state = {
       value: 0.5,
       valueText: "OK"
-    }
+    };
   }
 
   buttonSubmit() {
+    if (!this.props.selectedDate) {
+      this.database.db.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO moods (mood) VALUES (?);`,
+          [this.state.value],
+          (tx, result) => {
+            this.props.navigation.push("Reasons", {
+              moodId: result.insertId,
+              viewOnly: false
+            });
+          }
+        );
+      });
+    } else {
+      this.buttonSubmitWithDate();
+    }
+  }
+
+  buttonSubmitWithDate() {
     this.database.db.transaction(tx => {
       tx.executeSql(
-        `INSERT INTO moods (mood) VALUES (?);`,
-        [this.state.value],
+        `INSERT INTO moods (mood, timestamp) VALUES (?, ?);`,
+        [this.state.value, this.props.selectedDate],
         (tx, result) => {
           this.props.navigation.push("Reasons", {
             moodId: result.insertId,
@@ -50,7 +69,7 @@ class SliderView extends React.Component {
 
   render() {
     return (
-      <Animatable.View animation='fadeIn' style={{ borderRadius: 30 }}>
+      <Animatable.View animation="fadeIn" style={{ borderRadius: 30 }}>
         <ImageBackground
           source={require("../assets/gradientslider.jpg")}
           style={{ width: null, height: null, borderRadius: 30 }}
