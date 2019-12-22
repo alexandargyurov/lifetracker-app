@@ -6,9 +6,9 @@ import * as Animatable from "react-native-animatable";
 export const Screen = styled.View`
   flex: 1;
   background-color: #fef1e0;
-  paddingleft: 10px;
-  paddingright: 10px;
-  paddingtop: 45px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 45px;
 `;
 
 export const SectionHeader = Animatable.createAnimatableComponent(styled.View`
