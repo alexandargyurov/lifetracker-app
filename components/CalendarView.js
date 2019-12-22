@@ -1,30 +1,30 @@
 import React from "react";
 import { CalendarList } from "react-native-calendars";
-import { View } from "react-native";
+import { Modal, View, Text } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { style, theme } from "../css/calendarStyles";
 import calendarPhaser from "../functions/calendarPhaser";
 import Database from "../Database";
 import moment from "moment";
+import {
+  ModalView,
+  ModalSmall,
+  SmallHeading,
+  ButtonAccept,
+  ButtonDecline,
+  ButtonTextSmall
+} from "../css/designSystem";
 import * as Animatable from "react-native-animatable";
-
-const shadowStyle = {
-  width: 350,
-  height: 325,
-  color: "#000000",
-  radius: 10,
-  border: 8,
-  opacity: 0.15,
-  x: -1,
-  y: 5
-};
 
 export default class CalendarView extends React.Component {
   constructor(props) {
     super(props);
     this.database = new Database();
     this.state = {
-        calendarDates: {}
-    }
+      calendarDates: {},
+      modalVisible: false,
+      dateSelected: ""
+    };
   }
 
   componentDidMount() {
@@ -51,12 +51,58 @@ export default class CalendarView extends React.Component {
         moodId: data[0]["id"],
         date: moment(timestamp).format("dddd Do YYYY")
       });
+    } else {
+      this.setState({ modalVisible: true, dateSelected: timestamp });
     }
   }
 
   render() {
+    let modal = (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {
+          this.setState({ modalVisible: false });
+        }}
+      >
+        <ModalView>
+          <ModalSmall>
+            <SmallHeading style={{ paddingBottom: 30 }}>
+              You don't have a record for this day, would you like to add one?
+            </SmallHeading>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ modalVisible: false });
+              }}
+            >
+              <ButtonDecline>
+                <ButtonTextSmall style={{ color: "#1B4751" }}>
+                  No
+                </ButtonTextSmall>
+              </ButtonDecline>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ modalVisible: false });
+                this.props.navigation.push("Mood", {
+                  date: this.state.dateSelected
+                });
+              }}
+            >
+              <ButtonAccept>
+                <ButtonTextSmall>Yes</ButtonTextSmall>
+              </ButtonAccept>
+            </TouchableOpacity>
+          </ModalSmall>
+        </ModalView>
+      </Modal>
+    );
+
     return (
-      <Animatable.View animation='fadeIn'
+      <Animatable.View
+        animation="fadeIn"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -64,21 +110,23 @@ export default class CalendarView extends React.Component {
           justifyContent: "center"
         }}
       >
-          <CalendarList
-            style={style}
-            theme={theme}
-            current={Date()}
-            markingType={"custom"}
-            markedDates={this.state.calendarDates}
-            onDayPress={day => {
-              this.timestampPhaser(day["dateString"]);
-            }}
-            pagingEnabled={true}
-            scrollEnabled={true}
-            pastScrollRange={0}
-            futureScrollRange={0}
-            horizontal={true}
-          />
+        <CalendarList
+          style={style}
+          theme={theme}
+          current={Date()}
+          markingType={"custom"}
+          markedDates={this.state.calendarDates}
+          onDayPress={day => {
+            this.timestampPhaser(day["dateString"]);
+          }}
+          pagingEnabled={true}
+          scrollEnabled={true}
+          pastScrollRange={0}
+          futureScrollRange={0}
+          horizontal={true}
+        />
+
+        {modal}
       </Animatable.View>
     );
   }

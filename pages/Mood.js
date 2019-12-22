@@ -15,17 +15,26 @@ export default class MoodScreen extends React.Component {
     this.state = {
       value: 0.5,
       valueText: "OK",
-      switchValue: true
+      switchValue: true,
+      date: null
     };
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.setState({ date: navigation.getParam("date", null) });
   }
 
   render() {
     return (
       <Screen>
-        <Header title={"How did today go?"} backButton={true}/>
+        <Header title={"How did today go?"} backButton={true} />
 
-        <View animation='fadeIn' style={{ flex: 1, flexDirection: "column", marginTop: "40%" }}>
-          <SliderView />
+        <View
+          animation="fadeIn"
+          style={{ flex: 1, flexDirection: "column", marginTop: "40%" }}
+        >
+          <SliderView selectedDate={this.state.date} />
         </View>
       </Screen>
     );
