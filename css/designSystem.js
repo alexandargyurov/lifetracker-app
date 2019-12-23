@@ -25,6 +25,17 @@ export const CardSquare = styled.View`
   border: 1px black;
 `;
 
+export const CardDotted = styled.View`
+  align-items: center;
+  justify-content: center;
+  width: 95%;
+  height: 150px;
+  align-self: center;
+  border-radius: 1px;
+  border-style: dashed;
+  color: #1B4751;
+`;
+
 // BUTTONS
 
 export const ButtonMain = styled.View`
@@ -38,7 +49,7 @@ export const ButtonAccept = styled.View`
   display: flex;
   align-items: center;
   justify-items: center;
-  width: 50px;
+  width: 60px;
   background-color: #7e9cff;
   border-radius: 400px 400px 500px 500px;
 `;
@@ -47,7 +58,7 @@ export const ButtonDecline = styled.View`
   display: flex;
   align-items: center;
   justify-items: center;
-  width: 50px;
+  width: 70px;
   border-radius: 10px;
 `;
 
@@ -68,9 +79,22 @@ export const MedHeading = styled.Text`
 `;
 
 export const SmallHeading = styled.Text`
-  text-align: center;
   font-size: 18px;
   font-family: "europaRegular";
+  color: #1b4751;
+`;
+
+export const MediumText = styled.Text`
+  text-align: center;
+  font-size: 16px;
+  font-family: "europaBold";
+  color: #1b4751;
+  margin: 5px;
+`;
+
+export const SmallText = styled.Text`
+  font-size: 16px;
+  font-family: "europaLight";
   color: #1b4751;
 `;
 
@@ -105,7 +129,7 @@ export const SliderThumb = styled.View`
   background-color: #1b4751;
 `;
 
-// MODAL
+// MODALS
 
 export const ModalView = styled.View`
   flex: 1;
@@ -127,3 +151,28 @@ export const ModalSmall = styled.View`
   width: 80%;
   height: 150;
 `;
+
+export const ModalMedium = styled.View`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 80%;
+  height: 300;
+`;
+
+// SPACERS
+
+export const LineSeperator = styled.View`
+  width: 85%;
+  height: 1px;
+  align-self: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1;
+  border-bottom-width: 0.5px;
+`

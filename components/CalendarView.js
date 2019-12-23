@@ -49,7 +49,7 @@ export default class CalendarView extends React.Component {
     if (data.length != 0) {
       this.props.navigation.push("Day", {
         moodId: data[0]["id"],
-        date: moment(timestamp).format("dddd Do YYYY")
+        date: moment(timestamp).format("dddd Do MMMM")
       });
     } else {
       this.setState({ modalVisible: true, dateSelected: timestamp });
@@ -68,7 +68,7 @@ export default class CalendarView extends React.Component {
       >
         <ModalView>
           <ModalSmall>
-            <SmallHeading style={{ paddingBottom: 30 }}>
+            <SmallHeading style={{ paddingBottom: 30, textAlign: 'center' }}>
               You don't have a record for this day, would you like to add one?
             </SmallHeading>
             <TouchableOpacity
