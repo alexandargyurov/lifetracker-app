@@ -49,7 +49,7 @@ export default class CalendarView extends React.Component {
     if (data.length != 0) {
       this.props.navigation.push("Day", {
         moodId: data[0]["id"],
-        date: moment(timestamp).format("dddd Do YYYY")
+        date: moment(timestamp).format("dddd Do MMMM")
       });
     } else {
       this.setState({ modalVisible: true, dateSelected: timestamp });

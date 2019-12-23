@@ -25,7 +25,10 @@ class Header extends React.Component {
 
   render() {
     let button;
+    let rightSide;
+
     let header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>;
+    rightSide = <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "20%" }}/>
 
     if (this.props.backButton) {
       button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
@@ -38,6 +41,9 @@ class Header extends React.Component {
     if (this.props.size == 'big') header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>
     if (this.props.size == 'med') header = <MedHeading style={{ width: "60%" }}>{this.props.title}</MedHeading>
 
+    if (this.props.rightSide) rightSide = this.props.rightSide
+
+
     return (
       <SectionHeader animation='fadeIn'>
         <TouchableOpacity
@@ -47,12 +53,7 @@ class Header extends React.Component {
           {button}
         </TouchableOpacity>
         {header}
-        <Entypo
-          name="menu"
-          size={32}
-          color="#FEF1E0"
-          style={{ width: "20%" }}
-        />
+        {rightSide}
       </SectionHeader>
     );
   }
