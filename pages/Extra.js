@@ -1,18 +1,18 @@
 import React from "react";
-import { Modal, Image, Text, TextInput, TouchableOpacity } from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
+import { StackActions, NavigationActions } from "react-navigation";
 import {
   Screen,
-  SmallHeading,
   CardDotted,
-  ModalView,
-  ModalMedium,
-  ButtonAccept,
-  ButtonDecline,
-  ButtonTextSmall,
-  MediumText
+  MediumText,
+  SmallHeading,
+  SmallText
 } from "../css/designSystem";
+
 import Header from "../components/Header";
-import { Feather } from "@expo/vector-icons";
+import NotesModal from "../components/NotesModal";
+import ActionButton from "../components/ActionButton";
+import Database from "../Database";
 
 export default class RoadmapScreen extends React.Component {
   static navigationOptions = {
@@ -21,70 +21,70 @@ export default class RoadmapScreen extends React.Component {
 
   constructor(props) {
     super(props);
+    this.database = new Database();
+    this.closeModal = this.closeModal.bind(this);
+    this.updateNote = this.updateNote.bind(this);
+    this.buttonSubmit = this.buttonSubmit.bind(this);
     this.state = {
       value: "",
-      modalVisible: false
+      modalVisible: false,
+      mood_id: this.props.navigation.getParam("moodId", null),
+      note: null
     };
   }
 
+  updateNote(note) {
+    this.setState({ note: note });
+  }
+
+  closeModal() {
+    this.setState({ modalVisible: false });
+  }
+
+  buttonSubmit() {
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: "Common" })]
+    });
+
+    this.props.navigation.dispatch(resetAction);
+  }
+
+  componentDidMount() {
+    this.database.db.transaction(tx => {
+      tx.executeSql(`INSERT INTO extras (mood_id, notes) VALUES (?, ?);`, [
+        this.state.mood_id,
+        null
+      ]);
+    });
+  }
+
   render() {
-    let modal = (
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={this.state.modalVisible}
-        onRequestClose={() => {
-          this.setState({ modalVisible: false });
-        }}
-      >
-        <ModalView>
-          <ModalMedium>
-            <SmallHeading>Notes</SmallHeading>
-            <TextInput
-              style={{
-                width: "100%",
-                height: "70%",
-                borderColor: "#1b4751",
-                borderWidth: 0.5,
-                borderRadius: 2,
-                textAlignVertical: "top",
-                padding: 10,
-                marginBottom: 20
-              }}
-              onChangeText={text => this.setState({ value: text })}
-              value={this.state.value}
-              multiline
-              numberOfLines={4}
-              maxLength={1000}
-            />
+    let notesIcon;
 
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ modalVisible: false });
-              }}
-              style={{ marginLeft: "50%" }}
-            >
-              <ButtonDecline>
-                <ButtonTextSmall style={{ color: "#1B4751" }}>
-                  Cancel
-                </ButtonTextSmall>
-              </ButtonDecline>
-            </TouchableOpacity>
+    if (this.state.note) {
+      notesIcon = (
+        <View style={{maxHeight: 150, padding: 15}}>
+          <SmallHeading>
+            Notes:
+          </SmallHeading>
+          <SmallText numberOfLines={4}>{this.state.note}</SmallText>
+        </View>
+      );
+    } else {
+      notesIcon = (
+        <View>
+          <Image
+            style={{ width: 40, height: 40, alignSelf: "center" }}
+            source={{
+              uri: "https://lifetracker.fra1.digitaloceanspaces.com/notes.png"
+            }}
+          />
 
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ modalVisible: false });
-              }}
-            >
-              <ButtonAccept>
-                <ButtonTextSmall>Save</ButtonTextSmall>
-              </ButtonAccept>
-            </TouchableOpacity>
-          </ModalMedium>
-        </ModalView>
-      </Modal>
-    );
-
+          <MediumText>Notes</MediumText>
+        </View>
+      );
+    }
     return (
       <Screen>
         <Header title="Anything else to add?" backButton={true} />
@@ -93,19 +93,18 @@ export default class RoadmapScreen extends React.Component {
             this.setState({ modalVisible: true });
           }}
         >
-          <CardDotted style={{ borderWidth: 1 }}>
-            <Image
-              style={{ width: 40, height: 40 }}
-              source={{
-                uri: "https://lifetracker.fra1.digitaloceanspaces.com/notes.png"
-              }}
-            />
-
-            <MediumText>Notes</MediumText>
-          </CardDotted>
+          <CardDotted style={{ borderWidth: 1 }}>{notesIcon}</CardDotted>
         </TouchableOpacity>
 
-        {modal}
+        <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
+
+        <NotesModal
+          moodId={this.state.mood_id}
+          showModal={this.state.modalVisible}
+          textPlaceholder={this.state.value}
+          closeModal={this.closeModal}
+          updateNote={this.updateNote}
+        />
       </Screen>
     );
   }

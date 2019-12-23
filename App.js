@@ -46,7 +46,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Extra"
+    initialRouteName: "Common"
   }
 );
 

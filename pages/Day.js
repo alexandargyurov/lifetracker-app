@@ -7,9 +7,10 @@ import t from "../assets/tachyons.css";
 import Database from "../Database";
 import moodToColour from "../functions/moodToColour";
 import { Feather } from "@expo/vector-icons";
+import { Screen, LineSeperator } from "../css/designSystem";
 
-import { Screen } from "../css/designSystem";
 import Header from "../components/Header";
+import NotesSection from "../components/NotesSection";
 import ActionButton from "../components/ActionButton";
 import ReasonsIcon from "../components/ReasonIcon";
 
@@ -26,7 +27,8 @@ export default class DayScreen extends React.Component {
       mood: {},
       mood_id: this.props.navigation.getParam("moodId", null),
       editable: false,
-      showEditButton: false
+      showEditButton: false,
+      note: ""
     };
     this.addReason = this.addReason.bind(this);
     this.removeReason = this.removeReason.bind(this);
@@ -173,7 +175,11 @@ export default class DayScreen extends React.Component {
             {addButton}
           </Reasons>
 
-          {editButton}
+          {/* {editButton} */}
+
+          <LineSeperator />
+
+          <NotesSection moodId={this.state.mood_id}/>
         </ScrollView>
       </Screen>
     );
@@ -186,7 +192,6 @@ const Reasons = styled.View`
   flex-wrap: wrap;
   padding-left: 10px;
   padding-right: 10px;
-  margin-bottom: 50px;
 `;
 
 const AddButton = Animatable.createAnimatableComponent(styled.View`

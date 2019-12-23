@@ -1,6 +1,5 @@
 import React from "react";
 import { ScrollView, BackHandler } from "react-native";
-import { StackActions, NavigationActions } from "react-navigation";
 import styled from "@emotion/native";
 
 import Header from "../components/Header";
@@ -29,12 +28,9 @@ export default class ReasonsScreen extends React.Component {
   }
 
   buttonSubmit() {
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: "Common" })]
+    this.props.navigation.push("Extra", {
+      moodId: this.state.mood_id
     });
-
-    this.props.navigation.dispatch(resetAction);
   }
 
   reasonCallback = (reasonId, selected) => {
@@ -102,7 +98,7 @@ export default class ReasonsScreen extends React.Component {
       button = <ActionButton buttonText={"Back"} onPress={this.goBack} />;
     } else {
       button = (
-        <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
+        <ActionButton buttonText={"Continue"} onPress={this.buttonSubmit} />
       );
     }
 

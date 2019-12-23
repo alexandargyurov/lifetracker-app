@@ -79,7 +79,6 @@ export const MedHeading = styled.Text`
 `;
 
 export const SmallHeading = styled.Text`
-  text-align: center;
   font-size: 18px;
   font-family: "europaRegular";
   color: #1b4751;
@@ -91,6 +90,12 @@ export const MediumText = styled.Text`
   font-family: "europaBold";
   color: #1b4751;
   margin: 5px;
+`;
+
+export const SmallText = styled.Text`
+  font-size: 16px;
+  font-family: "europaLight";
+  color: #1b4751;
 `;
 
 export const ButtonText = styled.Text`
@@ -159,3 +164,15 @@ export const ModalMedium = styled.View`
   width: 80%;
   height: 300;
 `;
+
+// SPACERS
+
+export const LineSeperator = styled.View`
+  width: 85%;
+  height: 1px;
+  align-self: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1;
+  border-bottom-width: 0.5px;
+`
