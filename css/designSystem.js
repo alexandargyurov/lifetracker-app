@@ -34,6 +34,7 @@ export const CardDotted = styled.View`
   border-radius: 1px;
   border-style: dashed;
   color: #1B4751;
+  margin-bottom: 10px;
 `;
 
 // BUTTONS
@@ -163,6 +164,19 @@ export const ModalMedium = styled.View`
   background-color: #fff;
   width: 80%;
   height: 300;
+`;
+
+export const ModalFull = styled.View`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
 `;
 
 // SPACERS

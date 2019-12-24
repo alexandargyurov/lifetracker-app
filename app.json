@@ -24,7 +24,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.alexandargyurov.lifetracker",
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.410790811034-b38njme8u8cr1mq2ihnl7tg8soue68it"
+        }
+      }
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -38,6 +44,7 @@
     "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
     "android": {
       "package": "com.alexandargyurov.lifetracker",
+      "googleServicesFile": "./google-services.json",
       "permissions": [],
       "versionCode": 6
     }

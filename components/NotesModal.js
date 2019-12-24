@@ -36,7 +36,7 @@ class NotesModal extends React.Component {
         transparent={true}
         visible={this.props.showModal}
         onRequestClose={() => {
-          this.props.closeModal();
+          this.props.closeModal('note');
         }}
       >
         <ModalView>
@@ -62,7 +62,7 @@ class NotesModal extends React.Component {
 
             <TouchableOpacity
               onPress={() => {
-                this.props.closeModal();
+                this.props.closeModal('note');
               }}
               style={{ marginLeft: "50%" }}
             >
@@ -77,7 +77,7 @@ class NotesModal extends React.Component {
               onPress={() => {
                 this.saveNote();
                 this.props.updateNote(this.state.value);
-                this.props.closeModal();
+                this.props.closeModal('note');
               }}
             >
               <ButtonAccept>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "410790811034",
+    "firebase_url": "https://life-tracker-app-c52bf.firebaseio.com",
+    "project_id": "life-tracker-app-c52bf",
+    "storage_bucket": "life-tracker-app-c52bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410790811034:android:76626f82fa2d8e3de9d623",
+        "android_client_info": {
+          "package_name": "com.alexandargyurov.lifetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410790811034-9fbod4geagn9ug2lm8u0db816to8nqmc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7BWsnzwPzXLCnx9XWS5UJbcph_TyOYxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410790811034-9fbod4geagn9ug2lm8u0db816to8nqmc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

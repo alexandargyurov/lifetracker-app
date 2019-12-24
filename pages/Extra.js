@@ -11,6 +11,7 @@ import {
 
 import Header from "../components/Header";
 import NotesModal from "../components/NotesModal";
+import PhotosModal from "../components/PhotosModal";
 import ActionButton from "../components/ActionButton";
 import Database from "../Database";
 
@@ -27,7 +28,8 @@ export default class RoadmapScreen extends React.Component {
     this.buttonSubmit = this.buttonSubmit.bind(this);
     this.state = {
       value: "",
-      modalVisible: false,
+      noteModalVisible: false,
+      photosModalVisible: false,
       mood_id: this.props.navigation.getParam("moodId", null),
       note: null
     };
@@ -37,8 +39,12 @@ export default class RoadmapScreen extends React.Component {
     this.setState({ note: note });
   }
 
-  closeModal() {
-    this.setState({ modalVisible: false });
+  closeModal(modal) {
+    if (modal == "note") {
+      this.setState({ noteModalVisible: false });
+    } else if (modal == "photos") {
+      this.setState({ photosModalVisible: false });
+    }
   }
 
   buttonSubmit() {
@@ -59,20 +65,16 @@ export default class RoadmapScreen extends React.Component {
     });
   }
 
-  render() {
-    let notesIcon;
-
+  notesSection() {
     if (this.state.note) {
-      notesIcon = (
-        <View style={{maxHeight: 150, padding: 15}}>
-          <SmallHeading>
-            Notes:
-          </SmallHeading>
+      return (
+        <View style={{ maxHeight: 150, padding: 15 }}>
+          <SmallHeading>Notes:</SmallHeading>
           <SmallText numberOfLines={4}>{this.state.note}</SmallText>
         </View>
       );
     } else {
-      notesIcon = (
+      return (
         <View>
           <Image
             style={{ width: 40, height: 40, alignSelf: "center" }}
@@ -85,25 +87,69 @@ export default class RoadmapScreen extends React.Component {
         </View>
       );
     }
+  }
+
+  photoSection() {
+    if (this.state.note) {
+      return (
+        <View style={{ maxHeight: 150, padding: 15 }}>
+          <SmallHeading>Notes:</SmallHeading>
+          <SmallText numberOfLines={4}>{this.state.note}</SmallText>
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Image
+            style={{ width: 40, height: 40, alignSelf: "center" }}
+            source={{
+              uri: "https://lifetracker.fra1.digitaloceanspaces.com/photos.png"
+            }}
+          />
+
+          <MediumText>Photos</MediumText>
+        </View>
+      );
+    }
+  }
+
+  render() {
+    let notesSection = this.notesSection();
+    let photoSection = this.photoSection();
+
     return (
       <Screen>
         <Header title="Anything else to add?" backButton={true} />
         <TouchableOpacity
           onPress={() => {
-            this.setState({ modalVisible: true });
+            this.setState({ noteModalVisible: true });
           }}
         >
-          <CardDotted style={{ borderWidth: 1 }}>{notesIcon}</CardDotted>
+          <CardDotted style={{ borderWidth: 1 }}>{notesSection}</CardDotted>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            this.setState({ photosModalVisible: true });
+          }}
+        >
+          <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
         </TouchableOpacity>
 
         <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
 
         <NotesModal
           moodId={this.state.mood_id}
-          showModal={this.state.modalVisible}
+          showModal={this.state.noteModalVisible}
           textPlaceholder={this.state.value}
           closeModal={this.closeModal}
           updateNote={this.updateNote}
+        />
+
+        <PhotosModal
+          moodId={this.state.mood_id}
+          showModal={this.state.photosModalVisible}
+          closeModal={this.closeModal}
         />
       </Screen>
     );
