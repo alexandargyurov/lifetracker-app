@@ -50,7 +50,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "PhotosSelect"
+    initialRouteName: "Extra"
   }
 );
 

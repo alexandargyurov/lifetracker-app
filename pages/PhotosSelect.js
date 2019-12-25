@@ -1,46 +1,32 @@
 import React from "react";
-import { ScrollView, Text, View, Button, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  ActivityIndicator,
+  TouchableOpacity
+} from "react-native";
 import { Screen, MedHeading, SmallHeading } from "../css/designSystem";
 import Header from "../components/Header";
 import GooglePhoto from "../components/GooglePhoto";
 import Auth from "../Authentication";
 import ActionButton from "../components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
+import Database from "../Database";
 
 export default class PhotosSelect extends React.Component {
   static navigationOptions = {
     header: null
   };
-  //   static navigationOptions = ({ navigation }) => {
-  //     let selected = navigation.getParam("selected", 0);
-  //     return {
-  //       headerTitle: () => <MedHeading>Camera</MedHeading>,
-  //       headerLeft: () => (
-  //   <TouchableOpacity
-  //     onPress={() => {
-  //       navigation.goBack();
-  //     }}
-  //   >
-  //     <Ionicons
-  //       name="ios-arrow-back"
-  //       size={32}
-  //       color="#1B4751"
-  //       style={{ marginLeft: 20 }}
-  //     />
-  //   </TouchableOpacity>
-  //       ),
-  //       headerRight: () => (
-  //         <SmallHeading style={{ marginRight: 35 }}>
-  //           {selected} selected
-  //         </SmallHeading>
-  //       )
-  //     };
-  //   };
 
   constructor(props) {
     super(props);
     this.auth = new Auth();
+    this.database = new Database();
     this.updateHeader = this.updateHeader.bind(this);
+    this.addPhotoToDB = this.addPhotoToDB.bind(this);
+    this.removePhotoFromDB = this.removePhotoFromDB.bind(this);
+    this.mood_id = this.props.navigation.getParam("moodId", null);
     this.state = {
       photos: null,
       photosLoaded: false,
@@ -81,6 +67,26 @@ export default class PhotosSelect extends React.Component {
     }
   }
 
+  addPhotoToDB(photoId, photoUrl, baseUrl) {
+    console.log("Adding photo");
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `INSERT INTO photos (google_photo_id, product_url, base_url, mood_id) VALUES (?, ?, ?, ?);`,
+        [photoId, photoUrl, baseUrl, this.mood_id]
+      );
+    });
+  }
+
+  removePhotoFromDB(photoId) {
+    console.log("Removing photo");
+    this.database.db.transaction(tx => {
+      tx.executeSql(
+        `DELETE FROM photos WHERE google_photo_id = ? AND mood_id = ?;`,
+        [photoId, this.mood_id]
+      );
+    });
+  }
+
   render() {
     let photos;
 
@@ -88,12 +94,16 @@ export default class PhotosSelect extends React.Component {
       photos = this.state.photos.map((photo, key) => (
         <GooglePhoto
           uri={photo.baseUrl}
+          photoId={photo.id}
+          photoUrl={photo.productUrl}
           updateHeader={this.updateHeader}
+          addPhotoToDB={this.addPhotoToDB}
+          removePhotoFromDB={this.removePhotoFromDB}
           key={key}
         />
       ));
     } else {
-      photos = <Text>Loading...</Text>;
+      photos = <ActivityIndicator size="small" color="#00ff00" />;
     }
 
     let selectedText = (
@@ -124,6 +134,7 @@ export default class PhotosSelect extends React.Component {
         >
           <TouchableOpacity
             onPress={() => {
+              this.props.navigation.state.params.onGoBack()
               this.props.navigation.goBack();
             }}
             style={{ width: "15%" }}
