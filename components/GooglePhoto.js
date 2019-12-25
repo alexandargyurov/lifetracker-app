@@ -13,16 +13,17 @@ class GooglePhoto extends React.Component {
 
   selectPhoto() {
     this.state.selected
-      ? this.setState({
+      ? (this.setState({
           selected: false,
           borderColor: "#000000",
           borderWidth: 0
-        })
-      : this.setState({
+        }),
+        this.props.updateHeader('remove'))
+      : (this.setState({
           selected: true,
           borderColor: "#008000",
           borderWidth: 5
-        });
+        }), this.props.updateHeader('append'))
   }
 
   render() {
