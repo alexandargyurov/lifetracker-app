@@ -1,24 +1,24 @@
 import * as Google from "expo-google-app-auth";
 import * as SecureStore from "expo-secure-store";
-import axios from 'axios';
+import * as AppAuth from "expo-app-auth";
+import moment from "moment";
+import axios from "axios";
+
+const config = {
+  issuer: "https://accounts.google.com",
+  clientId: "410790811034-fa6hdle89o9eo6gdtpgfph7vegqgjtnt.apps.googleusercontent.com",
+  scopes: ["https://www.googleapis.com/auth/photoslibrary.readonly"]
+};
 
 export default class Auth {
   constructor() {
-    this.checkUser = this.checkUser.bind(this);
+    this.signInRequired = this.signInRequired.bind(this);
   }
 
   async refreshToken() {
-    console.log("Refreshing Token");
-    await axios.post("/oauth2/v4/token", {
-      client_id:
-        "410790811034-cehmk6vvq57fdcffdads426120au0a1v.apps.googleusercontent.com"
-    })
-      .then(function(response) {
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    let refreshToken = await this.getRefreshToken();
+    const authState = await AppAuth.refreshAsync(config, refreshToken);
+    console.log("refreshAuthAsync", authState);
   }
 
   async signIn() {
@@ -32,36 +32,57 @@ export default class Auth {
       let sessionUser = {
         info: user,
         accessToken: accessToken,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        expiry: new Date()
       };
       SecureStore.setItemAsync("user", JSON.stringify(sessionUser));
+      return sessionUser
     } else {
-      console.log("Failed");
-      // TODO: Provide a error message
+      console.log(type, "Failed");
+      return null      
     }
   }
 
-  async checkUser() {
+  async signOut() {
+    let accessToken = await this.getAccessToken()
+
+    await AppAuth.revokeAsync(config, {
+      token: accessToken,
+      isClientIdProvided: true,
+    });
+
+    await SecureStore.deleteItemAsync("user")
+    return null
+  }
+
+  async checkIfTokenExpired() {
+    let expiry_date = await this.getExpiryDate();
+    return moment(expiry_date).add(1, "hours") > new Date();
+  }
+
+  async signInRequired() {
     let user = await SecureStore.getItemAsync("user");
 
     if (user) {
-      // await this.signIn();
+      if (this.checkIfTokenExpired()) {
+        console.log("New token needed")
+        this.refreshToken();
+      }
     } else {
-      // Login
       this.signIn();
     }
   }
 
-  async currentUser() {
+  async getUser() {
     try {
       let session = await SecureStore.getItemAsync("user");
       return JSON.parse(session);
     } catch (e) {
-      console.log(e);
+      return null
     }
   }
 
-  async currentAccessToken() {
+  async getAccessToken() {
     try {
       let session = await SecureStore.getItemAsync("user");
       let parsedSession = JSON.parse(session);
@@ -71,11 +92,21 @@ export default class Auth {
     }
   }
 
-  async currentRefreshToken() {
+  async getRefreshToken() {
     try {
       let session = await SecureStore.getItemAsync("user");
       let parsedSession = JSON.parse(session);
       return parsedSession.refreshToken;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async getExpiryDate() {
+    try {
+      let session = await SecureStore.getItemAsync("user");
+      let parsedSession = JSON.parse(session);
+      return parsedSession.expiry;
     } catch (e) {
       console.log(e);
     }
