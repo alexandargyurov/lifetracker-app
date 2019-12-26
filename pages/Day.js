@@ -28,6 +28,7 @@ export default class DayScreen extends React.Component {
       mood_id: this.props.navigation.getParam("moodId", null),
       editable: false,
       showNoteSection: false,
+      showPhotosSection: false,
       note: ""
     };
     this.addReason = this.addReason.bind(this);
@@ -105,13 +106,14 @@ export default class DayScreen extends React.Component {
   }
 
   renderNoteSection() {
-    this.setState({ showNoteSection: true });
+    this.setState({ showNoteSection: true, showPhotosSection: true });
   }
 
   render() {
     const { navigation } = this.props;
     let addButton;
     let noteSection;
+    let photos;
     let editButton = (
       <TouchableOpacity onPress={this.toggleEdit} style={{ width: "20%" }}>
         <Feather
@@ -138,6 +140,15 @@ export default class DayScreen extends React.Component {
         <Animatable.View animation="fadeInUp" easing="ease-out-quad">
           <LineSeperator />
           <NotesSection moodId={this.state.mood_id} />
+        </Animatable.View>
+      );
+    }
+
+    if (this.state.showPhotosSection) {
+      photos = (
+        <Animatable.View animation="fadeInUp" easing="ease-out-quad" delay={500} duration={1500}>
+          <LineSeperator />
+          <PhotosSection moodId={this.state.mood_id} />
         </Animatable.View>
       );
     }
@@ -189,9 +200,7 @@ export default class DayScreen extends React.Component {
           </Reasons>
 
           {noteSection}
-
-          <LineSeperator />
-          <PhotosSection moodId={this.state.mood_id} />
+          {photos}
         </ScrollView>
       </Screen>
     );

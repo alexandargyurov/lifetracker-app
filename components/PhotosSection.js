@@ -56,7 +56,8 @@ export default class PhotosSection extends React.Component {
           width: "85%",
           alignSelf: "center",
           flexDirection: "row",
-          justifyContent: "space-between"
+          justifyContent: "space-between",
+          marginBottom: 20
         }}
       >
         <View style={{ width: "93%" }}>
