@@ -27,12 +27,10 @@ export default class RoadmapScreen extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.updateNote = this.updateNote.bind(this);
     this.buttonSubmit = this.buttonSubmit.bind(this);
-    this.refreshPhotos = this.refreshPhotos.bind(this);
     this.state = {
       value: "",
       noteModalVisible: false,
-      photosAdded: false,
-      photos: null,
+      photosNumber: null,
       mood_id: this.props.navigation.getParam("moodId", null),
       note: null
     };
@@ -66,15 +64,8 @@ export default class RoadmapScreen extends React.Component {
     });
   }
 
-  refreshPhotos() {
-    this.database.db.transaction(tx => {
-      tx.executeSql(
-        `SELECT * FROM photos WHERE mood_id = ?;`,
-        [this.state.mood_id],
-        (_, { rows: { _array } }) =>
-          this.setState({ photosAdded: true, photos: _array })
-      );
-    });
+  addImageCount(numOfImages) {
+    this.setState({ photosNumber: numOfImages });
   }
 
   notesSection() {
@@ -102,51 +93,29 @@ export default class RoadmapScreen extends React.Component {
   }
 
   photoSection() {
-    if (this.state.photos) {
-      console.log(this.state.photos[0]);
+    if (this.state.photosNumber) {
       return (
-        <PhotosView
-          uri={
-            "https://lh3.googleusercontent.com/lr/AGWb-e4q6e8Wnc1JeLTQT8maKB5-wQL2Ci0nm3dHhbc4sQI-Yq_joTDRoeSht-ZoGqjYJQHOW7gelszruFSs1cTU5z_9W2hithZ3d_FMvhOXm1da0JwZTrm94Qfefga3jjs2TXipuFaI8Hrey4UgVuvtU_HiOVxJ9DAMbWsnVwpMKzt8Cn1hL_yoYTL3kiodNzLBMawpKmnD6a9ri1hNXucO4v4ADIjn-L2pH6AN4ZsWxtobvOE3I03DSq-nTWDL2cqHL_p05KinTr_GQt6hhTalce_C2IMbxkK2YF6dDOKyeePJ-5rqE2DEjvpyQmmDIPZFElUZclWKDI4pRJPaPpZdjvl4s_C8vM3VqATgUyW2qgJflZt3ooCWZ_EqYCStDIP9SCm4-b8iHsMaOG-5e7_v2JESdOohg3TiaBvn8CAfUU4rMps3FxyhpvVrv42wRbzVEaFjVaR-RG9fEyXFvV81j_dWYe0F0yEC1zaUapIrc42hOObY79bTcFcsC-nOU39uYkdGC5oTLxbJK0wMfdDfniMhhRoQ4E2T8Xd40M_HCW2fTqY12oP8wutZdEuIC53HvFLXhErk1A6FVL8-h3VfxC5QemTur_t2Ps2o6Tfpxi0OPfRyXJPwRMkBmddc7V56BDtRsEdPWoZf4lcqh-Cg-VfVcqwH6yPoZrfLrdflpyiH1zGOFL3PvAMzBa3zjA5RwYcJMbqSsy0KUtRQ1gHII9BXlbV9trTLShQgga0l5Yfyg0bogeeYBbKlAeJsChUECf-95QklN8WnVTHKejVXm8gH6OS74nYeC67BcrWa3VpDmMW09U1kvH0ju6NgsQ"
-          }
-        />
+        <View>
+          <Image
+            style={{ width: 40, height: 40, alignSelf: "center" }}
+            source={{
+              uri: "https://lifetracker.fra1.digitaloceanspaces.com/photos.png"
+            }}
+          />
+          <MediumText>Google Photos</MediumText>
+          <SmallText style={{textAlign: 'center'}}>{this.state.photosNumber} photos added</SmallText>
+        </View>
       );
     } else {
       return (
-        <View style={{ flexDirection: "row", alignSelf: 'flex-start', justifyContent: 'space-around', maxHeight: '100%', width: '100%' }}>
+        <View>
           <Image
-            style={{
-              width: 125,
-              height: 125,
-              margin: 1
-            }}
+            style={{ width: 40, height: 40, alignSelf: "center" }}
             source={{
-              uri:
-                "https://lh3.googleusercontent.com/lr/AGWb-e4q6e8Wnc1JeLTQT8maKB5-wQL2Ci0nm3dHhbc4sQI-Yq_joTDRoeSht-ZoGqjYJQHOW7gelszruFSs1cTU5z_9W2hithZ3d_FMvhOXm1da0JwZTrm94Qfefga3jjs2TXipuFaI8Hrey4UgVuvtU_HiOVxJ9DAMbWsnVwpMKzt8Cn1hL_yoYTL3kiodNzLBMawpKmnD6a9ri1hNXucO4v4ADIjn-L2pH6AN4ZsWxtobvOE3I03DSq-nTWDL2cqHL_p05KinTr_GQt6hhTalce_C2IMbxkK2YF6dDOKyeePJ-5rqE2DEjvpyQmmDIPZFElUZclWKDI4pRJPaPpZdjvl4s_C8vM3VqATgUyW2qgJflZt3ooCWZ_EqYCStDIP9SCm4-b8iHsMaOG-5e7_v2JESdOohg3TiaBvn8CAfUU4rMps3FxyhpvVrv42wRbzVEaFjVaR-RG9fEyXFvV81j_dWYe0F0yEC1zaUapIrc42hOObY79bTcFcsC-nOU39uYkdGC5oTLxbJK0wMfdDfniMhhRoQ4E2T8Xd40M_HCW2fTqY12oP8wutZdEuIC53HvFLXhErk1A6FVL8-h3VfxC5QemTur_t2Ps2o6Tfpxi0OPfRyXJPwRMkBmddc7V56BDtRsEdPWoZf4lcqh-Cg-VfVcqwH6yPoZrfLrdflpyiH1zGOFL3PvAMzBa3zjA5RwYcJMbqSsy0KUtRQ1gHII9BXlbV9trTLShQgga0l5Yfyg0bogeeYBbKlAeJsChUECf-95QklN8WnVTHKejVXm8gH6OS74nYeC67BcrWa3VpDmMW09U1kvH0ju6NgsQ"
+              uri: "https://lifetracker.fra1.digitaloceanspaces.com/photos.png"
             }}
           />
-          <Image
-            style={{
-              width: 125,
-              height: 125,
-              margin: 1
-            }}
-            source={{
-              uri:
-                "https://lh3.googleusercontent.com/lr/AGWb-e4q6e8Wnc1JeLTQT8maKB5-wQL2Ci0nm3dHhbc4sQI-Yq_joTDRoeSht-ZoGqjYJQHOW7gelszruFSs1cTU5z_9W2hithZ3d_FMvhOXm1da0JwZTrm94Qfefga3jjs2TXipuFaI8Hrey4UgVuvtU_HiOVxJ9DAMbWsnVwpMKzt8Cn1hL_yoYTL3kiodNzLBMawpKmnD6a9ri1hNXucO4v4ADIjn-L2pH6AN4ZsWxtobvOE3I03DSq-nTWDL2cqHL_p05KinTr_GQt6hhTalce_C2IMbxkK2YF6dDOKyeePJ-5rqE2DEjvpyQmmDIPZFElUZclWKDI4pRJPaPpZdjvl4s_C8vM3VqATgUyW2qgJflZt3ooCWZ_EqYCStDIP9SCm4-b8iHsMaOG-5e7_v2JESdOohg3TiaBvn8CAfUU4rMps3FxyhpvVrv42wRbzVEaFjVaR-RG9fEyXFvV81j_dWYe0F0yEC1zaUapIrc42hOObY79bTcFcsC-nOU39uYkdGC5oTLxbJK0wMfdDfniMhhRoQ4E2T8Xd40M_HCW2fTqY12oP8wutZdEuIC53HvFLXhErk1A6FVL8-h3VfxC5QemTur_t2Ps2o6Tfpxi0OPfRyXJPwRMkBmddc7V56BDtRsEdPWoZf4lcqh-Cg-VfVcqwH6yPoZrfLrdflpyiH1zGOFL3PvAMzBa3zjA5RwYcJMbqSsy0KUtRQ1gHII9BXlbV9trTLShQgga0l5Yfyg0bogeeYBbKlAeJsChUECf-95QklN8WnVTHKejVXm8gH6OS74nYeC67BcrWa3VpDmMW09U1kvH0ju6NgsQ"
-            }}
-          />
-          <Image
-            style={{
-              width: 125,
-              height: 125,
-              margin: 1
-            }}
-            source={{
-              uri:
-                "https://lh3.googleusercontent.com/lr/AGWb-e4q6e8Wnc1JeLTQT8maKB5-wQL2Ci0nm3dHhbc4sQI-Yq_joTDRoeSht-ZoGqjYJQHOW7gelszruFSs1cTU5z_9W2hithZ3d_FMvhOXm1da0JwZTrm94Qfefga3jjs2TXipuFaI8Hrey4UgVuvtU_HiOVxJ9DAMbWsnVwpMKzt8Cn1hL_yoYTL3kiodNzLBMawpKmnD6a9ri1hNXucO4v4ADIjn-L2pH6AN4ZsWxtobvOE3I03DSq-nTWDL2cqHL_p05KinTr_GQt6hhTalce_C2IMbxkK2YF6dDOKyeePJ-5rqE2DEjvpyQmmDIPZFElUZclWKDI4pRJPaPpZdjvl4s_C8vM3VqATgUyW2qgJflZt3ooCWZ_EqYCStDIP9SCm4-b8iHsMaOG-5e7_v2JESdOohg3TiaBvn8CAfUU4rMps3FxyhpvVrv42wRbzVEaFjVaR-RG9fEyXFvV81j_dWYe0F0yEC1zaUapIrc42hOObY79bTcFcsC-nOU39uYkdGC5oTLxbJK0wMfdDfniMhhRoQ4E2T8Xd40M_HCW2fTqY12oP8wutZdEuIC53HvFLXhErk1A6FVL8-h3VfxC5QemTur_t2Ps2o6Tfpxi0OPfRyXJPwRMkBmddc7V56BDtRsEdPWoZf4lcqh-Cg-VfVcqwH6yPoZrfLrdflpyiH1zGOFL3PvAMzBa3zjA5RwYcJMbqSsy0KUtRQ1gHII9BXlbV9trTLShQgga0l5Yfyg0bogeeYBbKlAeJsChUECf-95QklN8WnVTHKejVXm8gH6OS74nYeC67BcrWa3VpDmMW09U1kvH0ju6NgsQ"
-            }}
-          />
+          <MediumText>Google Photos</MediumText>
         </View>
       );
     }
@@ -171,7 +140,7 @@ export default class RoadmapScreen extends React.Component {
           onPress={() => {
             this.props.navigation.push("PhotosSelect", {
               moodId: this.state.mood_id,
-              onGoBack: () => this.refreshPhotos()
+              onGoBack: numOfImages => this.addImageCount(numOfImages)
             });
           }}
         >

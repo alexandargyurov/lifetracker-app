@@ -35,8 +35,12 @@ export default class PhotosSelect extends React.Component {
   }
 
   async componentDidMount() {
-    this.auth.checkUser();
-    await this.getPhotos();
+    if (await this.auth.getUser()) {
+      await this.getPhotos();
+    }
+    else {
+      this.props.navigation.push("Settings");
+    }
   }
 
   async getPhotos() {
@@ -48,7 +52,7 @@ export default class PhotosSelect extends React.Component {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            Authorization: "Bearer " + (await this.auth.currentAccessToken())
+            Authorization: "Bearer " + (await this.auth.getAccessToken())
           }
         }
       );
@@ -115,9 +119,18 @@ export default class PhotosSelect extends React.Component {
     if (this.state.selected != 0)
       selectedText = (
         <View style={{ width: "80%", flexDirection: "row" }}>
-          <SmallHeading style={{ marginTop: 3, width: "85%" }}>
+          <SmallHeading style={{ marginTop: 4, width: "85%" }}>
             {this.state.selected} selected
           </SmallHeading>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.state.params.onGoBack(this.state.selected)
+              this.props.navigation.goBack();
+            }}
+            style={{ width: "15%" }}
+          >
+          <SmallHeading style={{ marginTop: 4}}>OK</SmallHeading>
+          </TouchableOpacity>
         </View>
       );
 
@@ -134,7 +147,7 @@ export default class PhotosSelect extends React.Component {
         >
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.state.params.onGoBack()
+              this.props.navigation.state.params.onGoBack(this.state.selected)
               this.props.navigation.goBack();
             }}
             style={{ width: "15%" }}
