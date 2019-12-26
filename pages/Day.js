@@ -11,7 +11,7 @@ import { Screen, LineSeperator } from "../css/designSystem";
 
 import Header from "../components/Header";
 import NotesSection from "../components/NotesSection";
-import ActionButton from "../components/ActionButton";
+import PhotosSection from "../components/PhotosSection";
 import ReasonsIcon from "../components/ReasonIcon";
 
 export default class DayScreen extends React.Component {
@@ -189,6 +189,9 @@ export default class DayScreen extends React.Component {
           </Reasons>
 
           {noteSection}
+
+          <LineSeperator />
+          <PhotosSection moodId={this.state.mood_id} />
         </ScrollView>
       </Screen>
     );

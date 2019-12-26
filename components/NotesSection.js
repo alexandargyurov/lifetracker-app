@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import NotesModal from "../components/NotesModal";
 import Database from "../Database";
 
-class NotesSection extends React.Component {
+export default class NotesSection extends React.Component {
   constructor(props) {
     super(props);
     this.database = new Database();
@@ -82,5 +82,3 @@ class NotesSection extends React.Component {
     );
   }
 }
-
-export default NotesSection;
