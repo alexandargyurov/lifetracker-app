@@ -12,6 +12,8 @@ import RoadmapScreen from "./pages/Roadmap";
 import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
 import ExtraScreen from "./pages/Extra";
+import PhotosSelect from "./pages/PhotosSelect"
+import SettingsScreen from "./pages/Settings"
 
 import SideMenu from "./components/SideMenu";
 import Header from "./components/Header";
@@ -43,6 +45,12 @@ const StackNavigator = createStackNavigator(
     },
     Header: {
       screen: Header
+    },
+    PhotosSelect: {
+      screen: PhotosSelect
+    },
+    Settings: {
+      screen: SettingsScreen
     }
   },
   {
