@@ -28,7 +28,7 @@ export default class PhotosSelect extends React.Component {
     this.state = {
       photos: null,
       photosLoaded: false,
-      selected: this.props.navigation.getParam("selected", 0).length
+      selected: this.props.navigation.getParam("selected", []).length
     };
   }
 
@@ -60,14 +60,15 @@ export default class PhotosSelect extends React.Component {
 
   findSelected() {
     let selectedPhotos = this.props.navigation.getParam("selected", []);
-
-    this.state.photos.filter(function(photo) {
-      selectedPhotos.map(function(selectedPhoto) {
-        if (photo.id == selectedPhoto.google_photo_id) {
-          photo.selected = true;
-        }
+    if (selectedPhotos.length != 0) {
+      this.state.photos.filter(function(photo) {
+        selectedPhotos.map(function(selectedPhoto) {
+          if (photo.id == selectedPhoto.google_photo_id) {
+            photo.selected = true;
+          }
+        });
       });
-    });
+    }
   }
 
   async getPhotos() {

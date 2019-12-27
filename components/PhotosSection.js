@@ -13,7 +13,7 @@ class PhotosSection extends React.Component {
     this.editPhotos = this.editPhotos.bind(this);
     this.state = {
       modalVisible: false,
-      photos: null,
+      photos: [],
       loaded: false
     };
   }
