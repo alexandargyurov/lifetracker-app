@@ -3,15 +3,14 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { MedHeading, SmallHeading } from "../css/designSystem";
 import GooglePhoto from "../components/GooglePhoto";
 import Auth from "../Authentication";
-import ActionButton from "../components/ActionButton";
 import { Ionicons } from "@expo/vector-icons";
 import Database from "../Database";
-
 export default class PhotosSelect extends React.Component {
   static navigationOptions = {
     header: null
@@ -35,11 +34,28 @@ export default class PhotosSelect extends React.Component {
   async componentDidMount() {
     if (await this.auth.getUser()) {
       await this.getPhotos();
-    }
-    else {
-      this.props.navigation.push("Settings");
+    } else {
+      this.props.navigation.push("Settings", {
+        fromPhotos: true,
+        refreshOnBack: async (user) => await this.checkUser(user)
+      });
     }
   }
+
+  async checkUser(user) {
+    if (user) {
+      this.getPhotos()
+    } else {
+      Alert.alert(
+        'Error',
+        'You need to sign into a Google account to access your Google Photos.',
+        [
+          { text: 'OK', onPress: () => this.props.navigation.goBack() },
+        ],
+        { cancelable: false }
+      );
+    }
+  } 
 
   async getPhotos() {
     try {
@@ -55,7 +71,6 @@ export default class PhotosSelect extends React.Component {
         }
       );
       const json = await response.json();
-      console.log(json)
       this.setState({ photos: json.mediaItems, photosLoaded: true });
     } catch (error) {
       console.log("Error:", error);
@@ -71,7 +86,6 @@ export default class PhotosSelect extends React.Component {
   }
 
   addPhotoToDB(photoId, photoUrl, baseUrl) {
-    console.log("Adding photo");
     this.database.db.transaction(tx => {
       tx.executeSql(
         `INSERT INTO photos (google_photo_id, product_url, base_url, mood_id) VALUES (?, ?, ?, ?);`,
@@ -81,7 +95,6 @@ export default class PhotosSelect extends React.Component {
   }
 
   removePhotoFromDB(photoId) {
-    console.log("Removing photo");
     this.database.db.transaction(tx => {
       tx.executeSql(
         `DELETE FROM photos WHERE google_photo_id = ? AND mood_id = ?;`,
@@ -106,7 +119,7 @@ export default class PhotosSelect extends React.Component {
         />
       ));
     } else {
-      photos = <ActivityIndicator size="small" color="#00ff00" />;
+      photos = <ActivityIndicator size="large" color="#1b4751"/>;
     }
 
     let selectedText = (
@@ -123,12 +136,12 @@ export default class PhotosSelect extends React.Component {
           </SmallHeading>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.state.params.onGoBack(this.state.selected)
+              this.props.navigation.state.params.onGoBack(this.state.selected);
               this.props.navigation.goBack();
             }}
             style={{ width: "15%" }}
           >
-          <SmallHeading style={{ marginTop: 4}}>OK</SmallHeading>
+            <SmallHeading style={{ marginTop: 4 }}>OK</SmallHeading>
           </TouchableOpacity>
         </View>
       );
@@ -146,7 +159,7 @@ export default class PhotosSelect extends React.Component {
         >
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.state.params.onGoBack(this.state.selected)
+              this.props.navigation.state.params.onGoBack(this.state.selected);
               this.props.navigation.goBack();
             }}
             style={{ width: "15%" }}
@@ -166,12 +179,13 @@ export default class PhotosSelect extends React.Component {
               display: "flex",
               flexDirection: "row",
               flexWrap: "wrap",
+              justifyContent: 'center',
+              marginTop: 10,
               marginBottom: 20
             }}
           >
             {photos}
           </View>
-          <ActionButton buttonText="" />
         </ScrollView>
       </View>
     );

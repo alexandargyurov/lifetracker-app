@@ -88,10 +88,8 @@ export default class Auth {
     if (session) {
       if (await this.checkIfTokenExpired()) {
         await this.refreshToken();
-        console.log(await this.buildUser())
         return await this.buildUser()
       } else {
-        console.log(await this.buildUser())
         return await this.buildUser()
       }
     }

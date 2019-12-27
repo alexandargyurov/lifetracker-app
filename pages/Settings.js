@@ -24,6 +24,7 @@ export default class SettingsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.auth = new Auth();
+    this.customBack = this.customBack.bind(this);
     this.state = {
       view: null,
       user: null,
@@ -37,6 +38,15 @@ export default class SettingsScreen extends React.Component {
 
   async signOut() {
     this.setState({ user: await this.auth.signOut() });
+  }
+
+  async customBack() {
+    if (this.props.navigation.getParam("fromPhotos")) {
+      await this.props.navigation.state.params.refreshOnBack(this.state.user);
+      this.props.navigation.goBack();
+    } else {
+      this.props.navigation.goBack();
+    }
   }
 
   async componentDidMount() {
@@ -76,7 +86,7 @@ export default class SettingsScreen extends React.Component {
       );
     } else {
       view = (
-        <View style={{margin: 10, marginTop: 0}}>
+        <View style={{ margin: 10, marginTop: 0 }}>
           <SmallText>
             By linking a Google account, you will be able to add photos for
             specific days and view them.
@@ -93,7 +103,7 @@ export default class SettingsScreen extends React.Component {
     }
     return (
       <Screen>
-        <Header title="Settings" backButton />
+        <Header title="Settings" customBack={this.customBack} />
         <MedHeading style={{ textAlign: "left", margin: 10 }}>
           Google Account
         </MedHeading>
@@ -140,7 +150,7 @@ export default class SettingsScreen extends React.Component {
           </ModalView>
         </Modal>
 
-        <LineSeperator/>
+        <LineSeperator />
 
         <SmallText></SmallText>
       </Screen>

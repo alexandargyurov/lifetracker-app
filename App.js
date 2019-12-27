@@ -54,7 +54,7 @@ const StackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Mood"
+    initialRouteName: "Extra"
   }
 );
 
