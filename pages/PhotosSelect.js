@@ -1,13 +1,11 @@
 import React from "react";
 import {
   ScrollView,
-  Text,
   View,
   ActivityIndicator,
   TouchableOpacity
 } from "react-native";
-import { Screen, MedHeading, SmallHeading } from "../css/designSystem";
-import Header from "../components/Header";
+import { MedHeading, SmallHeading } from "../css/designSystem";
 import GooglePhoto from "../components/GooglePhoto";
 import Auth from "../Authentication";
 import ActionButton from "../components/ActionButton";
@@ -57,6 +55,7 @@ export default class PhotosSelect extends React.Component {
         }
       );
       const json = await response.json();
+      console.log(json)
       this.setState({ photos: json.mediaItems, photosLoaded: true });
     } catch (error) {
       console.log("Error:", error);

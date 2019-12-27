@@ -16,9 +16,9 @@ export default class Auth {
   }
 
   async refreshToken() {
-    let refreshToken = await this.getRefreshToken();
-    const authState = await AppAuth.refreshAsync(config, refreshToken);
-    console.log("refreshAuthAsync", authState);
+    const refreshToken = await this.getRefreshToken();
+    const refreshedSession = await AppAuth.refreshAsync(config, refreshToken);
+    SecureStore.setItemAsync("refreshToken", refreshedSession.accessToken);
   }
 
   async signIn() {
@@ -35,7 +35,12 @@ export default class Auth {
         refreshToken: refreshToken,
         expiry: new Date()
       };
-      SecureStore.setItemAsync("user", JSON.stringify(sessionUser));
+
+      SecureStore.setItemAsync("accessToken", accessToken);
+      SecureStore.setItemAsync("refreshToken", refreshToken);
+      SecureStore.setItemAsync("user", JSON.stringify(user));
+      SecureStore.setItemAsync("expiry", toString(new Date()));
+
       return sessionUser
     } else {
       console.log(type, "Failed");
@@ -51,13 +56,17 @@ export default class Auth {
       isClientIdProvided: true,
     });
 
+    await SecureStore.deleteItemAsync("accessToken")
+    await SecureStore.deleteItemAsync("refreshToken")
     await SecureStore.deleteItemAsync("user")
+    await SecureStore.deleteItemAsync("expiry")
     return null
   }
 
   async checkIfTokenExpired() {
     let expiry_date = await this.getExpiryDate();
-    return moment(expiry_date).add(1, "hours") > new Date();
+    return moment(expiry_date).isSameOrAfter(moment());
+    // return true
   }
 
   async signInRequired() {
@@ -65,8 +74,8 @@ export default class Auth {
 
     if (user) {
       if (this.checkIfTokenExpired()) {
-        console.log("New token needed")
         this.refreshToken();
+
       }
     } else {
       this.signIn();
@@ -74,19 +83,40 @@ export default class Auth {
   }
 
   async getUser() {
+    let session = await this.getAccessToken()
+
+    if (session) {
+      if (await this.checkIfTokenExpired()) {
+        await this.refreshToken();
+        console.log(await this.buildUser())
+        return await this.buildUser()
+      } else {
+        console.log(await this.buildUser())
+        return await this.buildUser()
+      }
+    }
+  }
+
+  async buildUser() {
+    return {
+      info: await this.getUserInfo(),
+      accessToken: await this.getAccessToken(),
+      refreshToken: await this.getRefreshToken(),
+    }
+  }
+
+  async getUserInfo() {
     try {
-      let session = await SecureStore.getItemAsync("user");
-      return JSON.parse(session);
+      const user = await SecureStore.getItemAsync("user");
+      return JSON.parse(user);
     } catch (e) {
-      return null
+      console.log(e);
     }
   }
 
   async getAccessToken() {
     try {
-      let session = await SecureStore.getItemAsync("user");
-      let parsedSession = JSON.parse(session);
-      return parsedSession.accessToken;
+      return await SecureStore.getItemAsync("accessToken");
     } catch (e) {
       console.log(e);
     }
@@ -94,9 +124,7 @@ export default class Auth {
 
   async getRefreshToken() {
     try {
-      let session = await SecureStore.getItemAsync("user");
-      let parsedSession = JSON.parse(session);
-      return parsedSession.refreshToken;
+      return await SecureStore.getItemAsync("refreshToken");
     } catch (e) {
       console.log(e);
     }
@@ -104,9 +132,8 @@ export default class Auth {
 
   async getExpiryDate() {
     try {
-      let session = await SecureStore.getItemAsync("user");
-      let parsedSession = JSON.parse(session);
-      return parsedSession.expiry;
+      const expiry_date = await SecureStore.getItemAsync("expiry")
+      return Date.parse(expiry_date);
     } catch (e) {
       console.log(e);
     }
