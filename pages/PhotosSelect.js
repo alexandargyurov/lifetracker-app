@@ -23,11 +23,12 @@ export default class PhotosSelect extends React.Component {
     this.updateHeader = this.updateHeader.bind(this);
     this.addPhotoToDB = this.addPhotoToDB.bind(this);
     this.removePhotoFromDB = this.removePhotoFromDB.bind(this);
+    this.findSelected = this.findSelected.bind(this)
     this.mood_id = this.props.navigation.getParam("moodId", null);
     this.state = {
       photos: null,
       photosLoaded: false,
-      selected: 0
+      selected: this.props.navigation.getParam("selected", 0).length
     };
   }
 
@@ -56,6 +57,18 @@ export default class PhotosSelect extends React.Component {
       );
     }
   } 
+
+  findSelected() {
+    let selectedPhotos = this.props.navigation.getParam("selected", []);
+
+    this.state.photos.filter(function(photo) {
+      selectedPhotos.map(function(selectedPhoto) {
+        if (photo.id == selectedPhoto.google_photo_id) {
+          photo.selected = true;
+        }
+      });
+    });
+  }
 
   async getPhotos() {
     try {
@@ -107,6 +120,7 @@ export default class PhotosSelect extends React.Component {
     let photos;
 
     if (this.state.photosLoaded) {
+      this.findSelected()
       photos = this.state.photos.map((photo, key) => (
         <GooglePhoto
           uri={photo.baseUrl}
@@ -115,6 +129,7 @@ export default class PhotosSelect extends React.Component {
           updateHeader={this.updateHeader}
           addPhotoToDB={this.addPhotoToDB}
           removePhotoFromDB={this.removePhotoFromDB}
+          selected={photo.selected}
           key={key}
         />
       ));
@@ -136,8 +151,13 @@ export default class PhotosSelect extends React.Component {
           </SmallHeading>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.state.params.onGoBack(this.state.selected);
-              this.props.navigation.goBack();
+              if (this.props.navigation.state.params.new) {
+                this.props.navigation.state.params.onGoBack(this.state.selected);
+                this.props.navigation.goBack();
+              } else {
+                this.props.navigation.state.params.reRenderPhotos();
+                this.props.navigation.goBack();
+              }
             }}
             style={{ width: "15%" }}
           >
@@ -159,8 +179,13 @@ export default class PhotosSelect extends React.Component {
         >
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.state.params.onGoBack(this.state.selected);
-              this.props.navigation.goBack();
+              if (this.props.navigation.state.params.new) {
+                this.props.navigation.state.params.onGoBack(this.state.selected);
+                this.props.navigation.goBack();
+              } else {
+                this.props.navigation.state.params.reRenderPhotos();
+                this.props.navigation.goBack();
+              }
             }}
             style={{ width: "15%" }}
           >

@@ -140,6 +140,7 @@ export default class RoadmapScreen extends React.Component {
           onPress={() => {
             this.props.navigation.push("PhotosSelect", {
               moodId: this.state.mood_id,
+              new: true,
               onGoBack: numOfImages => this.addImageCount(numOfImages)
             });
           }}

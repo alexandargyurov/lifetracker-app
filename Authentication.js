@@ -18,7 +18,7 @@ export default class Auth {
   async refreshToken() {
     const refreshToken = await this.getRefreshToken();
     const refreshedSession = await AppAuth.refreshAsync(config, refreshToken);
-    SecureStore.setItemAsync("refreshToken", refreshedSession.accessToken);
+    SecureStore.setItemAsync("accessToken", refreshedSession.accessToken);
   }
 
   async signIn() {
@@ -36,10 +36,11 @@ export default class Auth {
         expiry: new Date()
       };
 
-      SecureStore.setItemAsync("accessToken", accessToken);
-      SecureStore.setItemAsync("refreshToken", refreshToken);
-      SecureStore.setItemAsync("user", JSON.stringify(user));
-      SecureStore.setItemAsync("expiry", toString(new Date()));
+      const date = moment().format()
+      await SecureStore.setItemAsync("accessToken", accessToken);
+      await SecureStore.setItemAsync("refreshToken", refreshToken);
+      await SecureStore.setItemAsync("user", JSON.stringify(user));
+      await SecureStore.setItemAsync("expiry", date);
 
       return sessionUser
     } else {
@@ -65,8 +66,12 @@ export default class Auth {
 
   async checkIfTokenExpired() {
     let expiry_date = await this.getExpiryDate();
-    return moment(expiry_date).isSameOrAfter(moment());
-    // return true
+
+    if (moment().diff(moment(expiry_date), 'h') >= 1) {
+      return true
+    } else {
+      return false
+    }
   }
 
   async signInRequired() {
@@ -131,7 +136,7 @@ export default class Auth {
   async getExpiryDate() {
     try {
       const expiry_date = await SecureStore.getItemAsync("expiry")
-      return Date.parse(expiry_date);
+      return expiry_date;
     } catch (e) {
       console.log(e);
     }

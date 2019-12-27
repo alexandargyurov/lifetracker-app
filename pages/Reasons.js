@@ -51,9 +51,8 @@ export default class ReasonsScreen extends React.Component {
     }
   };
 
-
   findSelected() {
-    let selectedReasons = this.props.navigation.getParam("selected", [])
+    let selectedReasons = this.props.navigation.getParam("selected", []);
 
     this.state.reasons.filter(function(reason) {
       selectedReasons.map(function(selectedReason) {
@@ -62,7 +61,6 @@ export default class ReasonsScreen extends React.Component {
         }
       });
     });
-
   }
 
   componentDidMount() {
@@ -86,7 +84,7 @@ export default class ReasonsScreen extends React.Component {
     if (reasonsCallback) {
       reasonsCallback();
     }
-   
+
     this.props.navigation.goBack();
     return true;
   }

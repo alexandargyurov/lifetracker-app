@@ -31,15 +31,14 @@ export default class DayScreen extends React.Component {
       showPhotosSection: false,
       note: ""
     };
-    this.addReason = this.addReason.bind(this);
+    this.editReasons = this.editReasons.bind(this);
     this.removeReason = this.removeReason.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.renderNoteSection = this.renderNoteSection.bind(this);
     this.updateReasons = this.updateReasons.bind(this);
-    this.deleteReasons = this.deleteReasons.bind(this);
   }
 
-  addReason() {
+  editReasons() {
     this.props.navigation.push("Reasons", {
       moodId: this.state.mood_id,
       viewOnly: false,
@@ -48,8 +47,6 @@ export default class DayScreen extends React.Component {
       reasonsCallback: this.updateReasons
     });
   }
-
-  deleteReasons() {}
 
   updateReasons() {
     this.toggleEdit();
@@ -128,7 +125,7 @@ export default class DayScreen extends React.Component {
     if (this.state.editable) {
       addButton = (
         <AddButton animation="fadeIn">
-          <TouchableOpacity onPress={this.addReason}>
+          <TouchableOpacity onPress={this.editReasons}>
             <Feather name="plus-circle" size={36} color="#1B4751" />
           </TouchableOpacity>
         </AddButton>

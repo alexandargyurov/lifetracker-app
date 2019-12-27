@@ -6,10 +6,16 @@ class GooglePhoto extends React.Component {
     super(props);
     this.selectPhoto = this.selectPhoto.bind(this);
     this.state = {
-      selected: null,
+      selected: this.props.selected,
       borderColor: "#000000",
       borderWidth: 0
     };
+  }
+
+  componentDidMount() {
+    if (this.state.selected) {
+      this.setState({ borderColor: "#008000", borderWidth: 5 });
+    }
   }
 
   selectPhoto() {
