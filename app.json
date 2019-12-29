@@ -27,6 +27,7 @@
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
       "supportsTablet": true,
       "config": {
+        "googleMobileAdsAppId": "ca-app-pub-6414919472390529~2221508850",
         "googleSignIn": {
           "reservedClientId": "com.googleusercontent.apps.410790811034-b38njme8u8cr1mq2ihnl7tg8soue68it"
         }
@@ -43,6 +44,7 @@
     "description": "Track your feelings each day",
     "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
     "android": {
+      "googleMobileAdsAppId": "ca-app-pub-6414919472390529~5965312748",
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
       "permissions": [],
