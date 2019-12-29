@@ -54,13 +54,11 @@ export default class SettingsScreen extends React.Component {
 
   async showAd() {
     if (Constants.platform.ios) {
-      AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/8691691433");
-      AdMobInterstitial.setTestDeviceID("EMULATOR");
+      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/4656100505");
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
       await AdMobInterstitial.showAdAsync();
     } else {
       AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/6324405398");
-      AdMobInterstitial.setTestDeviceID("EMULATOR");
       await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
       await AdMobInterstitial.showAdAsync();
     }
