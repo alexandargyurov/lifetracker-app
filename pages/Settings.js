@@ -1,6 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity, Image, Modal } from "react-native";
 import Header from "../components/Header";
+import { AdMobInterstitial } from "expo-ads-admob";
+import { Linking } from "expo";
+import Constants from "expo-constants";
 import {
   Screen,
   MedHeading,
@@ -46,6 +49,20 @@ export default class SettingsScreen extends React.Component {
       this.props.navigation.goBack();
     } else {
       this.props.navigation.goBack();
+    }
+  }
+
+  async showAd() {
+    if (Constants.platform.ios) {
+      AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/8691691433");
+      AdMobInterstitial.setTestDeviceID("EMULATOR");
+      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+      await AdMobInterstitial.showAdAsync();
+    } else {
+      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/6324405398");
+      AdMobInterstitial.setTestDeviceID("EMULATOR");
+      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+      await AdMobInterstitial.showAdAsync();
     }
   }
 
@@ -152,7 +169,29 @@ export default class SettingsScreen extends React.Component {
 
         <LineSeperator />
 
-        <SmallText></SmallText>
+        <MedHeading style={{ textAlign: "left", margin: 10 }}>
+          Want to support this project?
+        </MedHeading>
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL("https://www.buymeacoffee.com/alexandargyurov")
+          }
+        >
+          <Image
+            style={{ width: 200, height: 50, borderRadius: 8, margin: 10 }}
+            source={{
+              uri: "https://cdn.buymeacoffee.com/buttons/lato-orange.png"
+            }}
+          />
+        </TouchableOpacity>
+
+        <MedHeading style={{ textAlign: "left", margin: 10 }}>
+          or
+        </MedHeading>
+
+        <TouchableOpacity onPress={() => this.showAd()} style={{ margin: 10 }}>
+          <MedHeading style={{ textAlign: 'left'}}>Watch an ad!</MedHeading>
+        </TouchableOpacity>
       </Screen>
     );
   }
