@@ -1,11 +1,11 @@
-name: Build app
+name: Expo Publish & OTA Update
 on:
   push:
     branches:
       - master
 jobs:
   publish:
-    name: Install and publish
+    name: Build and publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
