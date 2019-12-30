@@ -19,4 +19,4 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: npm install
       - run: npm ci
-      - run: expo build:android -t app-bundle --no-wait
+      - run: expo publish
