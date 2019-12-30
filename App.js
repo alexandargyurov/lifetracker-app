@@ -13,7 +13,7 @@ import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
 import ExtraScreen from "./pages/Extra";
 import PhotosSelect from "./pages/PhotosSelect"
-import SettingsScreen from "./pages/Settings"
+import SettingsMain from "./pages/settings/Main"
 
 import SideMenu from "./components/SideMenu";
 import Header from "./components/Header";
@@ -50,11 +50,11 @@ const StackNavigator = createStackNavigator(
       screen: PhotosSelect
     },
     Settings: {
-      screen: SettingsScreen
+      screen: SettingsMain
     }
   },
   {
-    initialRouteName: "Common"
+    initialRouteName: "Settings"
   }
 );
 

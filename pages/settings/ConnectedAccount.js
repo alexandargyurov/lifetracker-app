@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Image, Modal } from "react-native";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { AdMobInterstitial } from "expo-ads-admob";
 import { Linking } from "expo";
 import Constants from "expo-constants";
@@ -19,7 +19,7 @@ import {
 
 import Auth from "../Authentication";
 
-export default class SettingsScreen extends React.Component {
+export default class SettingsMain extends React.Component {
   static navigationOptions = {
     header: null
   };
