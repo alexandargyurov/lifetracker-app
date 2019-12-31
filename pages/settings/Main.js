@@ -43,7 +43,7 @@ export default class SettingsMain extends React.Component {
   render() {
     return (
       <Screen>
-        <Header title="Settings" back />
+        <Header title="Settings" backButton />
         <View
           style={{
             flexDirection: "row",
