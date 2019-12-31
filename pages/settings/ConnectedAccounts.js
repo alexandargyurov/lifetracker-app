@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Image, Modal } from "react-native";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import { AdMobInterstitial } from "expo-ads-admob";
 import { Linking } from "expo";
 import Constants from "expo-constants";
@@ -15,11 +15,11 @@ import {
   ButtonDecline,
   ButtonTextSmall,
   LineSeperator
-} from "../css/designSystem";
+} from "../../css/designSystem";
 
-import Auth from "../Authentication";
+import Auth from "../../Authentication";
 
-export default class SettingsScreen extends React.Component {
+export default class ConnectedAccountsScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -110,7 +110,7 @@ export default class SettingsScreen extends React.Component {
           <TouchableOpacity onPress={() => this.signIn()}>
             <Image
               style={{ width: 200, resizeMode: "contain" }}
-              source={require("../assets/google_signin_btn.png")}
+              source={require("../../assets/google_signin_btn.png")}
             />
           </TouchableOpacity>
         </View>
@@ -166,30 +166,6 @@ export default class SettingsScreen extends React.Component {
         </Modal>
 
         <LineSeperator />
-
-        <MedHeading style={{ textAlign: "left", margin: 10 }}>
-          Want to support this project?
-        </MedHeading>
-        <TouchableOpacity
-          onPress={() =>
-            Linking.openURL("https://www.buymeacoffee.com/alexandargyurov")
-          }
-        >
-          <Image
-            style={{ width: 200, height: 50, borderRadius: 8, margin: 10 }}
-            source={{
-              uri: "https://cdn.buymeacoffee.com/buttons/lato-orange.png"
-            }}
-          />
-        </TouchableOpacity>
-
-        <MedHeading style={{ textAlign: "left", margin: 10 }}>
-          or
-        </MedHeading>
-
-        <TouchableOpacity onPress={() => this.showAd()} style={{ margin: 10 }}>
-          <MedHeading style={{ textAlign: 'left'}}>Watch an ad!</MedHeading>
-        </TouchableOpacity>
       </Screen>
     );
   }

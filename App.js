@@ -12,13 +12,16 @@ import RoadmapScreen from "./pages/Roadmap";
 import AboutScreen from "./pages/About";
 import DayScreen from "./pages/Day";
 import ExtraScreen from "./pages/Extra";
-import PhotosSelect from "./pages/PhotosSelect"
-import SettingsScreen from "./pages/Settings"
+import PhotosSelect from "./pages/PhotosSelect";
+import SettingsMain from "./pages/settings/Main";
+import ConnectedAccountsScreen from "./pages/settings/ConnectedAccounts";
+import NotificationScreen from "./pages/settings/Notifications";
 
 import SideMenu from "./components/SideMenu";
 import Header from "./components/Header";
 
 import Database from "./Database";
+import Notification from "./Notification";
 
 const StackNavigator = createStackNavigator(
   {
@@ -50,7 +53,13 @@ const StackNavigator = createStackNavigator(
       screen: PhotosSelect
     },
     Settings: {
-      screen: SettingsScreen
+      screen: SettingsMain
+    },
+    SettingsAccounts: {
+      screen: ConnectedAccountsScreen
+    },
+    SettingsNotifications: {
+      screen: NotificationScreen
     }
   },
   {
@@ -74,6 +83,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    new Notification().setNotification()
     new Database().fetchDatabase();
 
     await Font.loadAsync({
