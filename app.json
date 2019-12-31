@@ -50,7 +50,7 @@
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
       "permissions": [],
-      "versionCode": 6
+      "versionCode": 7
     }
   }
 }

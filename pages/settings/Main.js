@@ -51,8 +51,8 @@ export default class SettingsMain extends React.Component {
             flexWrap: "wrap"
           }}
         >
-          <SettingsButton title="Accounts" icon="account-circle" />
-          <SettingsButton title="Notifications" icon="notifications" />
+          <SettingsButton title="Accounts" icon="account-circle" navTo="SettingsAccounts"/>
+          <SettingsButton title="Notifications" icon="notifications" navTo="SettingsNotifications"/>
         </View>
 
         <LineSeperator />
