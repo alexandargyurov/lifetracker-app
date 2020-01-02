@@ -4,15 +4,9 @@ import Header from "../../components/Header";
 import { AdMobInterstitial } from "expo-ads-admob";
 import { Linking } from "expo";
 import Constants from "expo-constants";
-import {
-  Screen,
-  MedHeading,
-  LineSeperator,
-  ButtonMain
-} from "../../css/designSystem";
+import { Screen, MedHeading, LineSeperator } from "../../css/designSystem";
 import { Entypo } from "@expo/vector-icons";
 import SettingsButton from "../../components/SettingsButton";
-import { onDidFailWithError } from "expo/build/AR";
 
 export default class SettingsMain extends React.Component {
   static navigationOptions = {
@@ -29,14 +23,20 @@ export default class SettingsMain extends React.Component {
   }
 
   async showAd() {
-    if (Constants.platform.ios) {
-      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/4656100505");
-      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
-      await AdMobInterstitial.showAdAsync();
-    } else {
-      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/6324405398");
-      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
-      await AdMobInterstitial.showAdAsync();
+    try {
+      if (Constants.platform.ios) {
+        AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/4411468910");
+        AdMobInterstitial.setTestDeviceID("EMULATOR");
+        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+        await AdMobInterstitial.showAdAsync();
+      } else {
+        AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712");
+        AdMobInterstitial.setTestDeviceID("EMULATOR");
+        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+        await AdMobInterstitial.showAdAsync();
+      }
+    } catch(e) {
+      console.log(e)
     }
   }
 
@@ -51,8 +51,16 @@ export default class SettingsMain extends React.Component {
             flexWrap: "wrap"
           }}
         >
-          <SettingsButton title="Accounts" icon="account-circle" navTo="SettingsAccounts"/>
-          <SettingsButton title="Notifications" icon="notifications" navTo="SettingsNotifications"/>
+          <SettingsButton
+            title="Accounts"
+            icon="account-circle"
+            navTo="SettingsAccounts"
+          />
+          <SettingsButton
+            title="Notifications"
+            icon="notifications"
+            navTo="SettingsNotifications"
+          />
         </View>
 
         <LineSeperator />
@@ -76,10 +84,27 @@ export default class SettingsMain extends React.Component {
 
         <MedHeading style={{ margin: 10 }}>or</MedHeading>
 
-        <TouchableOpacity onPress={() => this.showAd()} style={{ margin: 10 }}>
-          <View style={{backgroundColor: '#7e9cff', width: '57%', padding: 3, borderRadius: 15, alignSelf: 'center', flexDirection: 'row', justifyContent: 'center'}}>
-            <Entypo name='megaphone' size={40} color='white'/>
-            <MedHeading style={{ color: "white", alignSelf: 'center', marginLeft: 10 }}>Watch an ad!</MedHeading>
+        <TouchableOpacity
+          onPress={() => this.showAd()}
+          style={{ margin: 10 }}
+        >
+          <View
+            style={{
+              backgroundColor: "#7e9cff",
+              width: "57%",
+              padding: 3,
+              borderRadius: 15,
+              alignSelf: "center",
+              flexDirection: "row",
+              justifyContent: "center"
+            }}
+          >
+            <Entypo name="megaphone" size={40} color="white" />
+            <MedHeading
+              style={{ color: "white", alignSelf: "center", marginLeft: 10 }}
+            >
+              Watch an ad!
+            </MedHeading>
           </View>
         </TouchableOpacity>
       </Screen>
