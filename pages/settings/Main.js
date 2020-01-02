@@ -25,13 +25,11 @@ export default class SettingsMain extends React.Component {
   async showAd() {
     try {
       if (Constants.platform.ios) {
-        AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/4411468910");
-        AdMobInterstitial.setTestDeviceID("EMULATOR");
+        AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529~2221508850");
         await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
         await AdMobInterstitial.showAdAsync();
       } else {
-        AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712");
-        AdMobInterstitial.setTestDeviceID("EMULATOR");
+        AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529~5965312748");
         await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
         await AdMobInterstitial.showAdAsync();
       }

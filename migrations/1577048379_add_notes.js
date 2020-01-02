@@ -1,4 +1,4 @@
-import { SQLite } from "expo-sqlite";
+import * as SQLite from "expo-sqlite";
 import { DATABASE_URI } from "react-native-dotenv";
 const db = SQLite.openDatabase(DATABASE_URI);
 

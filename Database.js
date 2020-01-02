@@ -1,6 +1,6 @@
-import { SQLite } from "expo-sqlite";
+import * as SQLite from "expo-sqlite";
 
-const CURRENT_SCHEMA_VERSION = 4; 
+const CURRENT_SCHEMA_VERSION = 4;
 
 export default class Database {
   constructor() {
@@ -8,10 +8,10 @@ export default class Database {
   }
 
   _migrate() {
-      import("./migrations/1573213877_initialise_tables").then(m => m.default())
-      import("./migrations/1574432118_alter_timestamp").then(m => m.default())
-      import("./migrations/1577048379_add_notes").then(m => m.default())
-      import("./migrations/1577276596_add_photos_table").then(m => m.default())
+    import("./migrations/1573213877_initialise_tables").then(m => m.default());
+    import("./migrations/1574432118_alter_timestamp").then(m => m.default());
+    import("./migrations/1577048379_add_notes").then(m => m.default());
+    import("./migrations/1577276596_add_photos_table").then(m => m.default());
   }
 
   checkDatabase() {
@@ -35,7 +35,6 @@ export default class Database {
       this._migrate();
     } else {
       let version = await this.getVersion();
-
       if (version == CURRENT_SCHEMA_VERSION) {
         console.log("Database up to date");
       } else {
@@ -61,10 +60,7 @@ export default class Database {
 
   deleteTable(table) {
     this.db.transaction(tx => {
-      tx.executeSql(
-        `DROP TABLE (?);`,
-        [table]
-      );
+      tx.executeSql(`DROP TABLE (?);`, [table]);
     });
   }
 }
