@@ -1,6 +1,6 @@
 export const style = {
-  width: 400,
-  overflow: "hidden",
+  width: 350,
+  overflow: "hidden"
 };
 
 export const theme = {

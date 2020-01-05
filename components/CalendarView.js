@@ -107,7 +107,7 @@ export default class CalendarView extends React.Component {
           display: "flex",
           flexDirection: "row",
           width: "100%",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
         <CalendarList
@@ -119,7 +119,7 @@ export default class CalendarView extends React.Component {
           onDayPress={day => {
             this.timestampPhaser(day["dateString"]);
           }}
-          calendarWidth={400}
+          calendarWidth={350}
           pagingEnabled={true}
           scrollEnabled={true}
           pastScrollRange={12}

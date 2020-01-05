@@ -45,8 +45,7 @@ export default class SettingsMain extends React.Component {
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-around",
-            flexWrap: "wrap"
+            justifyContent: "space-around"
           }}
         >
           <SettingsButton

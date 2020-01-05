@@ -25,21 +25,19 @@ class Header extends React.Component {
 
   render() {
     let button;
-    let rightSide;
-
-    let header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>;
-    rightSide = <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "20%" }}/>
+    let rightSide = <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "10%" }}/>
+    let header = <BigHeading style={{ width: "70%" }}>{this.props.title}</BigHeading>;
 
     if (this.props.backButton) {
-      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}}/>
     } else if (this.props.customBack) {
-      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{marginLeft: 10}}/>
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}}/>
     } else {
       button = <Entypo name="menu" size={32} color="#1B4751" />
     }
 
-    if (this.props.size == 'big') header = <BigHeading style={{ width: "60%" }}>{this.props.title}</BigHeading>
-    if (this.props.size == 'med') header = <MedHeading style={{ width: "60%" }}>{this.props.title}</MedHeading>
+    if (this.props.size == 'big') header = <BigHeading style={{ width: "70%" }}>{this.props.title}</BigHeading>
+    if (this.props.size == 'med') header = <MedHeading style={{ width: "70%" }}>{this.props.title}</MedHeading>
 
     if (this.props.rightSide) rightSide = this.props.rightSide
 
@@ -47,7 +45,7 @@ class Header extends React.Component {
     return (
       <SectionHeader animation='fadeIn'>
         <TouchableOpacity
-          style={{ width: "20%" }}
+          style={{ width: "10%" }}
           onPress={this.buttonAction.bind()}
         >
           {button}

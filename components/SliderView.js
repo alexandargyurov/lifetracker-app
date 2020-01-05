@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-native-slider-custom";
 import { View, Text, ImageBackground } from "react-native";
-import { SliderThumb } from "../css/designSystem";
+import { SliderThumb, SmallText, SliderNib } from "../css/designSystem";
 import ActionButton from "../components/ActionButton";
 import Database from "../Database";
 import { withNavigation } from "react-navigation";
@@ -70,10 +70,17 @@ class SliderView extends React.Component {
   render() {
     return (
       <Animatable.View animation="fadeIn" style={{ borderRadius: 30 }}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10}}>
+          <SmallText style={{width: '20%', textAlign: 'center'}}>Terrible</SmallText>
+          <SmallText style={{width: '20%', textAlign: 'center'}}>Bad</SmallText>
+          <SmallText style={{width: '20%', textAlign: 'center'}}>OK</SmallText>
+          <SmallText style={{width: '20%', textAlign: 'center'}}>Good</SmallText>
+          <SmallText style={{width: '20%', textAlign: 'center'}}>Fantastic</SmallText>
+        </View>
         <ImageBackground
           source={require("../assets/gradientslider.jpg")}
-          style={{ width: null, height: null, borderRadius: 30 }}
-          imageStyle={{ borderRadius: 30 }}
+          style={{ width: null, height: null }}
+          imageStyle={{ borderRadius: 20 }}
         >
           <Slider
             trackStyle={{
@@ -81,14 +88,7 @@ class SliderView extends React.Component {
               borderRadius: 5,
               opacity: 0
             }}
-            customThumb={
-              <View
-                style={{ display: "flex", alignItems: "center", width: 70 }}
-              >
-                <Text>{this.state.valueText}</Text>
-                <SliderThumb />
-              </View>
-            }
+            customThumb={<SliderThumb/>}
             value={this.state.value}
             onValueChange={value => this.sliderUpdate(value)}
           />

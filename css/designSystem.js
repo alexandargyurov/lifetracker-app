@@ -40,9 +40,9 @@ export const CardDotted = styled.View`
 // BUTTONS
 
 export const ButtonMain = styled.View`
-  width: 40%;
+  width: 50%;
   background-color: #7e9cff;
-  border-radius: 400px 400px 500px 500px;
+  border-radius: 999px;
   padding: 10px;
 `;
 
@@ -123,10 +123,17 @@ export const ReasonIconText = styled.Text`
 // SLIDER
 
 export const SliderThumb = styled.View`
-  margin-bottom: 20px;
-  width: 12;
+  width: 14;
   height: 55;
   border-radius: 5px;
+  background-color: #1b4751;
+`;
+
+export const SliderNib = styled.View`
+  width: 5;
+  height: 10;
+  border-radius: 2px;
+  align-self: center;
   background-color: #1b4751;
 `;
 

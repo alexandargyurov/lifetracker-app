@@ -17,7 +17,7 @@ export default class AboutScreen extends React.Component {
 
           <Text style={[t.tc, t.f5, t.mb4, t.pl3, t.pr3]}>
             Life Tacker is a way to keep track of your feelings and emotions. It
-            is a tool to understand more about yourself and how your mind works!
+            is a tool to understand yourself more and how your mind works!
           </Text>
 
           <Reasons>
@@ -30,8 +30,8 @@ export default class AboutScreen extends React.Component {
                 <Text style={[t.b, t.f4]}>1. Always have a record.</Text>
                 <Text>
                   Keeping a diary on how your feeling can be very useful, you
-                  can always look back and remember those special days and bring
-                  memories you would of forgot otherwise.
+                  can always look back and remember those special days, bringing
+                  back memories you would of forgotten otherwise.
                 </Text>
               </SectionDetails>
             </Section>
@@ -40,7 +40,7 @@ export default class AboutScreen extends React.Component {
               <SectionDetails>
                 <Text style={[t.b, t.f4]}>2. Learn about yourself</Text>
                 <Text>
-                  Tracking your mood and feelings means you can start learning
+                  Tracking your mood and feelings mean you can start learning
                   more about yourself! What are some of the reasons why you’re
                   sad? Are you more happy on weekends? You can use this app to
                   help find out.

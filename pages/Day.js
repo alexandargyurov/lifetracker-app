@@ -141,7 +141,7 @@ export default class DayScreen extends React.Component {
       );
     }
 
-    if (this.state.showPhotosSection) {
+    if (this.state.showPhotosSection || this.state.reasons.length == 0) {
       photos = (
         <Animatable.View animation="fadeInUp" easing="ease-out-quad" delay={500} duration={1500}>
           <LineSeperator />

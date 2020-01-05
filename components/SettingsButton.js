@@ -13,10 +13,9 @@ class SettingsButton extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={() => this.props.navigation.push(this.props.navTo)}>
+      <TouchableOpacity onPress={() => this.props.navigation.push(this.props.navTo)} style={{width: "50%"}}>
         <View
           style={{
-            width: 180,
             height: 180,
             margin: 5,
             backgroundColor: "rgba(255, 230, 192, 0.5)",
