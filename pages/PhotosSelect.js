@@ -36,7 +36,7 @@ export default class PhotosSelect extends React.Component {
     if (await this.auth.getUser()) {
       await this.getPhotos();
     } else {
-      this.props.navigation.push("Settings", {
+      this.props.navigation.push("SettingsAccounts", {
         fromPhotos: true,
         refreshOnBack: async (user) => await this.checkUser(user)
       });

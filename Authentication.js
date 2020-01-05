@@ -2,7 +2,6 @@ import * as Google from "expo-google-app-auth";
 import * as SecureStore from "expo-secure-store";
 import * as AppAuth from "expo-app-auth";
 import moment from "moment";
-import axios from "axios";
 
 const config = {
   issuer: "https://accounts.google.com",

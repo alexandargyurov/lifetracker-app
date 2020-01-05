@@ -1,9 +1,6 @@
 import React from "react";
 import { View, TouchableOpacity, Image, Modal } from "react-native";
 import Header from "../../components/Header";
-import { AdMobInterstitial } from "expo-ads-admob";
-import { Linking } from "expo";
-import Constants from "expo-constants";
 import {
   Screen,
   MedHeading,
@@ -49,18 +46,6 @@ export default class ConnectedAccountsScreen extends React.Component {
       this.props.navigation.goBack();
     } else {
       this.props.navigation.goBack();
-    }
-  }
-
-  async showAd() {
-    if (Constants.platform.ios) {
-      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/4656100505");
-      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
-      await AdMobInterstitial.showAdAsync();
-    } else {
-      AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529/6324405398");
-      await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
-      await AdMobInterstitial.showAdAsync();
     }
   }
 
