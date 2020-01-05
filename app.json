@@ -6,10 +6,9 @@
     "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,7 +24,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
-      "supportsTablet": true,
+      "supportsTablet": false,
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-6414919472390529~2221508850",
         "googleSignIn": {
@@ -41,8 +40,8 @@
         "css"
       ]
     },
-    "description": "Track your feelings each day",
-    "githubUrl": "https://github.com/alexandargyurov/life-tracker-mobile",
+    "description": "The all-in-one app to track your day-to-day life. Record your mood, take notes, link photos and even keep a voice a diary. View a heatmap of your feelings and notice your trends on what factors are effecting your mood.",
+    "githubUrl": "https://github.com/alexandargyurov/lifetracker-app",
     "android": {
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-6414919472390529~5965312748"
@@ -50,7 +49,7 @@
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
       "permissions": [],
-      "versionCode": 7
+      "versionCode": 8
     }
   }
 }
