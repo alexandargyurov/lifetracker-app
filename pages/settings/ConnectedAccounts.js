@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, Image, Modal } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Image,
+  Modal,
+  ActivityIndicator
+} from "react-native";
 import Header from "../../components/Header";
 import {
   Screen,
@@ -28,6 +34,7 @@ export default class ConnectedAccountsScreen extends React.Component {
     this.state = {
       view: null,
       user: null,
+      loaded: false,
       modalVisible: false
     };
   }
@@ -50,57 +57,62 @@ export default class ConnectedAccountsScreen extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ user: await this.auth.getUser() });
+    this.setState({ user: await this.auth.getUser(), loaded: true });
   }
 
   render() {
     let view;
-    if (this.state.user) {
-      view = (
-        <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-          <Image
-            style={{
-              width: 150,
-              height: 150,
-              margin: 10,
-              borderRadius: 999
-            }}
-            source={{
-              uri: this.state.user.info.photoUrl
-            }}
-          />
-          <View stlye={{ margin: 10 }}>
-            <SmallHeading>{this.state.user.info.name}</SmallHeading>
+    if (!this.state.loaded) {
+      <ActivityIndicator size="large" color="#1b4751" />;
+    } else {
+      if (this.state.user) {
+        view = (
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <Image
+              style={{
+                width: 150,
+                height: 150,
+                margin: 10,
+                borderRadius: 75
+              }}
+              source={{
+                uri: this.state.user.info.photoUrl
+              }}
+            />
+            <View stlye={{ margin: 10 }}>
+              <SmallHeading>{this.state.user.info.name}</SmallHeading>
 
-            <SmallHeading>{this.state.user.info.email}</SmallHeading>
+              <SmallHeading>{this.state.user.info.email}</SmallHeading>
 
-            <TouchableOpacity
-              onPress={() => this.setState({ modalVisible: true })}
-            >
-              <SmallHeading style={{ marginTop: 20, color: "#7e9cff" }}>
-                Logout
-              </SmallHeading>
+              <TouchableOpacity
+                onPress={() => this.setState({ modalVisible: true })}
+              >
+                <SmallHeading style={{ marginTop: 20, color: "#7e9cff" }}>
+                  Logout
+                </SmallHeading>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      } else {
+        view = (
+          <View style={{ margin: 10, marginTop: 0 }}>
+            <SmallText>
+              By linking a Google account, you will be able to add photos for
+              specific days and view them.
+            </SmallText>
+
+            <TouchableOpacity onPress={() => this.signIn()}>
+              <Image
+                style={{ width: 200, resizeMode: "contain" }}
+                source={require("../../assets/google_signin_btn.png")}
+              />
             </TouchableOpacity>
           </View>
-        </View>
-      );
-    } else {
-      view = (
-        <View style={{ margin: 10, marginTop: 0 }}>
-          <SmallText>
-            By linking a Google account, you will be able to add photos for
-            specific days and view them.
-          </SmallText>
-
-          <TouchableOpacity onPress={() => this.signIn()}>
-            <Image
-              style={{ width: 200, resizeMode: "contain" }}
-              source={require("../../assets/google_signin_btn.png")}
-            />
-          </TouchableOpacity>
-        </View>
-      );
+        );
+      }
     }
+
     return (
       <Screen>
         <Header title="Settings" customBack={this.customBack} />
