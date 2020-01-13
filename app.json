@@ -23,6 +23,7 @@
       "**/*"
     ],
     "ios": {
+      "buildNumber": "8",
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
       "supportsTablet": false,
       "config": {
