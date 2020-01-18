@@ -82,7 +82,7 @@ export default class RoadmapScreen extends React.Component {
           <Image
             style={{ width: 40, height: 40, alignSelf: "center" }}
             source={{
-              uri: "https://lifetracker.fra1.digitaloceanspaces.com/notes.png"
+              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/notes.png?alt=media"
             }}
           />
 
@@ -99,7 +99,7 @@ export default class RoadmapScreen extends React.Component {
           <Image
             style={{ width: 40, height: 40, alignSelf: "center" }}
             source={{
-              uri: "https://lifetracker.fra1.digitaloceanspaces.com/photos.png"
+              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
             }}
           />
           <MediumText>Google Photos</MediumText>
@@ -112,7 +112,7 @@ export default class RoadmapScreen extends React.Component {
           <Image
             style={{ width: 40, height: 40, alignSelf: "center" }}
             source={{
-              uri: "https://lifetracker.fra1.digitaloceanspaces.com/photos.png"
+              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
             }}
           />
           <MediumText>Google Photos</MediumText>
