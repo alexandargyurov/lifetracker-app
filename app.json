@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "0.2.0",
+    "version": "0.2.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "8",
+      "buildNumber": "9",
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
       "supportsTablet": false,
       "config": {
