@@ -76,13 +76,13 @@ export default class ReasonIcon extends React.Component {
             style={{ width: 75, height: 75 }}
             source={{
               uri:
-                "https://lifetracker.fra1.digitaloceanspaces.com/" +
+                "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
                 this.props.reason +
-                ".png"
+                ".png?alt=media"
             }}
           />
           <ReasonIconText style={[t.ttc, t.pt2]}>
-            {this.props.reason}
+            {this.props.reason.replace("-", " ").replace("-", " ")}
           </ReasonIconText>
         </TouchableOpacity>
         {removeButton}
@@ -96,6 +96,7 @@ const Icon = Animatable.createAnimatableComponent(styled.View`
   width: 33%;
   padding: 20px;
   align-items: center;
+  justify-content: center;
 `);
 
 let RemoveButton = Animatable.createAnimatableComponent(styled.View`

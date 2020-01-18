@@ -19,7 +19,7 @@ export default class SideMenu extends React.Component {
 
                     <Footer>
                         <Text>An Open Source Project</Text>
-                        <Text>v0.2.0</Text>
+                        <Text>v0.2.1</Text>
                     </Footer>
                     
                 </Menu>

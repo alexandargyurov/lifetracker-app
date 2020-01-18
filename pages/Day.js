@@ -90,7 +90,7 @@ export default class DayScreen extends React.Component {
           `SELECT * FROM reasons INNER JOIN mood_reasons ON reasons.id = mood_reasons.reason_id WHERE mood_id = ?;`,
           [this.state.mood_id],
           (_, { rows: { _array } }) => {
-            if (_array.length == 0) this.setState({ showNoteSection: true });
+            if (_array.length == 0) this.setState({ showNoteSection: true, showPhotosSection: true });
             _array.map(function(reason) {
               reason.selected = true;
             });
@@ -141,7 +141,7 @@ export default class DayScreen extends React.Component {
       );
     }
 
-    if (this.state.showPhotosSection || this.state.reasons.length == 0) {
+    if (this.state.showPhotosSection) {
       photos = (
         <Animatable.View animation="fadeInUp" easing="ease-out-quad" delay={500} duration={1500}>
           <LineSeperator />

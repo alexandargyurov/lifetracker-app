@@ -21,6 +21,7 @@ import {
 } from "../../css/designSystem";
 
 import Auth from "../../Authentication";
+import Constants from "expo-constants";
 
 export default class ConnectedAccountsScreen extends React.Component {
   static navigationOptions = {
@@ -65,7 +66,7 @@ export default class ConnectedAccountsScreen extends React.Component {
     if (!this.state.loaded) {
       <ActivityIndicator size="large" color="#1b4751" />;
     } else {
-      if (this.state.user) {
+      if (this.state.user && !Constants.platform.ios) {
         view = (
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             <Image
@@ -94,12 +95,21 @@ export default class ConnectedAccountsScreen extends React.Component {
             </View>
           </View>
         );
+      } else if (Constants.platform.ios) {
+        view = (
+          <View style={{ margin: 10, marginTop: 0 }}>
+            <SmallText>
+              Soon you'll be able to connect a Google Account or an Apple
+              Account to access photos and link them with a specific day!
+            </SmallText>
+          </View>
+        );
       } else {
         view = (
           <View style={{ margin: 10, marginTop: 0 }}>
             <SmallText>
               By linking a Google account, you will be able to add photos for
-              specific days and view them.
+              specific days and view them. Watch this space!
             </SmallText>
 
             <TouchableOpacity onPress={() => this.signIn()}>
@@ -113,11 +123,13 @@ export default class ConnectedAccountsScreen extends React.Component {
       }
     }
 
+
+
     return (
       <Screen>
         <Header title="Settings" customBack={this.customBack} />
         <MedHeading style={{ textAlign: "left", margin: 10 }}>
-          Google Account
+          Connected Accounts
         </MedHeading>
 
         {view}
