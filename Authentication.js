@@ -5,7 +5,7 @@ import moment from "moment";
 
 const config = {
   issuer: "https://accounts.google.com",
-  clientId: "410790811034-fa6hdle89o9eo6gdtpgfph7vegqgjtnt.apps.googleusercontent.com",
+  clientId: "410790811034-iqr3ipcnsl93niulbg6p6urtegjsf9nk.apps.googleusercontent.com",
   scopes: ["https://www.googleapis.com/auth/photoslibrary.readonly"]
 };
 
@@ -24,7 +24,7 @@ export default class Auth {
     const { type, accessToken, refreshToken, user } = await Google.logInAsync({
       iosClientId: `410790811034-b38njme8u8cr1mq2ihnl7tg8soue68it.apps.googleusercontent.com`,
       androidClientId: `410790811034-fa6hdle89o9eo6gdtpgfph7vegqgjtnt.apps.googleusercontent.com`,
-      androidStandaloneAppClientId: `410790811034-fa6hdle89o9eo6gdtpgfph7vegqgjtnt.apps.googleusercontent.com`,
+      androidStandaloneAppClientId: `410790811034-iqr3ipcnsl93niulbg6p6urtegjsf9nk.apps.googleusercontent.com`,
       scopes: ["https://www.googleapis.com/auth/photoslibrary.readonly"]
     });
 
