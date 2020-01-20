@@ -15,21 +15,28 @@
       },
       "oauth_client": [
         {
-          "client_id": "410790811034-9fbod4geagn9ug2lm8u0db816to8nqmc.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "410790811034-khn2iurufteqi5lk2jsb4l56p84efera.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexandargyurov.lifetracker",
+            "certificate_hash": "464a7c5ff50434b23ef1dd9ca951fce3a569bfce"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA7BWsnzwPzXLCnx9XWS5UJbcph_TyOYxw"
+          "current_key": "AIzaSyAIgy1Ob310pkLRmsZM7wjd9dRFyOcqu5E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "410790811034-9fbod4geagn9ug2lm8u0db816to8nqmc.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "410790811034-39jgplknn5r4sm4fh1p9dtfodqf5q0vi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.alexandargyurov.lifetracker"
+              }
             }
           ]
         }
