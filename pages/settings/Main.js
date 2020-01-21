@@ -26,11 +26,11 @@ export default class SettingsMain extends React.Component {
     try {
       if (Constants.platform.ios) {
         AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529~2221508850");
-        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
         await AdMobInterstitial.showAdAsync();
       } else {
         AdMobInterstitial.setAdUnitID("ca-app-pub-6414919472390529~5965312748");
-        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false });
+        await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
         await AdMobInterstitial.showAdAsync();
       }
     } catch (e) {
@@ -102,6 +102,7 @@ export default class SettingsMain extends React.Component {
             title="Accounts"
             icon="account-circle"
             navTo="SettingsAccounts"
+            comingSoon={true}
           />
           <SettingsButton
             title="Notifications"

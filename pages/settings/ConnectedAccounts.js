@@ -100,7 +100,7 @@ export default class ConnectedAccountsScreen extends React.Component {
           <View style={{ margin: 10, marginTop: 0 }}>
             <SmallText>
               Soon you'll be able to connect a Google Account or an Apple
-              Account to access photos and link them with a specific day!
+              Account to access photos and link them with a specific day! Watch this space!
             </SmallText>
           </View>
         );

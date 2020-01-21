@@ -15,6 +15,7 @@ import ActionButton from "../components/ActionButton";
 import PhotosView from "../components/PhotosView";
 import Database from "../Database";
 import GooglePhoto from "../components/GooglePhoto";
+import Constants from "expo-constants";
 
 export default class RoadmapScreen extends React.Component {
   static navigationOptions = {
@@ -93,37 +94,43 @@ export default class RoadmapScreen extends React.Component {
   }
 
   photoSection() {
-    if (this.state.photosNumber) {
-      return (
-        <View>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
-            }}
-          />
-          <MediumText>Google Photos</MediumText>
-          <SmallText style={{textAlign: 'center'}}>{this.state.photosNumber} photos added</SmallText>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
-            }}
-          />
-          <MediumText>Google Photos</MediumText>
-        </View>
-      );
-    }
+      if (this.state.photosNumber) {
+        return (
+          <View>
+            <Image
+              style={{ width: 40, height: 40, alignSelf: "center" }}
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
+              }}
+            />
+            <MediumText>Google Photos</MediumText>
+            <SmallText style={{textAlign: 'center'}}>{this.state.photosNumber} photos added</SmallText>
+          </View>
+        );
+      } else {
+        return (
+          <View>
+            <Image
+              style={{ width: 40, height: 40, alignSelf: "center" }}
+              source={{
+                uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
+              }}
+            />
+            <MediumText>Google Photos</MediumText>
+          </View>
+        );
+      }
   }
 
   render() {
     let notesSection = this.notesSection();
     let photoSection = this.photoSection();
+
+    let photoCard;
+    
+    if (!Constants.platform.ios) {
+          photoCard =  <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
+    }
 
     return (
       <Screen>
@@ -145,7 +152,7 @@ export default class RoadmapScreen extends React.Component {
             });
           }}
         >
-          <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
+          {photoCard}
         </TouchableOpacity>
 
         <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
