@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "9",
+      "buildNumber": "10",
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
       "supportsTablet": false,
       "config": {
@@ -50,7 +50,7 @@
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
       "permissions": [],
-      "versionCode": 8
+      "versionCode": 9
     }
   }
 }
