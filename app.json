@@ -45,7 +45,10 @@
     "githubUrl": "https://github.com/alexandargyurov/lifetracker-app",
     "android": {
       "config": {
-        "googleMobileAdsAppId": "ca-app-pub-6414919472390529~5965312748"
+        "googleMobileAdsAppId": "ca-app-pub-6414919472390529~5965312748",
+        "googleSignIn": {
+          "certificateHash": "B4A9ABD02BE60F9A279B6F54AD33E7A1380C099A"
+        }
       },
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
