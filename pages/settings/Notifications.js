@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Switch } from "react-native";
-import { AsyncStorage } from "react-native";
+import { View, Switch, AsyncStorage } from "react-native";
 import Header from "../../components/Header";
 import {
   Screen,

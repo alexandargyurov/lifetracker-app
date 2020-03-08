@@ -15,6 +15,7 @@ export const SectionHeader = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   margin-bottom: 25px;
 `);
 

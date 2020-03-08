@@ -4,7 +4,9 @@ import {
   TouchableOpacity,
   Image,
   Modal,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert,
+  BackHandler
 } from "react-native";
 import Header from "../../components/Header";
 import {
@@ -22,6 +24,9 @@ import {
 
 import Auth from "../../Authentication";
 import Constants from "expo-constants";
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import * as DocumentPicker from 'expo-document-picker';
 
 export default class ConnectedAccountsScreen extends React.Component {
   static navigationOptions = {
@@ -59,6 +64,43 @@ export default class ConnectedAccountsScreen extends React.Component {
 
   async componentDidMount() {
     this.setState({ user: await this.auth.getUser(), loaded: true });
+  }
+
+  showWarningModal() {
+    Alert.alert(
+      'Warning',
+      'This will delete all your data and replace it with the a new database you provide.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => this.replaceDatabase() },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  showInfoModal() {
+    Alert.alert(
+      'Success',
+      'Please restart your app to see the new database changes.',
+      [
+        { text: 'OK', onPress: () => BackHandler.exitApp() },
+      ]
+    )
+  }
+
+  async replaceDatabase() {
+    let selectedFile = await DocumentPicker.getDocumentAsync()
+
+    try {
+      await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/database.db')
+      await FileSystem.moveAsync({ from: selectedFile.uri, to: FileSystem.documentDirectory + 'SQLite/database.db' })
+
+    } catch (e) {
+      console.log("Error" + e)
+    }
   }
 
   render() {
@@ -175,7 +217,24 @@ export default class ConnectedAccountsScreen extends React.Component {
         </Modal>
 
         <LineSeperator />
+
+        <TouchableOpacity
+          onPress={() => {
+            Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/database.db')
+          }}>
+          <View style={{ margin: 10, marginTop: 0 }}>
+            <SmallText>Export Data</SmallText>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => { this.showWarningModal() }}>
+          <View style={{ margin: 10, marginTop: 0 }}>
+            <SmallText>Import Data</SmallText>
+          </View>
+        </TouchableOpacity>
       </Screen>
     );
   }
 }
+

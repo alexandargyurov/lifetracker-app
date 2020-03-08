@@ -25,13 +25,13 @@ class Header extends React.Component {
 
   render() {
     let button;
-    let rightSide = <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "10%" }}/>
+    let rightSide = <Entypo name="menu" size={32} color="#FEF1E0" style={{ width: "15%" }} />
     let header = <BigHeading style={{ width: "70%" }}>{this.props.title}</BigHeading>;
 
     if (this.props.backButton) {
-      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}}/>
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}} />
     } else if (this.props.customBack) {
-      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}}/>
+      button = <Ionicons name="ios-arrow-back" size={32} color="#1B4751" style={{}} />
     } else {
       button = <Entypo name="menu" size={32} color="#1B4751" />
     }
@@ -45,7 +45,7 @@ class Header extends React.Component {
     return (
       <SectionHeader animation='fadeIn'>
         <TouchableOpacity
-          style={{ width: "10%" }}
+          style={{ width: "15%", alignItems: "center" }}
           onPress={this.buttonAction.bind()}
         >
           {button}
