@@ -6,7 +6,7 @@ import t from "../assets/tachyons.css";
 export default class SideMenu extends React.Component {
     render() {
         return (
-            <Drawer style={{backgroundColor: '#FFE6C1'}}>
+            <Drawer style={{ backgroundColor: '#FFE6C1' }}>
                 <Menu>
                     <Text style={[t.b, t.tc, t.f3, t.pa2]}>Life Tracker</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("About")}>
@@ -19,9 +19,9 @@ export default class SideMenu extends React.Component {
 
                     <Footer>
                         <Text>An Open Source Project</Text>
-                        <Text>v0.2.1</Text>
+                        <Text>v0.2.2</Text>
                     </Footer>
-                    
+
                 </Menu>
             </Drawer>
         );

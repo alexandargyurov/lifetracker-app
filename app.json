@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "0.2.1",
+    "version": "0.2.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -53,7 +53,7 @@
       "package": "com.alexandargyurov.lifetracker",
       "googleServicesFile": "./google-services.json",
       "permissions": [],
-      "versionCode": 9
+      "versionCode": 10
     }
   }
 }

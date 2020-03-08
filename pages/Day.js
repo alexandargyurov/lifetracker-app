@@ -65,7 +65,7 @@ export default class DayScreen extends React.Component {
       );
     });
 
-    this.state.reasons.filter(function(reason) {
+    this.state.reasons.filter(function (reason) {
       if (reason.reason_id == reasonId) {
         reason.selected = false;
       }
@@ -91,7 +91,7 @@ export default class DayScreen extends React.Component {
           [this.state.mood_id],
           (_, { rows: { _array } }) => {
             if (_array.length == 0) this.setState({ showNoteSection: true, showPhotosSection: true });
-            _array.map(function(reason) {
+            _array.map(function (reason) {
               reason.selected = true;
             });
 
@@ -112,7 +112,7 @@ export default class DayScreen extends React.Component {
     let noteSection;
     let photos;
     let editButton = (
-      <TouchableOpacity onPress={this.toggleEdit} style={{ width: "20%" }}>
+      <TouchableOpacity onPress={this.toggleEdit} style={{ width: "15%" }}>
         <Feather
           name="edit"
           size={28}

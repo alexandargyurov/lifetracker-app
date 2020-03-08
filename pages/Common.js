@@ -5,6 +5,7 @@ import { Screen } from "../css/designSystem";
 import Header from "../components/Header";
 import ActionButton from "../components/ActionButton";
 import CalendarView from "../components/CalendarView";
+import * as FileSystem from 'expo-file-system';
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
@@ -29,7 +30,7 @@ export default class CommonScreen extends React.Component {
         <Header title={"Overview"} />
 
         <CalendarView navigation={this.props.navigation} />
-        <ActionButton buttonText={"New Record"} navigateTo={"Mood"}/>
+        <ActionButton buttonText={"New Record"} navigateTo={"Mood"} />
       </Screen>
     );
   }
