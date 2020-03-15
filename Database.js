@@ -16,17 +16,22 @@ export default class Database {
     import("./migrations/1579359297_add_more_reasons").then(m => m.default());
   }
 
-  checkDatabase() {
-    return new Promise((resolve, reject) => {
+  async checkDatabase() {
+    console.log("here")
+
+    return await new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
           `SELECT name FROM sqlite_master WHERE type='table' AND name='db_version';`,
           [],
           (_, { rows: { _array } }) => {
             resolve(_array);
+          },
+          (f, e) => {
+            console.log(e)
           }
         );
-      });
+      })
     });
   }
 

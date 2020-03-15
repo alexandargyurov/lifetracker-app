@@ -91,9 +91,11 @@ export default class App extends React.Component {
     }
 
     const dbName = await AsyncStorage.getItem("@database")
-    console.log(dbName)
+    console.log("Init DB: ", dbName)
 
-    const db = new Database(dbName)
+    let db = new Database(dbName)
+
+    console.log("DB: ", db)
     db.fetchDatabase();
 
     global.db = db

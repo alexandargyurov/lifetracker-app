@@ -29,6 +29,9 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
 
+import Database from "../../Database";
+
+
 export default class ConnectedAccountsScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -79,13 +82,17 @@ export default class ConnectedAccountsScreen extends React.Component {
         {
           text: 'OK', onPress: async () => {
             await this.replaceDatabase().then(async function (result) {
-              const newDBName = Math.random().toString(36).substring(7) + '.db';
+              const newDBName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5) + '.db';
               await FileSystem.moveAsync({ from: result.uri, to: (FileSystem.documentDirectory + 'SQLite/' + newDBName) })
               await AsyncStorage.setItem("@database", newDBName);
 
-              const dbName = await AsyncStorage.getItem("@database")
-              console.log("New DB: ", dbName)
-
+              Alert.alert(
+                'Success',
+                'Please restart your app to see the new database changes.',
+                [
+                  { text: 'OK', onPress: () => BackHandler.exitApp() },
+                ]
+              )
             })
           }
         },
@@ -95,20 +102,13 @@ export default class ConnectedAccountsScreen extends React.Component {
   }
 
   showInfoModal() {
-    Alert.alert(
-      'Success',
-      'Please restart your app to see the new database changes.',
-      [
-        { text: 'OK', onPress: () => BackHandler.exitApp() },
-      ]
-    )
+
   }
 
   async replaceDatabase() {
     let selectedFile = await DocumentPicker.getDocumentAsync()
-    const dbName = await AsyncStorage.getItem("@database")
 
-    await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/' + dbName)
+    await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/' + global.dbName)
     return selectedFile
   }
 
