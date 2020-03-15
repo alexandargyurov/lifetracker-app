@@ -9,7 +9,7 @@ import Database from "../Database";
 class PhotosSection extends React.Component {
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.editPhotos = this.editPhotos.bind(this);
     this.state = {
       modalVisible: false,

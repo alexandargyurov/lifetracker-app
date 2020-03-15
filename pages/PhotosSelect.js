@@ -19,7 +19,7 @@ export default class PhotosSelect extends React.Component {
   constructor(props) {
     super(props);
     this.auth = new Auth();
-    this.database = new Database();
+    this.database = global.db;
     this.updateHeader = this.updateHeader.bind(this);
     this.addPhotoToDB = this.addPhotoToDB.bind(this);
     this.removePhotoFromDB = this.removePhotoFromDB.bind(this);
@@ -56,13 +56,13 @@ export default class PhotosSelect extends React.Component {
         { cancelable: false }
       );
     }
-  } 
+  }
 
   findSelected() {
     let selectedPhotos = this.props.navigation.getParam("selected", []);
     if (selectedPhotos.length != 0) {
-      this.state.photos.filter(function(photo) {
-        selectedPhotos.map(function(selectedPhoto) {
+      this.state.photos.filter(function (photo) {
+        selectedPhotos.map(function (selectedPhoto) {
           if (photo.id == selectedPhoto.google_photo_id) {
             photo.selected = true;
           }
@@ -135,7 +135,7 @@ export default class PhotosSelect extends React.Component {
         />
       ));
     } else {
-      photos = <ActivityIndicator size="large" color="#1b4751"/>;
+      photos = <ActivityIndicator size="large" color="#1b4751" />;
     }
 
     let selectedText = (

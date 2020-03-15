@@ -1,10 +1,11 @@
 import * as SQLite from "expo-sqlite";
+import { AsyncStorage } from "react-native";
 
 const CURRENT_SCHEMA_VERSION = 5;
 
 export default class Database {
-  constructor() {
-    this.db = SQLite.openDatabase("database.db");
+  constructor(database) {
+    this.db = SQLite.openDatabase(database);
   }
 
   _migrate() {

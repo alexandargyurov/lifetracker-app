@@ -17,7 +17,7 @@ export default class ReasonsScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.buttonSubmit = this.buttonSubmit.bind(this);
     this.findSelected = this.findSelected.bind(this);
     this.goBack = this.goBack.bind(this);
@@ -54,8 +54,8 @@ export default class ReasonsScreen extends React.Component {
   findSelected() {
     let selectedReasons = this.props.navigation.getParam("selected", []);
 
-    this.state.reasons.filter(function(reason) {
-      selectedReasons.map(function(selectedReason) {
+    this.state.reasons.filter(function (reason) {
+      selectedReasons.map(function (selectedReason) {
         if (reason.id == selectedReason.reason_id) {
           reason.selected = selectedReason.selected;
         }

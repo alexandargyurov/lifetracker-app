@@ -6,7 +6,8 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
-  BackHandler
+  BackHandler,
+  AsyncStorage
 } from "react-native";
 import Header from "../../components/Header";
 import {
@@ -75,7 +76,19 @@ export default class ConnectedAccountsScreen extends React.Component {
           text: 'Cancel',
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => this.replaceDatabase() },
+        {
+          text: 'OK', onPress: async () => {
+            await this.replaceDatabase().then(async function (result) {
+              const newDBName = Math.random().toString(36).substring(7) + '.db';
+              await FileSystem.moveAsync({ from: result.uri, to: (FileSystem.documentDirectory + 'SQLite/' + newDBName) })
+              await AsyncStorage.setItem("@database", newDBName);
+
+              const dbName = await AsyncStorage.getItem("@database")
+              console.log("New DB: ", dbName)
+
+            })
+          }
+        },
       ],
       { cancelable: false }
     )
@@ -93,14 +106,10 @@ export default class ConnectedAccountsScreen extends React.Component {
 
   async replaceDatabase() {
     let selectedFile = await DocumentPicker.getDocumentAsync()
+    const dbName = await AsyncStorage.getItem("@database")
 
-    try {
-      await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/database.db')
-      await FileSystem.moveAsync({ from: selectedFile.uri, to: FileSystem.documentDirectory + 'SQLite/database.db' })
-
-    } catch (e) {
-      console.log("Error" + e)
-    }
+    await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/' + dbName)
+    return selectedFile
   }
 
   render() {

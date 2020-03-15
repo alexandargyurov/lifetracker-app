@@ -21,7 +21,7 @@ export default class DayScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.state = {
       reasons: [],
       mood: {},

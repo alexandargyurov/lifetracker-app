@@ -6,6 +6,9 @@ import Header from "../components/Header";
 import ActionButton from "../components/ActionButton";
 import CalendarView from "../components/CalendarView";
 import * as FileSystem from 'expo-file-system';
+import * as DocumentPicker from 'expo-document-picker';
+
+import { AsyncStorage } from "react-native";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
@@ -14,14 +17,19 @@ export default class CommonScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.state = {
       drawerOpen: true
     };
   }
 
-  componentDidMount() {
-    this.database.fetchDatabase();
+  async componentDidMount() {
+    await this.database.fetchDatabase();
+    // console.log(await AsyncStorage.getItem("@database"))
+
+    // const selectedFile = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true })
+    // console.log(selectedFile)
+    // await FileSystem.moveAsync({ from: selectedFile.uri, to: FileSystem.documentDirectory + 'SQLite/database.db' })
   }
 
   render() {

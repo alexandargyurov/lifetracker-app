@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as Font from "expo-font";
+import { AsyncStorage } from "react-native";
 
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -84,7 +85,19 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     new Notification().setNotification()
-    new Database().fetchDatabase();
+
+    if (await AsyncStorage.getItem("@database") == null) {
+      await AsyncStorage.setItem("@database", String("database.db"));
+    }
+
+    const dbName = await AsyncStorage.getItem("@database")
+    console.log(dbName)
+
+    const db = new Database(dbName)
+    db.fetchDatabase();
+
+    global.db = db
+    global.dbName = dbName
 
     await Font.loadAsync({
       europaBold: require("./assets/fonts/europa-bold-webfont.ttf"),

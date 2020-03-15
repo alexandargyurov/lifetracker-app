@@ -10,7 +10,7 @@ import * as Animatable from "react-native-animatable";
 class SliderView extends React.Component {
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.buttonSubmit = this.buttonSubmit.bind(this);
     this.state = {
       value: 0.5,
@@ -70,12 +70,12 @@ class SliderView extends React.Component {
   render() {
     return (
       <Animatable.View animation="fadeIn" style={{ borderRadius: 30 }}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10}}>
-          <SmallText style={{width: '20%', textAlign: 'center'}}>Terrible</SmallText>
-          <SmallText style={{width: '20%', textAlign: 'center'}}>Bad</SmallText>
-          <SmallText style={{width: '20%', textAlign: 'center'}}>OK</SmallText>
-          <SmallText style={{width: '20%', textAlign: 'center'}}>Good</SmallText>
-          <SmallText style={{width: '20%', textAlign: 'center'}}>Fantastic</SmallText>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10 }}>
+          <SmallText style={{ width: '20%', textAlign: 'center' }}>Terrible</SmallText>
+          <SmallText style={{ width: '20%', textAlign: 'center' }}>Bad</SmallText>
+          <SmallText style={{ width: '20%', textAlign: 'center' }}>OK</SmallText>
+          <SmallText style={{ width: '20%', textAlign: 'center' }}>Good</SmallText>
+          <SmallText style={{ width: '20%', textAlign: 'center' }}>Fantastic</SmallText>
         </View>
         <ImageBackground
           source={require("../assets/gradientslider.jpg")}
@@ -88,7 +88,7 @@ class SliderView extends React.Component {
               borderRadius: 5,
               opacity: 0
             }}
-            customThumb={<SliderThumb/>}
+            customThumb={<SliderThumb />}
             value={this.state.value}
             onValueChange={value => this.sliderUpdate(value)}
           />
