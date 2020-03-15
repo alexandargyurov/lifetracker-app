@@ -9,7 +9,8 @@
       "android"
     ],
     "androidStatusBar": {
-      "backgroundColor": "#fef1e0"
+      "backgroundColor": "#fef1e0",
+      "barStyle": "dark-content"
     },
     "version": "0.2.2",
     "orientation": "portrait",
