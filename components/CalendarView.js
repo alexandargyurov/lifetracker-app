@@ -19,7 +19,7 @@ import * as Animatable from "react-native-animatable";
 export default class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.state = {
       calendarDates: {},
       modalVisible: false,
@@ -27,16 +27,16 @@ export default class CalendarView extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.database.db.transaction(tx => {
+  async componentDidMount() {
+    await this.database.db.transaction(tx => {
       tx.executeSql(`SELECT * FROM moods;`, [], (_, { rows: { _array } }) =>
         this.setState({ calendarDates: calendarPhaser(_array) })
       );
     });
   }
 
-  timestampPhaser(timestamp) {
-    this.database.db.transaction(tx => {
+  async timestampPhaser(timestamp) {
+    await this.database.db.transaction(tx => {
       tx.executeSql(
         `SELECT * FROM moods WHERE timestamp = ? ORDER BY id DESC;`,
         [moment(timestamp).format("YYYY-MM-DD")],

@@ -6,7 +6,8 @@ import {
   Modal,
   ActivityIndicator,
   Alert,
-  BackHandler
+  BackHandler,
+  AsyncStorage
 } from "react-native";
 import Header from "../../components/Header";
 import {
@@ -27,6 +28,9 @@ import Constants from "expo-constants";
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as DocumentPicker from 'expo-document-picker';
+
+import Database from "../../Database";
+
 
 export default class ConnectedAccountsScreen extends React.Component {
   static navigationOptions = {
@@ -75,32 +79,37 @@ export default class ConnectedAccountsScreen extends React.Component {
           text: 'Cancel',
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => this.replaceDatabase() },
+        {
+          text: 'OK', onPress: async () => {
+            await this.replaceDatabase().then(async function (result) {
+              const newDBName = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5) + '.db';
+              await FileSystem.moveAsync({ from: result.uri, to: (FileSystem.documentDirectory + 'SQLite/' + newDBName) })
+              await AsyncStorage.setItem("@database", newDBName);
+
+              Alert.alert(
+                'Success',
+                'Please restart your app to see the new database changes.',
+                [
+                  { text: 'OK', onPress: () => BackHandler.exitApp() },
+                ]
+              )
+            })
+          }
+        },
       ],
       { cancelable: false }
     )
   }
 
   showInfoModal() {
-    Alert.alert(
-      'Success',
-      'Please restart your app to see the new database changes.',
-      [
-        { text: 'OK', onPress: () => BackHandler.exitApp() },
-      ]
-    )
+
   }
 
   async replaceDatabase() {
     let selectedFile = await DocumentPicker.getDocumentAsync()
 
-    try {
-      await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/database.db')
-      await FileSystem.moveAsync({ from: selectedFile.uri, to: FileSystem.documentDirectory + 'SQLite/database.db' })
-
-    } catch (e) {
-      console.log("Error" + e)
-    }
+    await FileSystem.deleteAsync(FileSystem.documentDirectory + 'SQLite/' + global.dbName)
+    return selectedFile
   }
 
   render() {
@@ -151,7 +160,7 @@ export default class ConnectedAccountsScreen extends React.Component {
           <View style={{ margin: 10, marginTop: 0 }}>
             <SmallText>
               By linking a Google account, you will be able to add photos for
-              specific days and view them. Watch this space!
+              specific days and view them.
             </SmallText>
 
             <TouchableOpacity onPress={() => this.signIn()}>

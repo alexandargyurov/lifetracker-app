@@ -13,7 +13,7 @@ import Database from "../Database";
 class NotesModal extends React.Component {
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.saveNote = this.saveNote.bind(this);
     this.state = {
       value: this.props.textPlaceholder

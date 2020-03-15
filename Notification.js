@@ -12,7 +12,7 @@ const localNotification = {
   },
   android: {
     sound: true,
-    priority: "high",
+    priority: "low",
     sticky: false,
     vibrate: true
   }

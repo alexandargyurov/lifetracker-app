@@ -8,7 +8,7 @@ import Database from "../Database";
 export default class NotesSection extends React.Component {
   constructor(props) {
     super(props);
-    this.database = new Database();
+    this.database = global.db;
     this.closeModal = this.closeModal.bind(this);
     this.updateNote = this.updateNote.bind(this);
     this.state = {
