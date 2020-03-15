@@ -17,8 +17,6 @@ export default class Database {
   }
 
   async checkDatabase() {
-    console.log("here")
-
     return await new Promise((resolve, reject) => {
       this.db.transaction(tx => {
         tx.executeSql(
@@ -26,9 +24,6 @@ export default class Database {
           [],
           (_, { rows: { _array } }) => {
             resolve(_array);
-          },
-          (f, e) => {
-            console.log(e)
           }
         );
       })

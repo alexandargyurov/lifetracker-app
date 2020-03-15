@@ -160,7 +160,7 @@ export default class ConnectedAccountsScreen extends React.Component {
           <View style={{ margin: 10, marginTop: 0 }}>
             <SmallText>
               By linking a Google account, you will be able to add photos for
-              specific days and view them. Watch this space!
+              specific days and view them.
             </SmallText>
 
             <TouchableOpacity onPress={() => this.signIn()}>

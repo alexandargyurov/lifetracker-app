@@ -25,11 +25,6 @@ export default class CommonScreen extends React.Component {
 
   async componentDidMount() {
     await this.database.fetchDatabase();
-    // console.log(await AsyncStorage.getItem("@database"))
-
-    // const selectedFile = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true })
-    // console.log(selectedFile)
-    // await FileSystem.moveAsync({ from: selectedFile.uri, to: FileSystem.documentDirectory + 'SQLite/database.db' })
   }
 
   render() {
