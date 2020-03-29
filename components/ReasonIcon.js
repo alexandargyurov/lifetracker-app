@@ -37,9 +37,9 @@ export default class ReasonIcon extends React.Component {
   };
 
   buttonCallBack = () => {
-      if (this.props.reasonsLength == this.props.position + 1)  {
-        this.props.buttonCallback()
-      }
+    if (this.props.reasonsLength == this.props.position + 1) {
+      this.props.buttonCallback()
+    }
   };
 
   componentDidMount() {
@@ -58,7 +58,7 @@ export default class ReasonIcon extends React.Component {
         </RemoveButton>
       );
     }
-    
+
     return (
       <Icon
         animation="fadeIn"
@@ -102,4 +102,5 @@ const Icon = Animatable.createAnimatableComponent(styled.View`
 let RemoveButton = Animatable.createAnimatableComponent(styled.View`
   position: absolute;
   right: 0px;
+  top: 0px;
 `);

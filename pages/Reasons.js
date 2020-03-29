@@ -93,7 +93,7 @@ export default class ReasonsScreen extends React.Component {
     let button;
 
     if (this.props.navigation.getParam("edit", false)) {
-      button = <ActionButton buttonText={"Back"} onPress={this.goBack} />;
+      button = <ActionButton buttonText={"Save"} onPress={this.goBack} />;
     } else {
       button = (
         <ActionButton buttonText={"Continue"} onPress={this.buttonSubmit} />

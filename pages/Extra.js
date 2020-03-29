@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, View, TouchableOpacity } from "react-native";
 import { StackActions, NavigationActions } from "react-navigation";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   Screen,
   CardDotted,
@@ -157,13 +158,15 @@ export default class RoadmapScreen extends React.Component {
 
         <ActionButton buttonText={"Submit"} onPress={this.buttonSubmit} />
 
-        <NotesModal
-          moodId={this.state.mood_id}
-          showModal={this.state.noteModalVisible}
-          textPlaceholder={this.state.value}
-          closeModal={this.closeModal}
-          updateNote={this.updateNote}
-        />
+        <KeyboardAwareScrollView>
+          <NotesModal
+            moodId={this.state.mood_id}
+            showModal={this.state.noteModalVisible}
+            textPlaceholder={this.state.value}
+            closeModal={this.closeModal}
+            updateNote={this.updateNote}
+          />
+        </KeyboardAwareScrollView>
       </Screen>
     );
   }

@@ -1,14 +1,10 @@
 import React from "react";
-import Database from "../Database";
 
 import { Screen } from "../css/designSystem";
 import Header from "../components/Header";
 import ActionButton from "../components/ActionButton";
 import CalendarView from "../components/CalendarView";
-import * as FileSystem from 'expo-file-system';
-import * as DocumentPicker from 'expo-document-picker';
 
-import { AsyncStorage } from "react-native";
 
 export default class CommonScreen extends React.Component {
   static navigationOptions = {
