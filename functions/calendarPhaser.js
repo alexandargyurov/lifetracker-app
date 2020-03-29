@@ -22,7 +22,7 @@ export default function calendarPhaser(data) {
           borderWidth: 4,
           borderColor: blockColour['colour'],
           borderBottomColor: highlight,
-          borderBottomWidth: 3,
+          borderBottomWidth: 4,
         },
         text: {
           color: "white"
