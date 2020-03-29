@@ -215,6 +215,7 @@ const Reasons = styled.View`
 const AddButton = Animatable.createAnimatableComponent(styled.View`
   display: flex;
   width: 33%;
-  padding-top: 50px;
+  padding-top: 25px;
+  padding-bottom: 25px;
   align-items: center;
 `);
