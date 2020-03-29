@@ -19,9 +19,10 @@ export default function calendarPhaser(data) {
         container: {
           backgroundColor: blockColour['colour'],
           borderRadius: 3,
-          borderWidth: 3,
+          borderWidth: 4,
           borderColor: blockColour['colour'],
           borderBottomColor: highlight,
+          borderBottomWidth: 3,
         },
         text: {
           color: "white"
