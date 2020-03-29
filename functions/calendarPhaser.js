@@ -18,17 +18,14 @@ export default function calendarPhaser(data) {
       customStyles: {
         container: {
           backgroundColor: blockColour['colour'],
-          borderRadius: 3,
-          borderWidth: 4,
-          borderColor: blockColour['colour'],
-          borderBottomColor: highlight,
+          borderRadius: 4,
           borderBottomWidth: 4,
+          borderBottomColor: highlight,
         },
         text: {
           color: "white"
         }
       },
-      dots: [{ key: 'vacation', color: 'red', selectedDotColor: 'blue' }],
       selected: true
     };
   });
