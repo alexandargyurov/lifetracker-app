@@ -19,4 +19,6 @@ jobs:
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: npm install
       - run: npm ci
+      - run: watchman watch-del-all
+      - run: rm -rf /tmp/haste-map-react-native-packager-*  
       - run: expo publish
