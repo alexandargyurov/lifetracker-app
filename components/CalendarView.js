@@ -29,7 +29,7 @@ export default class CalendarView extends React.Component {
 
   async componentDidMount() {
     await this.database.db.transaction(tx => {
-      tx.executeSql(`SELECT * FROM moods;`, [], (_, { rows: { _array } }) =>
+      tx.executeSql(`SELECT * FROM moods INNER JOIN extras ON moods.id = extras.mood_id;`, [], (_, { rows: { _array } }) =>
         this.setState({ calendarDates: calendarPhaser(_array) })
       );
     });

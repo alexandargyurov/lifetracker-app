@@ -4,20 +4,30 @@ import moodToColour from "./moodToColour"
 export default function calendarPhaser(data) {
   dates = {};
 
-  data.forEach(function(element) {
+  data.forEach(function (element) {
     date = moment(element.timestamp).format("YYYY-MM-DD")
     mood = element.mood;
+    blockColour = moodToColour(mood)
+    highlight = blockColour['colour'];
+
+    if (element.notes) {
+      highlight = blockColour['highlightColour']
+    }
 
     dates[date] = {
       customStyles: {
         container: {
-          backgroundColor: moodToColour(mood)['colour'],
-          borderRadius: 0
+          backgroundColor: blockColour['colour'],
+          borderRadius: 3,
+          borderWidth: 3,
+          borderColor: blockColour['colour'],
+          borderBottomColor: highlight,
         },
         text: {
           color: "white"
         }
       },
+      dots: [{ key: 'vacation', color: 'red', selectedDotColor: 'blue' }],
       selected: true
     };
   });
