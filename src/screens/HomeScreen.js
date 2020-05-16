@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Layout, Text } from '@ui-kitten/components';
 import { CalendarList } from "react-native-calendars";
 
 import moment from "moment";
