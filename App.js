@@ -2,10 +2,14 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import API from './api/Api';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 
-import HomeScreen from './screens/HomeScreen'
+import API from './src/api/Api';
 
+import HomeScreen from './src/screens/HomeScreen'
+import IntroductionScreen from './src/screens/IntroductionScreen'
+import SpecificDaySreen from './src/screens/SpecificDayScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,31 +19,25 @@ export default class App extends React.Component {
     this.state = { fontLoaded: false };
   }
 
-
-
   async componentDidMount() {
     const userExists = await API.userExists()
     if (!userExists) {
       API.initDatabase()
       API.updateLastActive()
     }
-
-    // await Font.loadAsync({
-    //   europaBold: require("./assets/fonts/europa-bold-webfont.ttf"),
-    //   europaLight: require("./assets/fonts/europa-light-webfont.ttf"),
-    //   europaRegular: require("./assets/fonts/europa-regular-webfont.ttf")
-    // });
-
-    // this.setState({ fontLoaded: true });
   }
-
+  
   render() {
     return(
+    <ApplicationProvider {...eva} theme={eva.light}>
       <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
+          <Stack.Screen name="Introduction" component={IntroductionScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ApplicationProvider>
     )
   }
 }

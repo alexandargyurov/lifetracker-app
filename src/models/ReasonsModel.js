@@ -8,7 +8,7 @@ export default class Reasons extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('database.db')
+    return async () => SQLite.openDatabase('lifetrackerV1-testing3.db')
   }
 
   static get tableName() {
@@ -16,7 +16,7 @@ export default class Reasons extends BaseModel {
   }
 
   static async seedDefaultReasons() {
-    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('database.db'), 'reasons')
+    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('lifetrackerV1-testing3.db'), 'reasons')
     const reasons = [
 			{name: 'friends'}, 
 			{name: 'family'},

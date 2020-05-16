@@ -7,7 +7,7 @@ export default class Notes extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('database.db')
+    return async () => SQLite.openDatabase('lifetrackerV1-testing3.db')
   }
 
   static get tableName() {

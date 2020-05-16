@@ -1,4 +1,3 @@
-import React from 'react';
 import { AsyncStorage } from 'react-native';
 
 import Moods from '../models/MoodsModel'
@@ -9,6 +8,13 @@ import Photos from '../models/PhotosModel'
 
 export default class API {
 	static initDatabase = async () => {
+		console.log('RESETTING DB')
+		await Moods.dropTable()
+		await Reasons.dropTable()
+		await MoodsReasons.dropTable()
+		await Notes.dropTable()
+		await Photos.dropTable()
+
 		await Moods.createTable()
 		await Reasons.createTable()
 		await MoodsReasons.createTable()

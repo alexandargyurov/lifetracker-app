@@ -1,19 +1,21 @@
 {
   "expo": {
-    "name": "temp",
-    "slug": "temp",
+    "scheme": "lifetracker",
+    "name": "Life Tracker",
+    "slug": "life-tracker",
+    "privacy": "public",
     "platforms": [
       "ios",
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "0.2.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#C7EECA"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
