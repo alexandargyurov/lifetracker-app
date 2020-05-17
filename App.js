@@ -12,7 +12,12 @@ import SpecificDaySreen from './src/screens/SpecificDayScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
 
-import { Roboto_500Medium } from '@expo-google-fonts/roboto';
+import {
+  Roboto_300Light,
+  Roboto_400Regular,
+  Roboto_500Medium,
+  Roboto_700Bold
+} from '@expo-google-fonts/roboto';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +32,10 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
+      'Roboto_400Regular': Roboto_400Regular,
       'Roboto_500Medium': Roboto_500Medium,
+      'Roboto_700Bold': Roboto_700Bold,
+      'Roboto_300Light': Roboto_300Light
     })
     this.setState({ fontsLoaded: true })
 
@@ -42,9 +50,9 @@ export default class App extends React.Component {
     if (this.state.fontsLoaded) {
       return (<NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
           <Stack.Screen name="MoodScreen" component={MoodScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
           <Stack.Screen name="Introduction" component={IntroductionScreen} />
         </Stack.Navigator>
