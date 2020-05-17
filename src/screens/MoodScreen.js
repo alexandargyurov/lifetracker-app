@@ -1,16 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Slider } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import chroma from 'chroma-js'
 import styled from 'styled-components/native'
 import { ButtonWithIcon } from '../components/Buttons'
 
+import Slider from "@brlja/react-native-slider";
+
 import * as Animatable from 'react-native-animatable';
 
 export default class MoodScreen extends React.Component {
-	static navigationOptions = {
-		header: null
-	}
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -49,30 +47,35 @@ export default class MoodScreen extends React.Component {
 		}
 	}
 
-	fadeIn = () => this.view.fadeIn(1200)
+	fadeIn = () => this.view.bounceIn(1800)
 	handleViewRef = ref => this.view = ref;
 
 	render() {
 		return (
 			<View style={{ backgroundColor: this.state.backgroundColour, flex: 1 }}>
 
-				<Animatable.View ref={this.handleViewRef} style={{ textAlign: 'center' }}>
-					<Header>{this.state.feelingText}</Header>
-				</Animatable.View>
+				<Container>
+					<Animatable.View ref={this.handleViewRef} style={{ textAlign: 'center' }}>
+						<Header>{this.state.feelingText}</Header>
+					</Animatable.View>
 
-				<Slider
-					style={{ width: 200, height: 40 }}
-					minimumValue={0}
-					maximumValue={1}
-					value={0.5}
-					onValueChange={(value) => this.transitionColour(value)}
-					minimumTrackTintColor="#FFEBE1"
-					maximumTrackTintColor="#FFEBE1"
-					thumbTintColor="FFF1EA"
-				/>
+					<Slider
+						style={{ width: 275, height: 40, marginTop: 100 }}
+						trackStyle={{ width: 275, height: 10, borderRadius: 12 }}
+						thumbStyle={{ width: 34, height: 34, borderRadius: 99 }}
+						minimumValue={0}
+						maximumValue={1}
+						value={0.5}
+						onValueChange={(value) => this.transitionColour(value)}
+						minimumTrackTintColor="#FFEBE1"
+						maximumTrackTintColor="#FFEBE1"
+						thumbTintColor="#FFF1EA"
+					/>
 
-				<ButtonWithIcon onPress={this.fadeIn} />
-
+					<ButtonContainer>
+						<ButtonWithIcon onPress={this.fadeIn} />
+					</ButtonContainer>
+				</Container>
 			</View>
 		)
 	}
@@ -81,7 +84,20 @@ export default class MoodScreen extends React.Component {
 const Header = styled.Text`
 	font-family: Roboto_500Medium;
 	text-transform: capitalize;
-	font-size: 34px;
+	font-size: 50px;
 	text-align: center;
 	color: #FFF1EA;
 `;
+
+const Container = styled.View`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 1;
+`
+
+const ButtonContainer = styled.View`
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+`

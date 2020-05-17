@@ -9,7 +9,7 @@ export function ButtonWithIcon(props) {
 		<TouchableOpacity onPress={props.onPress}>
 			<ButtonNormal>
 				<Text>Next</Text>
-				<FontAwesome5 name="arrow-right" size={18} color="#585A79" />
+				<FontAwesome5 name="arrow-right" size={18} color="#585A79" style={{ marginTop: 2 }} />
 			</ButtonNormal>
 		</TouchableOpacity>
 	);
@@ -33,3 +33,26 @@ const Text = styled.Text`
 	color: #585A79;
 	margin-right: 5px;
 `
+
+export function ButtonOnlyIcon(props) {
+	// Declare a new state variable, which we'll call "count"  const [count, setCount] = useState(0);
+	return (
+		<TouchableOpacity onPress={props.onPress}>
+			<ButtonCircle>
+				<Text>Add</Text>
+				<FontAwesome5 name="plus" size={20} color="#585A79" style={{ marginLeft: 2 }} />
+			</ButtonCircle>
+		</TouchableOpacity>
+	);
+}
+const ButtonCircle = styled.View`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: 120px;
+	height: 65px;
+	padding: 10px;
+	background-color: #FFF1EA;
+	border-radius: 99px;
+`;
