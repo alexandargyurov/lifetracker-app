@@ -65,36 +65,35 @@ export default class HomeScreen extends React.Component {
         <MoodWeekContainer>
           <SmallText>This week so far...</SmallText>
 
-          <MoodBarChart>
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+          <BarChart>
+            <ChartBox>
+              <ChartLine style={{ height: '100%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+            <ChartBox>
+              <ChartLine style={{ height: '20%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+            <ChartBox>
+              <ChartLine style={{ height: '80%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+            <ChartBox>
+              <ChartLine style={{ height: '50%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+            <ChartBox>
+              <ChartLine style={{ height: '5%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
+            <ChartBox>
+              <ChartLine style={{ height: '100%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
 
-            <MoodBarChartBox>
-              <MoodBarChartLine />
-            </MoodBarChartBox>
-
-          </MoodBarChart>
+            <ChartBox>
+              <ChartLine style={{ height: '18%', backgroundColor: '#10CE00' }} />
+            </ChartBox>
+          </BarChart>
 
           <WeekContainer>
             <ThinText>Mon</ThinText>
@@ -105,6 +104,7 @@ export default class HomeScreen extends React.Component {
             <ThinText>Sat</ThinText>
             <ThinText>Sun</ThinText>
           </WeekContainer>
+
         </MoodWeekContainer>
 
         <MoodCardSummary></MoodCardSummary>
@@ -128,26 +128,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const MoodBarChartBox = styled.View`
+const ChartBox = styled.View`
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 14px;
-  height: 100%;
 `
 
-const MoodBarChartLine = styled.View`
-  width: 10px;
-  height: 50px;
-  background-color: #10CE00;
+const ChartLine = styled.View`
+  width: 6.5px;
   border-radius: 5px;
 `
 
-const MoodBarChart = styled.View`
+const BarChart = styled.View`
   display: flex;
+  height: 75%;
   justify-content: space-between;
   flex-direction: row;
-  width: 100%
+  width: 100%;
+  transform: rotate(180deg);
 `
 
 const WeekContainer = styled.View`
@@ -171,7 +169,9 @@ const SmallText = styled.Text`
 `
 
 const MoodWeekContainer = styled.View`
-  height: 300px;
+  display: flex;
+  height: 150px;
+  padding: 18px;
   background-color: #FFF1EA;
   border-radius: 12px;
   margin: 12px;
