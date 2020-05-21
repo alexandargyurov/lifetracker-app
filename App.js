@@ -18,6 +18,7 @@ import SpecificDaySreen from './src/screens/SpecificDayScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
 import StatisticsScreen from './src/screens/StatisticsScreen';
+import AccountScreen from './src/screens/AccountScreen';
 
 import {
   Roboto_300Light,
@@ -48,15 +49,16 @@ function RootStack() {
           }
         }} >
 
-        <Stack.Screen name="Home" options={{
-          title: 'Overview', headerRight: () => (
+        <Stack.Screen name="Home" options={({ navigation, route }) => ({
+          title: 'Overview',
+          headerRight: () => (
             <TouchableOpacity
-              onPress={() => alert('Hello, world!')}
+              onPress={() => navigation.push('Account')}
               style={{ padding: 10, marginRight: 8 }} >
               <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
             </TouchableOpacity>
           )
-        }} >
+        })} >
           {() => (
             <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'}>
               <Tab.Screen name="Home" component={HomeScreen} />
@@ -65,6 +67,7 @@ function RootStack() {
           )}
         </Stack.Screen>
 
+        <Stack.Screen name="Account" component={AccountScreen} />
         <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
         <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
         <Stack.Screen name="Introduction" component={IntroductionScreen} />

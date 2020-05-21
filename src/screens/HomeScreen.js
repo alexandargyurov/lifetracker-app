@@ -37,22 +37,6 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: '#585A79' }}>
         <StatusBar barStyle="light-content" backgroundColor="#585A79" />
-        {/* <CalendarList
-          style={style}
-          theme={theme}
-          current={Date()}
-          markingType={"custom"}
-          markedDates={this.state.calendarDates}
-          onDayPress={day => {
-            this.props.navigation.push('SpecificDay', { date: day.dateString });
-          }}
-          calendarWidth={350}
-          pagingEnabled={true}
-          scrollEnabled={true}
-          pastScrollRange={12}
-          futureScrollRange={1}
-          horizontal={true}
-        /> */}
 
         <MoodWeekContainer>
           <SmallText>This week so far...</SmallText>
