@@ -1,6 +1,5 @@
 import React from 'react';
 import { TouchableOpacity, View, StatusBar } from 'react-native';
-import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
 
 import { Divider } from 'react-native-paper';
@@ -10,38 +9,47 @@ import moment from "moment";
 import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/Moods'
 
-import { MoodCardSummary } from '../components/MoodCardSummary'
-import { ButtonWithIcon } from '../components/Buttons'
-
-const data = {
-  labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43]
-    }
-  ]
-};
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
 
 export default class AccountScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarDates: {} };
   }
 
-  specificDay(data, timestamp) {
-    if (data.length != 0) {
-      this.props.navigation.push("Day", {
-        moodId: data[0]["id"],
-        date: moment(timestamp).format("dddd Do MMMM")
-      });
-    } else {
-      this.setState({ modalVisible: true, dateSelected: timestamp });
+  onSubmit(e) {
+    const localNotification = {
+      title: 'done',
+      body: 'done!'
+    };
+
+    const schedulingOptions = {
+      time: (new Date()).getTime() + 10000
     }
+
+    // Notifications show only when app is not active.
+    // (ie. another app being used or device's screen is locked)
+    Notifications.scheduleLocalNotificationAsync(
+      localNotification, schedulingOptions
+    );
+  }
+
+  handleNotification() {
+    console.warn('ok! got your notif');
   }
 
   async componentDidMount() {
-    moods = await Moods.all()
-    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
+    let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+
+    if (Constants.isDevice && result.status === 'granted') {
+      console.log('Notification permissions granted.')
+    }
+
+    // If we want to do something with the notification when the app
+    // is active, we need to listen to notification events and 
+    // handle them in a callback
+    Notifications.addListener(this.handleNotification);
   }
 
   render() {
@@ -49,7 +57,7 @@ export default class AccountScreen extends React.Component {
       <View style={{ flex: 1, backgroundColor: '#585A79' }}>
         <StatusBar barStyle="light-content" backgroundColor="#585A79" />
 
-        <TouchableOpacity style={{ width: '70%', padding: 20 }}>
+        <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={this.onSubmit}>
           <SubHeader>Notifications</SubHeader>
           <Description>Receive daily reminders to write how your day went.</Description>
         </TouchableOpacity>
