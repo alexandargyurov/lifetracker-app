@@ -1,6 +1,12 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native'
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { FontAwesome5 } from '@expo/vector-icons';
+
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
 
@@ -11,6 +17,7 @@ import IntroductionScreen from './src/screens/IntroductionScreen'
 import SpecificDaySreen from './src/screens/SpecificDayScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
+import StatisticsScreen from './src/screens/StatisticsScreen';
 
 import {
   Roboto_300Light,
@@ -19,9 +26,52 @@ import {
   Roboto_700Bold
 } from '@expo-google-fonts/roboto';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
+const Tab = createMaterialTopTabNavigator();
 
+function RootStack() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            color: '#FFF1EA',
+            fontWeight: 'bold',
+            fontSize: 22
+          },
+          headerStyle: {
+            backgroundColor: '#585A79',
+            shadowColor: 'transparent',
+            shadowOpacity: 0,
+            elevation: 0
+          }
+        }} >
 
+        <Stack.Screen name="Home" options={{
+          title: 'Overview', headerRight: () => (
+            <TouchableOpacity
+              onPress={() => alert('Hello, world!')}
+              style={{ padding: 10, marginRight: 8 }} >
+              <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
+            </TouchableOpacity>
+          )
+        }} >
+          {() => (
+            <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'}>
+              <Tab.Screen name="Home" component={HomeScreen} />
+              <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
+            </Tab.Navigator>
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
+        <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
+        <Stack.Screen name="Introduction" component={IntroductionScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -48,15 +98,7 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.fontsLoaded) {
-      return (<NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
-          <Stack.Screen name="MoodScreen" component={MoodScreen} />
-          <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
-          <Stack.Screen name="Introduction" component={IntroductionScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>)
+      return RootStack()
     } else {
       return <AppLoading />
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, StatusBar } from 'react-native';
+import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
 import { DrawerActions } from '@react-navigation/native';
 
@@ -11,7 +12,16 @@ import MoodsAPI from '../api/Moods'
 import { MoodCardSummary } from '../components/MoodCardSummary'
 import { ButtonWithIcon } from '../components/Buttons'
 
-export default class HomeScreen extends React.Component {
+const data = {
+  labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
+  datasets: [
+    {
+      data: [20, 45, 28, 80, 99, 43]
+    }
+  ]
+};
+
+export default class StatisticsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { calendarDates: {} };
@@ -37,7 +47,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: '#585A79' }}>
         <StatusBar barStyle="light-content" backgroundColor="#585A79" />
-        {/* <CalendarList
+        <CalendarList
           style={style}
           theme={theme}
           current={Date()}
@@ -52,57 +62,8 @@ export default class HomeScreen extends React.Component {
           pastScrollRange={12}
           futureScrollRange={1}
           horizontal={true}
-        /> */}
+        />
 
-        <MoodWeekContainer>
-          <SmallText>This week so far...</SmallText>
-
-          <BarChart>
-            <ChartBox>
-              <ChartLine style={{ height: '100%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '20%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '80%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '50%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '5%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '100%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-
-            <ChartBox>
-              <ChartLine style={{ height: '18%', backgroundColor: '#10CE00' }} />
-            </ChartBox>
-          </BarChart>
-
-          <WeekContainer>
-            <ThinText>Mon</ThinText>
-            <ThinText>Tue</ThinText>
-            <ThinText>Wed</ThinText>
-            <ThinText>Thu</ThinText>
-            <ThinText>Fri</ThinText>
-            <ThinText>Sat</ThinText>
-            <ThinText>Sun</ThinText>
-          </WeekContainer>
-
-        </MoodWeekContainer>
-
-        <MoodCardSummary onPress={() => console.log("hello world")}></MoodCardSummary>
-        <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
-        <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
-        <ButtonWithIcon />
       </View>
 
 
