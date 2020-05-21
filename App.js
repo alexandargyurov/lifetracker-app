@@ -3,7 +3,6 @@ import { TouchableOpacity } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -60,7 +59,12 @@ function RootStack() {
           )
         })} >
           {() => (
-            <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'}>
+            <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{
+              style: {
+                position: 'absolute'
+              }
+
+            }}>
               <Tab.Screen name="Home" component={HomeScreen} />
               <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
             </Tab.Navigator>
