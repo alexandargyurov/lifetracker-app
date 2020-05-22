@@ -18,6 +18,7 @@ import MoodScreen from './src/screens/MoodScreen';
 import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
 import StatisticsScreen from './src/screens/StatisticsScreen';
 import AccountScreen from './src/screens/AccountScreen';
+import ExtrasScreen from './src/screens/ExtrasScreen';
 
 import {
   Roboto_300Light,
