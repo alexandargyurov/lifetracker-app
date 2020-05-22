@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, StatusBar } from 'react-native';
 import styled from 'styled-components/native'
+import Colours from '../components/Colours'
 
 import { Divider } from 'react-native-paper';
 
@@ -54,7 +55,7 @@ export default class AccountScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#585A79' }}>
+      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
         <StatusBar barStyle="light-content" backgroundColor="#585A79" />
 
         <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={this.onSubmit}>

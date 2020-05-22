@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StatusBar } from 'react-native'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,6 +19,7 @@ import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
 import StatisticsScreen from './src/screens/StatisticsScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import ExtrasScreen from './src/screens/ExtrasScreen';
+import Colours from './src/components/Colours'
 
 import {
   Roboto_300Light,
@@ -30,54 +31,35 @@ import {
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator();
 
-function RootStack() {
+const screenOptions = {
+  headerTitleAlign: 'center',
+  headerTitleStyle: {
+    color: '#FFF1EA',
+    fontWeight: 'bold',
+    fontSize: 22
+  },
+  headerStyle: {
+    backgroundColor: Colours.purple(),
+    shadowColor: 'transparent',
+    shadowOpacity: 0,
+    elevation: 0
+  }
+}
+
+const accountScreenButton = (navigation) => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            color: '#FFF1EA',
-            fontWeight: 'bold',
-            fontSize: 22
-          },
-          headerStyle: {
-            backgroundColor: '#585A79',
-            shadowColor: 'transparent',
-            shadowOpacity: 0,
-            elevation: 0
-          }
-        }} >
+    <TouchableOpacity onPress={() => navigation.push('Account')} style={{ padding: 10, marginRight: 8 }} >
+      <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
+    </TouchableOpacity>
+  )
+}
 
-        <Stack.Screen name="Home" options={({ navigation, route }) => ({
-          title: 'Overview',
-          headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.push('Account')}
-              style={{ padding: 10, marginRight: 8 }} >
-              <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
-            </TouchableOpacity>
-          )
-        })} >
-          {() => (
-            <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{
-              style: {
-                position: 'absolute'
-              }
-
-            }}>
-              <Tab.Screen name="Home" component={HomeScreen} />
-              <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
-            </Tab.Navigator>
-          )}
-        </Stack.Screen>
-
-        <Stack.Screen name="Account" component={AccountScreen} />
-        <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
-        <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
-        <Stack.Screen name="Introduction" component={IntroductionScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+function TabStack() {
+  return (
+    <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{ style: { position: 'absolute' } }}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
+    </Tab.Navigator>
   )
 }
 
@@ -87,7 +69,6 @@ export default class App extends React.Component {
     this.state = { fontLoaded: false };
   }
 
-
   async componentDidMount() {
     await Font.loadAsync({
       'Roboto_400Regular': Roboto_400Regular,
@@ -95,6 +76,7 @@ export default class App extends React.Component {
       'Roboto_700Bold': Roboto_700Bold,
       'Roboto_300Light': Roboto_300Light
     })
+
     this.setState({ fontsLoaded: true })
 
     const userExists = await API.userExists()
@@ -106,7 +88,22 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.fontsLoaded) {
-      return RootStack()
+      return (
+        <NavigationContainer>
+          <StatusBar barStyle="light-content" backgroundColor={Colours.purple()} />
+          <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen name="Home" options={({ navigation, route }) => ({ title: 'Overview', headerRight: () => accountScreenButton(navigation) })} >
+              {() => TabStack()}
+            </Stack.Screen>
+            <Stack.Screen name="Account" component={AccountScreen} />
+            <Stack.Screen name="Mood" component={MoodScreen} />
+            <Stack.Screen name="Extra" component={ExtrasScreen} />
+            <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
+            <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
+            <Stack.Screen name="Introduction" component={IntroductionScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
     } else {
       return <AppLoading />
     }

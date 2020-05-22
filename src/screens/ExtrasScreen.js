@@ -2,6 +2,7 @@ import React from "react";
 import { Image, View, TouchableOpacity, Button, Text } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
+import Colours from '../components/Colours'
 
 import NotesModal from "../components/NotesModal";
 import Constants from "expo-constants";
@@ -107,7 +108,7 @@ export default class ExtrasScreen extends React.Component {
     let photoCard = <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
 
     return (
-      <View style={{ flex: 1, backgroundColor: '#585A79' }}>
+      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
         <TouchableOpacity
           onPress={() => {
             this.setState({ noteModalVisible: true });

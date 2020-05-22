@@ -6,6 +6,7 @@ import Reasons from '../models/ReasonsModel'
 import styled from 'styled-components/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ButtonOnlyIcon } from '../components/Buttons'
+import Colours from '../components/Colours'
 
 export default class ReasonsSelectorScreen extends React.Component {
   constructor(props) {
@@ -20,8 +21,8 @@ export default class ReasonsSelectorScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#585A79' }}>
-        <ScrollView style={{ backgroundColor: '#585A79' }}>
+      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
+        <ScrollView style={{ backgroundColor: Colours.purple() }}>
           <Container>
             {this.state.reasons.map((reason, key) => (
               <ReasonIcon

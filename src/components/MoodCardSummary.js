@@ -18,7 +18,6 @@ export function MoodCardSummary(props) {
         </CardHeader>
 
         <CardReasons>
-
           <Image
             style={{ width: 30, height: 30 }}
             source={{
@@ -28,10 +27,7 @@ export function MoodCardSummary(props) {
                 ".png?alt=media"
             }}
           />
-
         </CardReasons>
-
-
       </Card>
     </TouchableOpacity>
   );

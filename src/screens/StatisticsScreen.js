@@ -3,6 +3,7 @@ import { StyleSheet, View, StatusBar } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
 import { DrawerActions } from '@react-navigation/native';
+import Colours from '../components/Colours'
 
 import moment from "moment";
 
@@ -45,7 +46,7 @@ export default class StatisticsScreen extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#585A79' }}>
+      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
         <StatusBar barStyle="light-content" backgroundColor="#585A79" />
         <CalendarList
           style={style}
