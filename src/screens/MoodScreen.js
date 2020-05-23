@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import chroma from 'chroma-js'
 import styled from 'styled-components/native'
-import { ButtonWithIcon } from '../components/Buttons'
+import { ButtonWithIcon } from '../components/patterns/Buttons'
 
 import Slider from "@brlja/react-native-slider";
 
@@ -82,7 +82,7 @@ export default class MoodScreen extends React.Component {
 }
 
 const Header = styled.Text`
-	font-family: Roboto_500Medium;
+	font-family: Medium;
 	text-transform: capitalize;
 	font-size: 50px;
 	text-align: center;

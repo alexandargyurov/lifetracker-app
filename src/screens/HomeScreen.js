@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import styled from 'styled-components/native'
 import { DrawerActions } from '@react-navigation/native';
 
@@ -9,9 +9,10 @@ import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/Moods'
 
 import { MoodCardSummary } from '../components/MoodCardSummary'
-import { ButtonWithIcon } from '../components/Buttons'
-import { ThinText, SmallText } from '../components/Texts'
-import Colours from '../components/Colours'
+import { ButtonWithIcon } from '../components/patterns/Buttons'
+import { Small, Normal } from '../components/patterns/Texts'
+import Colours from '../components/patterns/Colours'
+import NavigationBalls from '../components/NavigationBalls'
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -38,66 +39,75 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <WeekOverview>
-          <BarChart>
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '100%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <WeekOverview>
+            <Normal bold>This week so far...</Normal>
 
-            <ChartBox>
+            <BarChart>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '50%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Mon</WeekDayText>
+              </ChartBox>
 
-              <ChartLineContainer>
-                <ChartLine style={{ height: '70%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '70%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Tue</WeekDayText>
+              </ChartBox>
 
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '50%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '66%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Wed</WeekDayText>
+              </ChartBox>
 
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '35%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '35%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Thu</WeekDayText>
+              </ChartBox>
 
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '20%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '57%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Fri</WeekDayText>
+              </ChartBox>
 
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '10%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '62%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Sat</WeekDayText>
+              </ChartBox>
 
-            <ChartBox>
-              <ChartLineContainer>
-                <ChartLine style={{ height: '5%', backgroundColor: Colours.green() }} />
-              </ChartLineContainer>
-              <WeekDayText>Mon</WeekDayText>
-            </ChartBox>
-          </BarChart>
+              <ChartBox>
+                <ChartLineContainer>
+                  <ChartLine style={{ height: '90%', backgroundColor: Colours.green() }} />
+                </ChartLineContainer>
+                <WeekDayText>Sun</WeekDayText>
+              </ChartBox>
+            </BarChart>
 
-        </WeekOverview>
+          </WeekOverview>
 
-        <MoodCardSummary onPress={() => console.log("hello world")}></MoodCardSummary>
-        <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
-        <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
-        <ButtonWithIcon />
-      </View >
+          <MoodCardSummary onPress={() => console.log("hello world")}></MoodCardSummary>
+          <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
+          <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
+
+          <ButttonContainer>
+            <ButtonWithIcon title='New entry' faIcon='telegram-plane' />
+          </ButttonContainer>
+
+          <NavigationBalls first />
+
+        </ScrollView >
+      </View>
     )
   }
 }
@@ -106,18 +116,19 @@ const ChartBox = styled.View`
   display: flex;
   align-items: center;
   flex-direction: column-reverse;
-  height: 100%;
   transform: rotate(180deg);
 `
 
-const WeekDayText = styled(ThinText)`
-  height: 10%;
+const WeekDayText = styled(Small)`
+  font-family: Light;
+  font-size: 14px;
   transform: rotate(180deg);
   text-align: justify;
+  padding-top: 8px;
 `
 
 const ChartLineContainer = styled.View`
-  height: 90%;
+  height: 80%;
 `
 
 const ChartLine = styled.View`
@@ -126,15 +137,21 @@ const ChartLine = styled.View`
 `
 
 const BarChart = styled.View`
-  display: flex;
-  height: 100%;
+  height: 80%;
   justify-content: space-evenly;
   flex-direction: row;
 `
 const WeekOverview = styled.View`
   display: flex;
-  height: 300px;
+  justify-content: space-evenly;
+  height: 190px;
   background-color: #FFF1EA;
   border-radius: 12px;
   margin: 12px;
+  padding: 12px;
+`
+
+const ButttonContainer = styled.View`
+  align-items: flex-end;
+  padding: 12px;
 `

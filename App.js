@@ -19,7 +19,7 @@ import ReasonsSelectorScreen from './src/screens/ReasonsSelectorScreen';
 import StatisticsScreen from './src/screens/StatisticsScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import ExtrasScreen from './src/screens/ExtrasScreen';
-import Colours from './src/components/Colours'
+import Colours from './src/components/patterns/Colours'
 
 import {
   Roboto_300Light,
@@ -71,10 +71,10 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
-      'Roboto_400Regular': Roboto_400Regular,
-      'Roboto_500Medium': Roboto_500Medium,
-      'Roboto_700Bold': Roboto_700Bold,
-      'Roboto_300Light': Roboto_300Light
+      'Light': Roboto_300Light,
+      'Regular': Roboto_400Regular,
+      'Medium': Roboto_500Medium,
+      'Bold': Roboto_700Bold
     })
 
     this.setState({ fontsLoaded: true })

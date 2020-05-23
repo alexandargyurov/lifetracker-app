@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
 import { DrawerActions } from '@react-navigation/native';
-import Colours from '../components/Colours'
+import Colours from '../components/patterns/Colours'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import moment from "moment";
 
@@ -11,7 +12,8 @@ import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/Moods'
 
 import { MoodCardSummary } from '../components/MoodCardSummary'
-import { ButtonWithIcon } from '../components/Buttons'
+import { ButtonWithIcon } from '../components/patterns/Buttons'
+import NavigationBalls from '../components/NavigationBalls'
 
 const data = {
   labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
@@ -47,27 +49,28 @@ export default class StatisticsScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <StatusBar barStyle="light-content" backgroundColor="#585A79" />
-        <CalendarList
-          style={style}
-          theme={theme}
-          current={Date()}
-          markingType={"custom"}
-          markedDates={this.state.calendarDates}
-          onDayPress={day => {
-            this.props.navigation.push('SpecificDay', { date: day.dateString });
-          }}
-          calendarWidth={350}
-          pagingEnabled={true}
-          scrollEnabled={true}
-          pastScrollRange={12}
-          futureScrollRange={1}
-          horizontal={true}
-        />
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <CalendarList
+            style={style}
+            theme={theme}
+            current={Date()}
+            markingType={"custom"}
+            markedDates={this.state.calendarDates}
+            onDayPress={day => {
+              this.props.navigation.push('SpecificDay', { date: day.dateString });
+            }}
+            calendarWidth={350}
+            pagingEnabled={true}
+            scrollEnabled={true}
+            pastScrollRange={12}
+            futureScrollRange={1}
+            horizontal={true}
+          />
 
+          <NavigationBalls second />
+
+        </ScrollView>
       </View>
-
-
     )
   }
 }
@@ -110,14 +113,14 @@ const WeekContainer = styled.View`
 `
 
 const ThinText = styled.Text`
-  font-family: Roboto_300Light;
+  font-family: Light;
   font-size: 14px;
   color: #585A79;
 
 `
 
 const SmallText = styled.Text`
-  font-family: Roboto_700Bold;
+  font-family: Bold;
   color: #585A79;
   font-size: 18px;
 `

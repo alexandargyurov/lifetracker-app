@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, StatusBar } from 'react-native';
 import styled from 'styled-components/native'
-import Colours from '../components/Colours'
+import Colours from '../components/patterns/Colours'
 
 import { Divider } from 'react-native-paper';
 
@@ -96,20 +96,20 @@ export default class AccountScreen extends React.Component {
 
 
 const TinyText = styled.Text`
-  font-family: Roboto_400Regular;
+  font-family: Regular;
   font-size: 12px;
   color: #FFF1EA;
 
 `
 
 const SubHeader = styled.Text`
-  font-family: Roboto_500Medium;
+  font-family: Medium;
   color: #FFF1EA;
   font-size: 18px;
 `
 
 const Description = styled.Text`
-  font-family: Roboto_400Regular;
+  font-family: Regular;
   color: #FFF1EA;
   font-size: 14px;
 `

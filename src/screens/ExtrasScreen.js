@@ -2,7 +2,7 @@ import React from "react";
 import { Image, View, TouchableOpacity, Button, Text } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
-import Colours from '../components/Colours'
+import Colours from '../components/patterns/Colours'
 
 import NotesModal from "../components/NotesModal";
 import Constants from "expo-constants";

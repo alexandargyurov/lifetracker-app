@@ -79,9 +79,9 @@ export default class ReasonIcon extends React.Component {
                 ".png?alt=media"
             }}
           />
-          <ReasonText>
+          <Text>
             {this.props.reason.replace("-", " ").replace("-", " ")}
-          </ReasonText>
+          </Text>
         </TouchableOpacity>
         {removeButton}
       </Icon>
@@ -103,11 +103,3 @@ const RemoveButton = Animatable.createAnimatableComponent(styled.View`
   top: 0px;
 `);
 
-const ReasonText = styled.Text`
-  font-family: Roboto_500Medium;
-  text-transform: capitalize;
-  font-size: 14px;
-  text-align: center;
-  color: #FFF1EA;
-  margin-top: 14px;
-`
