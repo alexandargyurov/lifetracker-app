@@ -41,7 +41,7 @@ export default class ExtrasScreen extends React.Component {
   }
 
   componentDidMount() {
-
+    this.props.navigation.setOptions({ headerStyle: { backgroundColor: this.props.route.params.backgroundColor } })
   }
 
   addImageCount(numOfImages) {
@@ -108,7 +108,7 @@ export default class ExtrasScreen extends React.Component {
     let photoCard = <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
 
     return (
-      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
+      <View style={{ flex: 1, backgroundColor: this.props.route.params.backgroundColor }}>
         <TouchableOpacity
           onPress={() => {
             this.setState({ noteModalVisible: true });

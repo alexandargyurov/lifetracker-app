@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import chroma from 'chroma-js'
 import styled from 'styled-components/native'
 import { ButtonWithIcon } from '../components/patterns/Buttons'
@@ -41,10 +41,21 @@ export default class MoodScreen extends React.Component {
 	transitionColour(sliderValue) {
 		const colour = Math.round((sliderValue + Number.EPSILON) * 100)
 		this.setState({ backgroundColour: this.state.gradient[colour], feelingText: this.moodToColour(sliderValue).feeling, previousText: this.moodToColour(sliderValue).feeling })
+		this.props.navigation.setOptions({ headerStyle: { backgroundColor: this.state.gradient[colour] } })
 
 		if (this.state.previousText !== this.moodToColour(sliderValue).feeling) {
 			this.fadeIn()
 		}
+	}
+
+	componentDidMount() {
+		this.props.navigation.setOptions({
+			headerStyle: {
+				backgroundColor: this.state.backgroundColour, shadowColor: 'transparent',
+				shadowOpacity: 0,
+				elevation: 0
+			}
+		})
 	}
 
 	fadeIn = () => this.view.bounceIn(1800)
@@ -53,14 +64,14 @@ export default class MoodScreen extends React.Component {
 	render() {
 		return (
 			<View style={{ backgroundColor: this.state.backgroundColour, flex: 1 }}>
-
+				<StatusBar barStyle="light-content" backgroundColor={this.state.backgroundColour} />
 				<Container>
 					<Animatable.View ref={this.handleViewRef} style={{ textAlign: 'center' }}>
 						<Header>{this.state.feelingText}</Header>
 					</Animatable.View>
 
 					<Slider
-						style={{ width: 275, height: 40, marginTop: 100 }}
+						style={{ width: 275, height: 40, marginTop: 100, marginBottom: 50 }}
 						trackStyle={{ width: 275, height: 10, borderRadius: 12 }}
 						thumbStyle={{ width: 34, height: 34, borderRadius: 99 }}
 						minimumValue={0}
@@ -73,7 +84,7 @@ export default class MoodScreen extends React.Component {
 					/>
 
 					<ButtonContainer>
-						<ButtonWithIcon onPress={this.fadeIn} />
+						<ButtonWithIcon onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.state.backgroundColour })} title={'Next'} faIcon={'chevron-right'} faSize={18} />
 					</ButtonContainer>
 				</Container>
 			</View>
@@ -97,7 +108,6 @@ const Container = styled.View`
 `
 
 const ButtonContainer = styled.View`
-	display: flex;
-	align-items: flex-start;
-	justify-content: flex-start;
+	align-self: flex-end;
+	margin-right: 50px;
 `

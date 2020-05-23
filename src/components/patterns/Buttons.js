@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-
 import styled from 'styled-components/native'
 import { Normal } from './Texts'
 
@@ -22,12 +21,11 @@ export function ButtonWithIcon(props) {
 		<TouchableOpacity onPress={props.onPress}>
 			<ButtonNormal>
 				<Normal bold>{props.title}</Normal>
-				<FontAwesome5 name={props.faIcon} size={20} color="#585A79" style={{ marginLeft: 5, marginTop: 2 }} />
+				<FontAwesome5 name={props.faIcon} size={props.faSize} color="#585A79" style={{ marginLeft: 5, marginTop: 2 }} />
 			</ButtonNormal>
 		</TouchableOpacity>
 	);
 }
-
 
 export function ButtonOnlyIcon(props) {
 	const ButtonCircle = styled.View`
@@ -51,3 +49,4 @@ export function ButtonOnlyIcon(props) {
 		</TouchableOpacity>
 	);
 }
+

@@ -43,12 +43,16 @@ const screenOptions = {
     shadowColor: 'transparent',
     shadowOpacity: 0,
     elevation: 0
-  }
+  },
+  headerBackTitleStyle: {
+    display: 'none'
+  },
+  headerTintColor: 'white',
 }
 
 const accountScreenButton = (navigation) => {
   return (
-    <TouchableOpacity onPress={() => navigation.push('Account')} style={{ padding: 10, marginRight: 8 }} >
+    <TouchableOpacity onPress={() => navigation.push('Account')} style={{ padding: 10, marginLeft: 8 }} >
       <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
     </TouchableOpacity>
   )
@@ -56,7 +60,7 @@ const accountScreenButton = (navigation) => {
 
 function TabStack() {
   return (
-    <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{ style: { position: 'absolute' } }} swipeVelocityImpact={1}>
+    <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{ style: { position: 'absolute' } }} >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
     </Tab.Navigator>
@@ -91,13 +95,13 @@ export default class App extends React.Component {
       return (
         <NavigationContainer>
           <StatusBar barStyle="light-content" backgroundColor={Colours.purple()} />
-          <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name="Home" options={({ navigation, route }) => ({ title: 'Overview', headerRight: () => accountScreenButton(navigation) })} >
+          <Stack.Navigator screenOptions={screenOptions} >
+            <Stack.Screen name="Home" options={({ navigation, route }) => ({ title: 'Overview', headerLeft: () => accountScreenButton(navigation) })} >
               {() => TabStack()}
             </Stack.Screen>
             <Stack.Screen name="Account" component={AccountScreen} />
-            <Stack.Screen name="Mood" component={MoodScreen} />
-            <Stack.Screen name="Extra" component={ExtrasScreen} />
+            <Stack.Screen name="Mood" component={MoodScreen} options={{ title: "How did today go?" }} />
+            <Stack.Screen name="Extra" component={ExtrasScreen} initialParams={{ backgroundColor: Colours.purple() }} />
             <Stack.Screen name="ReasonSelector" component={ReasonsSelectorScreen} />
             <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
             <Stack.Screen name="Introduction" component={IntroductionScreen} />

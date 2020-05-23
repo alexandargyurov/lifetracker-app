@@ -31,6 +31,10 @@ export default class HomeScreen extends React.Component {
     }
   }
 
+  newEntryPress() {
+    this.props.navigation.push('Mood')
+  }
+
   async componentDidMount() {
     moods = await Moods.all()
     this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
@@ -101,7 +105,7 @@ export default class HomeScreen extends React.Component {
           <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
 
           <ButttonContainer>
-            <ButtonWithIcon title='New entry' faIcon='telegram-plane' />
+            <ButtonWithIcon title='New entry' faIcon='telegram-plane' faSize={20} onPress={() => this.newEntryPress()} />
           </ButttonContainer>
 
           <NavigationBalls first />
