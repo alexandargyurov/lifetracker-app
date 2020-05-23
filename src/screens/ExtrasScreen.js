@@ -1,17 +1,32 @@
 import React from "react";
-import { Image, View, TouchableOpacity, Button, Text } from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
 import Colours from '../components/patterns/Colours'
+import { DottedCard } from '../components/DottedCard'
 
 import NotesModal from "../components/NotesModal";
-import Constants from "expo-constants";
+import { ButtonWithIcon } from '../components/patterns/Buttons'
+import { Small } from '../components/patterns/Texts'
+
+const photosImage = (url) => {
+  return (
+    <Image style={imageStyles}
+      source={{
+        uri: url
+      }}
+    />
+  )
+}
+
+const imageStyles = {
+  width: 40,
+  height: 40,
+  alignSelf: "center",
+  marginBottom: 10
+}
 
 export default class ExtrasScreen extends React.Component {
-  static navigationOptions = {
-    header: null
-  };
-
   constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
@@ -41,7 +56,14 @@ export default class ExtrasScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.navigation.setOptions({ headerStyle: { backgroundColor: this.props.route.params.backgroundColor } })
+    this.props.navigation.setOptions({
+      headerStyle: {
+        backgroundColor: this.props.route.params.backgroundColor,
+        shadowColor: 'transparent',
+        shadowOpacity: 0,
+        elevation: 0
+      }
+    })
   }
 
   addImageCount(numOfImages) {
@@ -52,21 +74,15 @@ export default class ExtrasScreen extends React.Component {
     if (this.state.note) {
       return (
         <View style={{ maxHeight: 150, padding: 15 }}>
-          <SmallHeading>Notes:</SmallHeading>
-          <SmallText numberOfLines={4}>{this.state.note}</SmallText>
+          <Small lightColour bold>Notes:</Small>
+          <Small lightColour numberOfLines={4}>{this.state.note}</Small>
         </View>
       );
     } else {
       return (
         <View>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/notes.png?alt=media"
-            }}
-          />
-
-          <Text style={{ color: '#FFF1EA' }}>Notes</Text>
+          {photosImage("https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/notes.png?alt=media")}
+          <Small bold lightColour >Notes</Small>
         </View>
       );
     }
@@ -76,60 +92,41 @@ export default class ExtrasScreen extends React.Component {
     if (this.state.photosNumber) {
       return (
         <View>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
-            }}
-          />
-          <Text>Google Photos</Text>
-          <SmallText style={{ textAlign: 'center' }}>{this.state.photosNumber} photos added</SmallText>
+          {photosImage("https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media")}
+          <Small>Photos</Small>
+          <Small style={{ textAlign: 'center' }}>{this.state.photosNumber} photos added</Small>
         </View>
       );
     } else {
       return (
         <View>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            source={{
-              uri: "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media"
-            }}
-          />
-          <Text style={{ color: '#FFF1EA' }}>Google Photos</Text>
+          {photosImage("https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media")}
+          <Small bold lightColour>Photos</Small>
         </View>
       );
     }
   }
 
   render() {
-    let notesSection = this.notesSection();
-    let photoSection = this.photoSection();
 
-    let photoCard = <CardDotted style={{ borderWidth: 1 }}>{photoSection}</CardDotted>
 
     return (
       <View style={{ flex: 1, backgroundColor: this.props.route.params.backgroundColor }}>
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({ noteModalVisible: true });
-          }}
-        >
-          <CardDotted style={{ borderWidth: 1 }}>{notesSection}</CardDotted>
+        <TouchableOpacity onPress={() => { this.setState({ noteModalVisible: true }) }}>
+          <DottedCard style={{ height: 150 }}>
+            {this.notesSection()}
+          </DottedCard>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.push("PhotosSelect", {
-              moodId: this.state.mood_id,
-              new: true,
-              onGoBack: numOfImages => this.addImageCount(numOfImages)
-            });
-          }}
-        >
-          {photoCard}
+        <TouchableOpacity onPress={() => { }}>
+          <DottedCard style={{ height: 150 }}>
+            {this.photoSection()}
+          </DottedCard>
         </TouchableOpacity>
 
-        <Text style={{ color: '#FFF1EA' }}>Button</Text>
+        <ButtonContainer>
+          <ButtonWithIcon onPress={() => this.props.navigation.navigate('Home')} title={'Done'} faIcon={'chevron-right'} faSize={16} />
+        </ButtonContainer>
 
         <KeyboardAwareScrollView>
           <NotesModal
@@ -140,20 +137,13 @@ export default class ExtrasScreen extends React.Component {
             updateNote={this.updateNote}
           />
         </KeyboardAwareScrollView>
+
       </View>
     );
   }
 }
 
-export const CardDotted = styled.View`
-  align-items: center;
-  justify-content: center;
-  width: 95%;
-  height: 150px;
-  align-self: center;
-  border-radius: 1px;
-  border-style: dashed;
-  border-color: #FFF1EA;
-  color: #FFF1EA;
-  margin-bottom: 10px;
-`;
+const ButtonContainer = styled.View`
+	align-self: flex-end;
+	margin: 12px;
+`

@@ -41,8 +41,14 @@ export default class MoodScreen extends React.Component {
 	transitionColour(sliderValue) {
 		const colour = Math.round((sliderValue + Number.EPSILON) * 100)
 		this.setState({ backgroundColour: this.state.gradient[colour], feelingText: this.moodToColour(sliderValue).feeling, previousText: this.moodToColour(sliderValue).feeling })
-		this.props.navigation.setOptions({ headerStyle: { backgroundColor: this.state.gradient[colour] } })
-
+		this.props.navigation.setOptions({
+			headerStyle: {
+				backgroundColor: this.state.gradient[colour],
+				shadowColor: 'transparent',
+				shadowOpacity: 0,
+				elevation: 0
+			}
+		})
 		if (this.state.previousText !== this.moodToColour(sliderValue).feeling) {
 			this.fadeIn()
 		}
@@ -51,7 +57,8 @@ export default class MoodScreen extends React.Component {
 	componentDidMount() {
 		this.props.navigation.setOptions({
 			headerStyle: {
-				backgroundColor: this.state.backgroundColour, shadowColor: 'transparent',
+				backgroundColor: this.state.backgroundColour,
+				shadowColor: 'transparent',
 				shadowOpacity: 0,
 				elevation: 0
 			}

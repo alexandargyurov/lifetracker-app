@@ -2,17 +2,16 @@ import React from 'react';
 import { Dimensions, ScrollView, View } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
-import { DrawerActions } from '@react-navigation/native';
+
 import Colours from '../components/patterns/Colours'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { DottedCard } from '../components/DottedCard'
 
 import moment from "moment";
+
 
 import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/Moods'
 
-import { MoodCardSummary } from '../components/MoodCardSummary'
-import { ButtonWithIcon } from '../components/patterns/Buttons'
 import NavigationBalls from '../components/NavigationBalls'
 import { Normal, Tiny } from '../components/patterns/Texts'
 
@@ -72,10 +71,10 @@ export default class StatisticsScreen extends React.Component {
             />
           </CalendarContainer>
 
-          <CardDotted>
+          <DottedCard>
             <Normal lightColour bold>Coming Soon!</Normal>
             <Tiny lightColour light>Get to see data about your emotions and feelings</Tiny>
-          </CardDotted>
+          </DottedCard>
 
 
           <NavigationBalls second />
@@ -94,29 +93,6 @@ const CalendarContainer = styled.View`
   border-radius: 12px;
   overflow: hidden;
 `
-const CardDotted = styled.View`
-  width: ${Dimensions.get('window').width - 24}px;
-  height: 300px;
-  align-items: center;
-  justify-content: center;
-  border-color: ${Colours.light()};
-  border-radius: 1px;
-  border-width: 1px;
-  border-style: dashed;
-  margin: 12px;
-`;
-
-// `
-// align-items: center;
-// justify-content: center;
-// height: 150px;
-// width: 150px;
-// border-radius: 1px;
-// border-style: dashed;
-// border-color: ${Colours.light()};
-// background-color: ${Colours.light()}
-// color: ${Colours.light()};
-// `
 
 export const style = {
   width: '100%',

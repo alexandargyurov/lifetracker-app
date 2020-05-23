@@ -91,5 +91,5 @@ export const ModalMedium = styled.View`
   border-radius: 10px;
   background-color: #fff;
   width: 80%;
-  height: 300;
+  height: 250px;
 `;
