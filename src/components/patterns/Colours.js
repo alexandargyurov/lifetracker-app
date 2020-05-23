@@ -10,4 +10,8 @@ export default class Colours {
   static light() {
     return '#FFF1EA'
   }
+
+  static warm() {
+    return '#FFE4D3'
+  }
 }

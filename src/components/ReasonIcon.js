@@ -1,8 +1,11 @@
 import React from "react";
 import styled from 'styled-components/native'
-import { Image, TouchableOpacity, Text } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { Ionicons } from "@expo/vector-icons";
+import chroma from 'chroma-js'
+
+import { Smaller } from '../components/patterns/Texts'
 
 export default class ReasonIcon extends React.Component {
   handleViewRef = ref => this.view = ref;
@@ -20,25 +23,25 @@ export default class ReasonIcon extends React.Component {
   onPress = () => {
     if (this.props.viewOnly === false) {
       if (this.state.selected === false) {
-        this.setState({ colour: "#4E506F", selected: true });
+        this.setState({ colour: chroma(this.props.backgroundColor).brighten(0.5), selected: true });
         this.props.reasonCallback(this.props.reasonId, true);
       } else {
-        this.setState({ colour: "#585A79", selected: false });
+        this.setState({ colour: this.props.backgroundColor, selected: false });
         this.props.reasonCallback(this.props.reasonId, false);
       }
     }
-  };
+  }
 
   removeReason = () => {
     this.view.fadeOut(250)
     this.props.reasonCallback(this.props.reasonId);
-  };
+  }
 
   buttonCallBack = () => {
     if (this.props.reasonsLength == this.props.position + 1) {
       this.props.buttonCallback()
     }
-  };
+  }
 
   componentDidMount() {
     if (this.props.selected) this.setState({ colour: "#4E506F" });
@@ -66,7 +69,8 @@ export default class ReasonIcon extends React.Component {
         ref={this.handleViewRef}
         style={{
           backgroundColor: this.state.colour,
-          display: this.state.display
+          display: this.state.display,
+          borderRadius: 12,
         }}
       >
         <TouchableOpacity onPress={this.onPress} disabled={this.props.viewOnly} style={{ display: 'flex', alignItems: 'center' }}>
@@ -79,9 +83,9 @@ export default class ReasonIcon extends React.Component {
                 ".png?alt=media"
             }}
           />
-          <Text>
+          <Smaller lightColour bold style={{ marginTop: 10, textTransform: 'capitalize', textAlign: 'center' }}>
             {this.props.reason.replace("-", " ").replace("-", " ")}
-          </Text>
+          </Smaller>
         </TouchableOpacity>
         {removeButton}
       </Icon>
@@ -91,8 +95,9 @@ export default class ReasonIcon extends React.Component {
 
 const Icon = Animatable.createAnimatableComponent(styled.View`
   display: flex;
-  width: 33%;
+  width: 30%;
   padding: 20px;
+  margin: 3px;
   align-items: center;
   justify-content: center;
 `);

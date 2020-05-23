@@ -8,7 +8,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { ButtonOnlyIcon } from '../components/patterns/Buttons'
 import Colours from '../components/patterns/Colours'
 
-export default class ReasonsSelectorScreen extends React.Component {
+export default class ReasonsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { reasons: [] };
@@ -17,12 +17,21 @@ export default class ReasonsSelectorScreen extends React.Component {
   async componentDidMount() {
     reasons = await Reasons.all()
     this.setState({ reasons: reasons })
+
+    this.props.navigation.setOptions({
+      headerStyle: {
+        backgroundColor: this.props.route.params.backgroundColor,
+        shadowColor: 'transparent',
+        shadowOpacity: 0,
+        elevation: 0
+      }
+    })
   }
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <ScrollView style={{ backgroundColor: Colours.purple() }}>
+      <View style={{ flex: 1 }}>
+        <ScrollView style={{ backgroundColor: this.props.route.params.backgroundColor }}>
           <Container>
             {this.state.reasons.map((reason, key) => (
               <ReasonIcon
@@ -31,6 +40,7 @@ export default class ReasonsSelectorScreen extends React.Component {
                 reasonCallback={(v) => console.log(v)}
                 viewOnly={false}
                 selected={false}
+                backgroundColor={this.props.route.params.backgroundColor}
                 key={key}
               />
             ))}
@@ -38,7 +48,7 @@ export default class ReasonsSelectorScreen extends React.Component {
         </ScrollView>
 
         <TouchableOpacity style={{ position: 'absolute', right: 20, bottom: 20 }}>
-          <ButtonOnlyIcon></ButtonOnlyIcon>
+          <ButtonOnlyIcon onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.props.route.params.backgroundColor })} />
         </TouchableOpacity>
       </View>
 
@@ -48,7 +58,6 @@ export default class ReasonsSelectorScreen extends React.Component {
 
 const Container = styled.View`
   display: flex;
-  background-color: #585A79;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;

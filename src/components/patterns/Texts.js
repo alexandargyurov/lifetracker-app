@@ -11,6 +11,7 @@ const fontWeight = (props) => {
 
 const fontColour = (props) => {
 	if (props.lightColour) return "color: " + Colours.light()
+	if (props.warmColour) return "color: " + Colours.warm()
 }
 
 const Text = styled.Text`
@@ -21,6 +22,13 @@ const Text = styled.Text`
 
 export const Tiny = styled(Text)`
 	font-size: 12px;
+	${props => fontWeight(props)};
+	${props => fontColour(props)};
+	${allowCustomProps};
+`;
+
+export const Smaller = styled(Text)`
+	font-size: 14px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
 	${allowCustomProps};

@@ -65,7 +65,7 @@ export default class MoodScreen extends React.Component {
 		})
 	}
 
-	fadeIn = () => this.view.bounceIn(1800)
+	fadeIn = () => this.view.fadeIn()
 	handleViewRef = ref => this.view = ref;
 
 	render() {
@@ -91,7 +91,7 @@ export default class MoodScreen extends React.Component {
 					/>
 
 					<ButtonContainer>
-						<ButtonWithIcon onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.state.backgroundColour })} title={'Next'} faIcon={'chevron-right'} faSize={18} />
+						<ButtonWithIcon onPress={() => this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour })} title={'Next'} faIcon={'chevron-right'} faSize={18} />
 					</ButtonContainer>
 				</Container>
 			</View>

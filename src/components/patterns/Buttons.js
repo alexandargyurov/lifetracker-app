@@ -43,8 +43,8 @@ export function ButtonOnlyIcon(props) {
 	return (
 		<TouchableOpacity onPress={props.onPress}>
 			<ButtonCircle>
-				<Normal>Add</Normal>
-				<FontAwesome5 name="plus" size={20} color="#585A79" style={{ marginLeft: 2 }} />
+				<Normal bold>Add</Normal>
+				<FontAwesome5 name="plus" size={16} color="#585A79" style={{ marginLeft: 5 }} />
 			</ButtonCircle>
 		</TouchableOpacity>
 	);
