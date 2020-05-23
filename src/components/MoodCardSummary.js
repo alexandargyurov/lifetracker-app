@@ -17,7 +17,7 @@ export function MoodCardSummary(props) {
 
         <CardHeader>
           <Small bold>Wednesday 16th</Small>
-          <FontAwesome5 name="sticky-note" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 4 }} />
+          <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} />
           <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} />
         </CardHeader>
 

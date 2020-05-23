@@ -56,7 +56,7 @@ const accountScreenButton = (navigation) => {
 
 function TabStack() {
   return (
-    <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{ style: { position: 'absolute' } }}>
+    <Tab.Navigator initialRouteName="Analytics" tabBarPosition={'bottom'} tabBarOptions={{ style: { position: 'absolute' } }} swipeVelocityImpact={1}>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="MoodScreen" component={StatisticsScreen} />
     </Tab.Navigator>

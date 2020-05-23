@@ -23,7 +23,7 @@ export default class NavigationBalls extends React.Component {
 const BallsContainer = styled.View`
   justify-content: center;
   flex-direction: row;
-
+  margin-bottom: 15px;
 `
 
 const Ball = styled.View`

@@ -9,6 +9,10 @@ const fontWeight = (props) => {
 	if (props.bold) return "font-family: Bold"
 }
 
+const fontColour = (props) => {
+	if (props.lightColour) return "color: " + Colours.light()
+}
+
 const Text = styled.Text`
   font-family: Regular;
   color: ${Colours.purple()};
@@ -18,36 +22,42 @@ const Text = styled.Text`
 export const Tiny = styled(Text)`
 	font-size: 12px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 
 export const Small = styled(Text)`
 	font-size: 16px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 
 export const Normal = styled(Text)`
 	font-size: 18px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 
 export const SubHeader = styled(Text)`
 	font-size: 22px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 
 export const Header = styled(Text)`
 	font-size: 28px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 
 export const HugeHeader = styled(Text)`
 	font-size: 36px;
 	${props => fontWeight(props)};
+	${props => fontColour(props)};
 	${allowCustomProps};
 `;
 

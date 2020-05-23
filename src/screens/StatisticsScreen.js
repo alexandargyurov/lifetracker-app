@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import { CalendarList } from "react-native-calendars";
 import styled from 'styled-components/native'
 import { DrawerActions } from '@react-navigation/native';
@@ -14,6 +14,7 @@ import MoodsAPI from '../api/Moods'
 import { MoodCardSummary } from '../components/MoodCardSummary'
 import { ButtonWithIcon } from '../components/patterns/Buttons'
 import NavigationBalls from '../components/NavigationBalls'
+import { Normal, Tiny } from '../components/patterns/Texts'
 
 const data = {
   labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
@@ -50,22 +51,32 @@ export default class StatisticsScreen extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <CalendarList
-            style={style}
-            theme={theme}
-            current={Date()}
-            markingType={"custom"}
-            markedDates={this.state.calendarDates}
-            onDayPress={day => {
-              this.props.navigation.push('SpecificDay', { date: day.dateString });
-            }}
-            calendarWidth={350}
-            pagingEnabled={true}
-            scrollEnabled={true}
-            pastScrollRange={12}
-            futureScrollRange={1}
-            horizontal={true}
-          />
+          <CalendarContainer>
+            <CalendarList
+              style={style}
+              theme={theme}
+              current={Date()}
+              markingType={"custom"}
+              firstDay={1}
+              hideExtraDays={false}
+              markedDates={this.state.calendarDates}
+              onDayPress={day => {
+                this.props.navigation.push('SpecificDay', { date: day.dateString });
+              }}
+              calendarWidth={Dimensions.get('window').width - 24}
+              pagingEnabled={true}
+              scrollEnabled={true}
+              pastScrollRange={12}
+              futureScrollRange={1}
+              horizontal={true}
+            />
+          </CalendarContainer>
+
+          <CardDotted>
+            <Normal lightColour bold>Coming Soon!</Normal>
+            <Tiny lightColour light>Get to see data about your emotions and feelings</Tiny>
+          </CardDotted>
+
 
           <NavigationBalls second />
 
@@ -75,68 +86,42 @@ export default class StatisticsScreen extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  card: {
-    margin: 2,
-  },
-});
-
-const ChartBox = styled.View`
+const CalendarContainer = styled.View`
   display: flex;
-  align-items: center;
-  width: 14px;
-`
-
-const ChartLine = styled.View`
-  width: 6.5px;
-  border-radius: 5px;
-`
-
-const BarChart = styled.View`
-  display: flex;
-  height: 75%;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  transform: rotate(180deg);
-`
-
-const WeekContainer = styled.View`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%
-`
-
-const ThinText = styled.Text`
-  font-family: Light;
-  font-size: 14px;
-  color: #585A79;
-
-`
-
-const SmallText = styled.Text`
-  font-family: Bold;
-  color: #585A79;
-  font-size: 18px;
-`
-
-const MoodWeekContainer = styled.View`
-  display: flex;
-  height: 150px;
-  padding: 18px;
-  background-color: #FFF1EA;
-  border-radius: 12px;
+  align-content: center;
+  justify-content: center;
   margin: 12px;
+  border-radius: 12px;
+  overflow: hidden;
 `
+const CardDotted = styled.View`
+  width: ${Dimensions.get('window').width - 24}px;
+  height: 300px;
+  align-items: center;
+  justify-content: center;
+  border-color: ${Colours.light()};
+  border-radius: 1px;
+  border-width: 1px;
+  border-style: dashed;
+  margin: 12px;
+`;
+
+// `
+// align-items: center;
+// justify-content: center;
+// height: 150px;
+// width: 150px;
+// border-radius: 1px;
+// border-style: dashed;
+// border-color: ${Colours.light()};
+// background-color: ${Colours.light()}
+// color: ${Colours.light()};
+// `
 
 export const style = {
-  width: 350,
-  overflow: "hidden"
+  width: '100%',
+  borderRadius: 12,
+  overflow: 'hidden'
 };
 
 export const theme = {
@@ -150,7 +135,8 @@ export const theme = {
     week: {
       marginTop: 5,
       marginBottom: 5,
-      flexDirection: "row"
+      flexDirection: "row",
+      flexGrow: 1
     }
   },
   "stylesheet.day.single": {

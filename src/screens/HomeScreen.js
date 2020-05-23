@@ -81,14 +81,14 @@ export default class HomeScreen extends React.Component {
 
               <ChartBox>
                 <ChartLineContainer>
-                  <ChartLine style={{ height: '62%', backgroundColor: Colours.green() }} />
+                  <ChartLine style={{ height: '5%', backgroundColor: Colours.green() }} />
                 </ChartLineContainer>
                 <WeekDayText>Sat</WeekDayText>
               </ChartBox>
 
               <ChartBox>
                 <ChartLineContainer>
-                  <ChartLine style={{ height: '90%', backgroundColor: Colours.green() }} />
+                  <ChartLine style={{ height: '100%', backgroundColor: Colours.green() }} />
                 </ChartLineContainer>
                 <WeekDayText>Sun</WeekDayText>
               </ChartBox>
