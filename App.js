@@ -53,7 +53,15 @@ const screenOptions = {
 const accountScreenButton = (navigation) => {
   return (
     <TouchableOpacity onPress={() => navigation.push('Account')} style={{ padding: 10, marginLeft: 8 }} >
-      <FontAwesome5 name="user-circle" size={24} color="#FFEBE1" />
+      <FontAwesome5 name="user-circle" size={24} color={Colours.light()} />
+    </TouchableOpacity>
+  )
+}
+
+const editButton = (navigation) => {
+  return (
+    <TouchableOpacity onPress={() => console.log('edit me!')} style={{ padding: 10, marginRight: 8 }} >
+      <FontAwesome5 name="edit" size={20} color={Colours.light()} />
     </TouchableOpacity>
   )
 }
@@ -96,14 +104,14 @@ export default class App extends React.Component {
         <NavigationContainer>
           <StatusBar barStyle="light-content" backgroundColor={Colours.purple()} />
           <Stack.Navigator screenOptions={screenOptions} >
-            <Stack.Screen name="Home" options={({ navigation, route }) => ({ title: 'Overview', headerLeft: () => accountScreenButton(navigation) })} >
+            <Stack.Screen name="Home" options={({ navigation }) => ({ title: 'Overview', headerLeft: () => accountScreenButton(navigation) })} >
               {() => TabStack()}
             </Stack.Screen>
             <Stack.Screen name="Account" component={AccountScreen} />
             <Stack.Screen name="Mood" component={MoodScreen} options={{ title: "How did today go?" }} />
             <Stack.Screen name="Extra" component={ExtrasScreen} options={{ title: "Add anything else?" }} initialParams={{ backgroundColor: Colours.purple() }} />
             <Stack.Screen name="Reasons" component={ReasonsSelectorScreen} options={{ title: "Why's that?" }} />
-            <Stack.Screen name="SpecificDay" component={SpecificDaySreen} />
+            <Stack.Screen name="SpecificDay" component={SpecificDaySreen} options={({ navigation }) => ({ headerRight: () => editButton(navigation) })} />
             <Stack.Screen name="Introduction" component={IntroductionScreen} />
           </Stack.Navigator>
         </NavigationContainer>

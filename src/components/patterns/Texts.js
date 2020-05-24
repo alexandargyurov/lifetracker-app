@@ -14,6 +14,13 @@ const fontColour = (props) => {
 	if (props.warmColour) return "color: " + Colours.warm()
 }
 
+const textPosition = (props) => {
+	if (props.center) return "text-align: center"
+	if (props.left) return "text-align: left"
+	if (props.right) return "text-align: right"
+
+}
+
 const Text = styled.Text`
   font-family: Regular;
   color: ${Colours.purple()};
@@ -24,6 +31,7 @@ export const Tiny = styled(Text)`
 	font-size: 12px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 
@@ -38,6 +46,7 @@ export const Small = styled(Text)`
 	font-size: 16px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 
@@ -45,6 +54,7 @@ export const Normal = styled(Text)`
 	font-size: 18px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 
@@ -52,6 +62,7 @@ export const SubHeader = styled(Text)`
 	font-size: 22px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 
@@ -59,6 +70,7 @@ export const Header = styled(Text)`
 	font-size: 28px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 
@@ -66,6 +78,7 @@ export const HugeHeader = styled(Text)`
 	font-size: 36px;
 	${props => fontWeight(props)};
 	${props => fontColour(props)};
+	${props => textPosition(props)};
 	${allowCustomProps};
 `;
 

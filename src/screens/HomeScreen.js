@@ -100,7 +100,7 @@ export default class HomeScreen extends React.Component {
 
           </WeekOverview>
 
-          <MoodCardSummary onPress={() => console.log("hello world")}></MoodCardSummary>
+          <MoodCardSummary onPress={() => this.props.navigation.push('SpecificDay')}></MoodCardSummary>
           <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
           <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
 
