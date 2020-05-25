@@ -52,17 +52,18 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  chartLineStyles(weekday) {
+  chartLineStyles(entry) {
     try {
-      return { height: (weekday.mood * 100), backgroundColor: this.moodToColour(weekday.mood).colour }
+      return { height: `${(entry.mood * 100)}%`, backgroundColor: this.moodToColour(entry.mood).colour }
     } catch {
-      return { height: 0, backgroundColor: 'white' }
+      return { height: `50%`, backgroundColor: '#E7E7E7' }
     }
   }
 
   async componentDidMount() {
     const weekMoods = await Moods.currentWeek()
     this.setState({ loaded: true, weekMoods: weekMoods })
+    console.log(weekMoods)
   }
 
   render() {

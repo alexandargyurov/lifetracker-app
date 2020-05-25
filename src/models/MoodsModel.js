@@ -9,7 +9,7 @@ export default class Moods extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('lifetrackerV1-testing5.db')
+    return async () => SQLite.openDatabase('lifetrackerV1-testing8.db')
   }
 
   static get tableName() {
@@ -21,51 +21,65 @@ export default class Moods extends BaseModel {
   }
 
   static async currentWeek() {
-    const monday = await this.findBy({ timestamp_eq: moment().day("Monday").format('YYYY-MM-DD') })
-
     const sql = `
       SELECT moods.id, moods.mood, moods.timestamp, reasons.label, reasons.id, notes.notes
       FROM moods
-      INNER JOIN mood_reasons ON moods.id = mood_reasons.mood_id
-      INNER JOIN reasons ON mood_reasons.reason_id = reasons.id
+      LEFT JOIN mood_reasons ON moods.id = mood_reasons.mood_id
+      LEFT JOIN reasons ON mood_reasons.reason_id = reasons.id
       LEFT JOIN notes ON moods.id = notes.mood_id
-      WHERE moods.id >= ?;
+      WHERE moods.timestamp >= ? ORDER BY moods.timestamp DESC LIMIT 7;
     `
-    const params = [monday.id]
+    const params = [moment().day("Monday").format("YYYY-MM-DD")]
+
     const reasons = await this.repository.databaseLayer.executeSql(sql, params).then(({ rows }) => rows)
+    console.log(reasons)
 
     const weeklyMoodsWithReasons = []
 
-    reasons.forEach(query => {
+    reasons.forEach(entry => {
       const obj = Object.create(null)
-      obj.timestamp = query.timestamp
-      obj.mood_id = query.id
-      obj.mood = query.mood
-      obj.notes = query.notes
+      obj.mood_id = entry.id
+      obj.mood = entry.mood
+      obj.notes = entry.notes
+      obj.date = {
+        day: moment(entry.timestamp).format("ddd"),
+        month: moment(entry.timestamp).format("MMMM"),
+        timestamp: moment(entry.timestamp).format("YYYY-MM-DD")
+      }
       obj.reasons = []
-      obj.reasons.push({ id: query.id, name: query.label })
+      obj.reasons.push({ id: entry.id, name: entry.label })
 
-      if (!weeklyMoodsWithReasons.find(element => element.timestamp == query.timestamp)) {
+      if (!weeklyMoodsWithReasons.find(element => element.date.timestamp == entry.timestamp)) {
         weeklyMoodsWithReasons.push(obj)
       } else {
-        const indexOfX = weeklyMoodsWithReasons.findIndex(element => element.timestamp == query.timestamp)
-        weeklyMoodsWithReasons[indexOfX]['reasons'].push({ id: query.id, name: query.label })
+        const indexOfX = weeklyMoodsWithReasons.findIndex(element => element.date.timestamp == entry.timestamp)
+        weeklyMoodsWithReasons[indexOfX]['reasons'].push({ id: entry.id, name: entry.label })
       }
     });
 
-    console.log(weeklyMoodsWithReasons)
+    // if (weeklyMoodsWithReasons.length < 7) {
+    //   const days_missing = 7 - weeklyMoodsWithReasons.length
+    //   for (let i = 1; i < days_missing; i++) {
+    //     const obj = Object.create(null)
+    //     const previous_day_timestamp = weeklyMoodsWithReasons[weeklyMoodsWithReasons.length - 1].date.timestamp
+    //     const next_day = moment(previous_day_timestamp).add(1, 'days')
 
-    try {
-      return this.query({ columns: 'id, mood, timestamp', limit: 7, page: 1, order: 'id ASC', where: { id_gteq: monday.id } })
-    } catch {
-      return []
-    }
+    //     obj.date = {
+    //       day: next_day.format('ddd'),
+    //       month: next_day.format('MMMM'),
+    //       timestamp: next_day.format('YYYY-MM-DD')
+    //     }
 
+    //     weeklyMoodsWithReasons.push(obj)
+    //   }
+    // }
+
+    return weeklyMoodsWithReasons
   }
 
   static seed() {
-    this.create({ mood: 0.3, timestamp: moment().day("Monday").format('YYYY-MM-DD') })
-    this.create({ mood: 0.5, timestamp: moment().day("Tuesday").format('YYYY-MM-DD') })
+    this.create({ mood: 0.30, timestamp: moment().day("Monday").format('YYYY-MM-DD') })
+    this.create({ mood: 0.50, timestamp: moment().day("Tuesday").format('YYYY-MM-DD') })
     this.create({ mood: 0.72, timestamp: moment().day("Wednesday").format('YYYY-MM-DD') })
     this.create({ mood: 0.22, timestamp: moment().day("Thursday").format('YYYY-MM-DD') })
     this.create({ mood: 0.80, timestamp: moment().day("Friday").format('YYYY-MM-DD') })

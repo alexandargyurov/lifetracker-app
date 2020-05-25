@@ -7,7 +7,7 @@ export default class Moods extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('lifetrackerV1-testing5.db')
+    return async () => SQLite.openDatabase('lifetrackerV1-testing8.db')
   }
 
   static get tableName() {
