@@ -1,14 +1,13 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import styled from 'styled-components/native'
-import { DrawerActions } from '@react-navigation/native';
 
 import moment from "moment";
 
 import Moods from '../models/MoodsModel'
-import MoodsAPI from '../api/Moods'
+import { AppLoading } from 'expo';
 
-import { MoodCardSummary } from '../components/MoodCardSummary'
+import MoodCardSummary from '../components/MoodCardSummary'
 import { ButtonWithIcon } from '../components/patterns/Buttons'
 import { Small, Normal } from '../components/patterns/Texts'
 import Colours from '../components/patterns/Colours'
@@ -17,7 +16,7 @@ import NavigationBalls from '../components/NavigationBalls'
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarDates: {} };
+    this.state = { weekMoods: [], loaded: false };
   }
 
   specificDay(data, timestamp) {
@@ -35,84 +34,119 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.push('Mood')
   }
 
+  moodToColour = (mood) => {
+    if (mood <= 0.1429) {
+      return { colour: "#BC1B05", feeling: "terrible" };
+    } else if (mood <= 0.2857) {
+      return { colour: "#CF4E25", feeling: "bad" };
+    } else if (mood <= 0.4285) {
+      return { colour: "#E19945", feeling: "meh" };
+    } else if (mood <= 0.5714) {
+      return { colour: "#00A8DD", feeling: "okay" };
+    } else if (mood <= 0.7142) {
+      return { colour: "#00D0DD", feeling: "alright" };
+    } else if (mood <= 0.8571) {
+      return { colour: "#00DDB5", feeling: "good" };
+    } else if (mood <= 1) {
+      return { colour: "#00DD66", feeling: "fantastic" };
+    }
+  }
+
+  chartLineStyles(weekday) {
+    try {
+      return { height: (weekday.mood * 100), backgroundColor: this.moodToColour(weekday.mood).colour }
+    } catch {
+      return { height: 0, backgroundColor: 'white' }
+    }
+  }
+
   async componentDidMount() {
-    moods = await Moods.all()
-    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
+    const weekMoods = await Moods.currentWeek()
+    this.setState({ loaded: true, weekMoods: weekMoods })
   }
 
   render() {
-    return (
-      <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <WeekOverview>
-            <Normal bold>This week so far...</Normal>
+    if (this.state.loaded) {
+      return (
+        <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <WeekOverview>
+              <Normal bold>This week so far...</Normal>
 
-            <BarChart>
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '50%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Mon</WeekDayText>
-              </ChartBox>
+              <BarChart>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[0])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Mon</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '70%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Tue</WeekDayText>
-              </ChartBox>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[1])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Tue</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '66%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Wed</WeekDayText>
-              </ChartBox>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[2])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Wed</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '35%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Thu</WeekDayText>
-              </ChartBox>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[3])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Thu</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '57%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Fri</WeekDayText>
-              </ChartBox>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[4])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Fri</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '5%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Sat</WeekDayText>
-              </ChartBox>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[5])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Sat</WeekDayText>
+                </ChartBox>
 
-              <ChartBox>
-                <ChartLineContainer>
-                  <ChartLine style={{ height: '100%', backgroundColor: Colours.green() }} />
-                </ChartLineContainer>
-                <WeekDayText>Sun</WeekDayText>
-              </ChartBox>
-            </BarChart>
+                <ChartBox>
+                  <ChartLineContainer>
+                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[6])} />
+                  </ChartLineContainer>
+                  <WeekDayText>Sun</WeekDayText>
+                </ChartBox>
+              </BarChart>
 
-          </WeekOverview>
+            </WeekOverview>
 
-          <MoodCardSummary onPress={() => this.props.navigation.push('SpecificDay')}></MoodCardSummary>
-          <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
-          <MoodCardSummary onPress={() => DrawerActions.openDrawer()}></MoodCardSummary>
+            {this.state.weekMoods.map((mood, key) => (
+              <MoodCardSummary
+                onPress={() => this.props.navigation.push('SpecificDay')}
+                reasons={mood.reasons}
+                mood={mood}
+                key={key}
+              />
+            ))}
 
-          <ButttonContainer>
-            <ButtonWithIcon title='New entry' faIcon='telegram-plane' faSize={20} onPress={() => this.newEntryPress()} />
-          </ButttonContainer>
+            <ButttonContainer>
+              <ButtonWithIcon title='New entry' faIcon='telegram-plane' faSize={20} onPress={() => this.newEntryPress()} />
+            </ButttonContainer>
 
-          <NavigationBalls first />
+            <NavigationBalls first />
 
-        </ScrollView >
-      </View>
-    )
+          </ScrollView >
+        </View>
+      )
+    } else {
+      return <AppLoading />
+    }
   }
 }
 

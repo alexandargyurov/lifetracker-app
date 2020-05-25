@@ -6,47 +6,58 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Small } from './patterns/Texts'
 import Colours from './patterns/Colours';
 
+import MoodReasons from '../models/MoodReasonsModel';
 
-export function MoodCardSummary(props) {
-  return (
-    <TouchableOpacity onPress={props.onPress}>
-      <Card>
-        <CardLeftBorder>
-          <EmotionBorder />
-        </CardLeftBorder>
+export default class MoodCardSummary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-        <CardHeader>
-          <Small bold>Wednesday 16th</Small>
-          <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} />
-          <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} />
-        </CardHeader>
+  async componentDidMount() {
 
-        <CardReasons>
-          <Image
-            style={{ width: 30, height: 30 }}
-            source={{
-              uri:
-                "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
-                "friends" +
-                ".png?alt=media"
-            }}
-          />
+  }
 
-          <Image
-            style={{ width: 30, height: 30, marginLeft: 12 }}
-            source={{
-              uri:
-                "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
-                "family" +
-                ".png?alt=media"
-            }}
-          />
-        </CardReasons>
-      </Card>
-    </TouchableOpacity>
-  );
+  render() {
+    return (
+      <TouchableOpacity onPress={this.props.onPress}>
+        <Card>
+          <CardLeftBorder>
+            <EmotionBorder />
+          </CardLeftBorder>
+
+          <CardHeader>
+            <Small bold>Wednesday 16th</Small>
+            <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} />
+            <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} />
+          </CardHeader>
+
+          <CardReasons>
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={{
+                uri:
+                  "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
+                  "friends" +
+                  ".png?alt=media"
+              }}
+            />
+
+            <Image
+              style={{ width: 30, height: 30, marginLeft: 12 }}
+              source={{
+                uri:
+                  "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
+                  "family" +
+                  ".png?alt=media"
+              }}
+            />
+          </CardReasons>
+        </Card>
+      </TouchableOpacity>
+    );
+  }
 }
-
 
 
 const Card = styled.View`

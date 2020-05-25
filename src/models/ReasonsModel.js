@@ -8,7 +8,7 @@ export default class Reasons extends BaseModel {
 	}
 
 	static get database() {
-		return async () => SQLite.openDatabase('lifetrackerV1-testing3.db')
+		return async () => SQLite.openDatabase('lifetrackerV1-testing5.db')
 	}
 
 	static get tableName() {
@@ -17,7 +17,7 @@ export default class Reasons extends BaseModel {
 
 	static all() {
 		const options = {
-			columns: 'id, name',
+			columns: 'id, label',
 			order: 'id ASC'
 		}
 
@@ -25,37 +25,37 @@ export default class Reasons extends BaseModel {
 	}
 
 	static async seedDefaultReasons() {
-		const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('lifetrackerV1-testing3.db'), 'reasons')
+		const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('lifetrackerV1-testing5.db'), 'reasons')
 		const reasons = [
-			{ name: 'friends' },
-			{ name: 'family' },
-			{ name: 'walking' },
-			{ name: 'exercise' },
-			{ name: 'travel' },
-			{ name: 'alcohol' },
-			{ name: 'dancing' },
-			{ name: 'work' },
-			{ name: 'colleagues' },
-			{ name: 'movies' },
-			{ name: 'business' },
-			{ name: 'reading' },
-			{ name: 'music' },
-			{ name: 'concert' },
-			{ name: 'driving' },
-			{ name: 'eating-out' },
-			{ name: 'tea' },
-			{ name: 'coffee' },
-			{ name: 'home' },
-			{ name: 'love' },
-			{ name: 'meditation' },
-			{ name: 'video-games' },
-			{ name: 'board-games' },
-			{ name: 'writing' },
-			{ name: 'not-feeling-it' },
-			{ name: 'bored' },
-			{ name: 'tired' },
-			{ name: 'stress' },
-			{ name: 'cannabis' }
+			{ label: 'friends' },
+			{ label: 'family' },
+			{ label: 'walking' },
+			{ label: 'exercise' },
+			{ label: 'travel' },
+			{ label: 'alcohol' },
+			{ label: 'dancing' },
+			{ label: 'work' },
+			{ label: 'colleagues' },
+			{ label: 'movies' },
+			{ label: 'business' },
+			{ label: 'reading' },
+			{ label: 'music' },
+			{ label: 'concert' },
+			{ label: 'driving' },
+			{ label: 'eating-out' },
+			{ label: 'tea' },
+			{ label: 'coffee' },
+			{ label: 'home' },
+			{ label: 'love' },
+			{ label: 'meditation' },
+			{ label: 'video-games' },
+			{ label: 'board-games' },
+			{ label: 'writing' },
+			{ label: 'not-feeling-it' },
+			{ label: 'bored' },
+			{ label: 'tired' },
+			{ label: 'stress' },
+			{ label: 'cannabis' }
 		]
 
 		databaseLayer.bulkInsertOrReplace(reasons)
@@ -64,7 +64,7 @@ export default class Reasons extends BaseModel {
 	static get columnMapping() {
 		return {
 			id: { type: types.INTEGER, primary_key: true },
-			name: { type: types.TEXT, unique: true }
+			label: { type: types.TEXT, unique: true }
 		}
 	}
 }

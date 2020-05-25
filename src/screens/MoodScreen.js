@@ -7,6 +7,8 @@ import { ButtonWithIcon } from '../components/patterns/Buttons'
 import Slider from "@brlja/react-native-slider";
 
 import * as Animatable from 'react-native-animatable';
+import Moods from '../models/MoodsModel';
+import moment from "moment";
 
 export default class MoodScreen extends React.Component {
 	constructor(props) {
@@ -40,7 +42,7 @@ export default class MoodScreen extends React.Component {
 
 	transitionColour(sliderValue) {
 		const colour = Math.round((sliderValue + Number.EPSILON) * 100)
-		this.setState({ backgroundColour: this.state.gradient[colour], feelingText: this.moodToColour(sliderValue).feeling, previousText: this.moodToColour(sliderValue).feeling })
+		this.setState({ sliderValue: sliderValue, backgroundColour: this.state.gradient[colour], feelingText: this.moodToColour(sliderValue).feeling, previousText: this.moodToColour(sliderValue).feeling })
 		this.props.navigation.setOptions({
 			headerStyle: {
 				backgroundColor: this.state.gradient[colour],
@@ -52,6 +54,11 @@ export default class MoodScreen extends React.Component {
 		if (this.state.previousText !== this.moodToColour(sliderValue).feeling) {
 			this.fadeIn()
 		}
+	}
+
+	async submitMood() {
+		mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(Date.now()).format('YYYY-MM-DD') })
+		this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour, mood_id: mood.id })
 	}
 
 	componentDidMount() {
@@ -91,7 +98,7 @@ export default class MoodScreen extends React.Component {
 					/>
 
 					<ButtonContainer>
-						<ButtonWithIcon onPress={() => this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour })} title={'Next'} faIcon={'chevron-right'} faSize={18} />
+						<ButtonWithIcon onPress={() => this.submitMood()} title={'Next'} faIcon={'chevron-right'} faSize={18} />
 					</ButtonContainer>
 				</Container>
 			</View>

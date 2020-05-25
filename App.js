@@ -21,6 +21,8 @@ import AccountScreen from './src/screens/AccountScreen';
 import ExtrasScreen from './src/screens/ExtrasScreen';
 import Colours from './src/components/patterns/Colours'
 
+import Reasons from './src/models/ReasonsModel'
+
 import {
   Roboto_300Light,
   Roboto_400Regular,
@@ -92,6 +94,7 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true })
 
     const userExists = await API.userExists()
+
     if (!userExists) {
       API.initDatabase()
       API.updateLastActive()

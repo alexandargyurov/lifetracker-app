@@ -7,7 +7,7 @@ export default class Notes extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('lifetrackerV1-testing3.db')
+    return async () => SQLite.openDatabase('lifetrackerV1-testing5.db')
   }
 
   static get tableName() {
@@ -16,7 +16,7 @@ export default class Notes extends BaseModel {
 
   static get columnMapping() {
     return {
-      id: { type: types.INTEGER, primary_key: true }, 
+      id: { type: types.INTEGER, primary_key: true },
       mood_id: { type: types.INTEGER },
       notes: { type: types.TEXT }
     }

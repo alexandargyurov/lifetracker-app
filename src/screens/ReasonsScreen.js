@@ -7,11 +7,13 @@ import styled from 'styled-components/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ButtonOnlyIcon } from '../components/patterns/Buttons'
 import Colours from '../components/patterns/Colours'
+import MoodReasons from '../models/MoodReasonsModel';
 
 export default class ReasonsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { reasons: [] };
+    this.addReason = this.addReason.bind(this);
   }
 
   async componentDidMount() {
@@ -28,6 +30,10 @@ export default class ReasonsScreen extends React.Component {
     })
   }
 
+  addReason(reason_id) {
+    MoodReasons.create({ mood_id: this.props.route.params.mood_id, reason_id: reason_id })
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -35,9 +41,9 @@ export default class ReasonsScreen extends React.Component {
           <Container>
             {this.state.reasons.map((reason, key) => (
               <ReasonIcon
-                reason={reason.name}
+                reason={reason.label}
                 reasonId={reason.id}
-                reasonCallback={(v) => console.log(v)}
+                reasonCallback={this.addReason}
                 viewOnly={false}
                 selected={false}
                 backgroundColor={this.props.route.params.backgroundColor}
