@@ -5,14 +5,15 @@ import Colours from '../components/patterns/Colours'
 
 import { Divider } from 'react-native-paper';
 
-import moment from "moment";
-
-import Moods from '../models/MoodsModel'
-import MoodsAPI from '../api/Moods'
+import * as WebBrowser from 'expo-web-browser';
 
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+
+const feedback_link = "https://docs.google.com/forms/d/e/1FAIpQLScdIyRF2p-iA59fky9YxQvX_l1jLZea0Scji6GOPkrHH7cU-g/viewform"
+const bug_link = "https://docs.google.com/forms/d/e/1FAIpQLSeKAXaZ5_98nh13m9bT3WvMmfABqvnj4zrAf7TnDYHLwabQnw/viewform"
+const github_link = "https://github.com/alexandargyurov/lifetracker-app"
 
 export default class AccountScreen extends React.Component {
   constructor(props) {
@@ -64,30 +65,35 @@ export default class AccountScreen extends React.Component {
         </TouchableOpacity>
 
         <TouchableOpacity style={{ width: '70%', padding: 20 }}>
-          <SubHeader>Backup Data</SubHeader>
-          <Description>Download and save your data</Description>
+          <SubHeader>Export Data</SubHeader>
+          <Description>Copy and save your data</Description>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={{ width: '70%', padding: 20 }}>
+          <SubHeader>Import Data</SubHeader>
+          <Description>Import previously exported data</Description>
         </TouchableOpacity>
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
-        <TouchableOpacity style={{ width: '80%', padding: 20 }}>
+        <TouchableOpacity style={{ width: '80%', padding: 20 }} onPress={() => WebBrowser.openBrowserAsync(feedback_link)}>
           <SubHeader>Feedback</SubHeader>
           <Description>Send feedback on any aspects of the app</Description>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{ width: '80%', padding: 20 }}>
+        <TouchableOpacity style={{ width: '80%', padding: 20 }} onPress={() => WebBrowser.openBrowserAsync(bug_link)}>
           <SubHeader>Report a bug</SubHeader>
           <Description>Any issues? Please submit a bug report.</Description>
         </TouchableOpacity>
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
-        <TouchableOpacity style={{ width: '80%', padding: 20 }}>
+        <TouchableOpacity style={{ width: '80%', padding: 20 }} onPress={() => WebBrowser.openBrowserAsync(github_link)}>
           <TinyText>Version: v1.0.0</TinyText>
           <TinyText>License: GPL v3.0</TinyText>
         </TouchableOpacity>
 
-      </View>
+      </View >
 
 
     )
