@@ -7,7 +7,7 @@ import moment from "moment";
 import Moods from '../models/MoodsModel'
 import { AppLoading } from 'expo';
 
-import MoodCardSummary from '../components/MoodCardSummary'
+import { MoodCardSummary } from '../components/MoodCardSummary'
 import { ButtonWithIcon } from '../components/patterns/Buttons'
 import { Small, Normal } from '../components/patterns/Texts'
 import Colours from '../components/patterns/Colours'
@@ -52,7 +52,13 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  chartLineStyles(entry) {
+  findDay(day) {
+
+  }
+
+  chartLineStyles(chartDay) {
+    const entry = this.state.weekMoods.find(element => { return element.date.day == chartDay });
+
     try {
       return { height: `${(entry.mood * 100)}%`, backgroundColor: this.moodToColour(entry.mood).colour }
     } catch {
@@ -63,7 +69,6 @@ export default class HomeScreen extends React.Component {
   async componentDidMount() {
     const weekMoods = await Moods.currentWeek()
     this.setState({ loaded: true, weekMoods: weekMoods })
-    console.log(weekMoods)
   }
 
   render() {
@@ -77,49 +82,49 @@ export default class HomeScreen extends React.Component {
               <BarChart>
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[0])} />
+                    <ChartLine style={this.chartLineStyles('mon')} />
                   </ChartLineContainer>
                   <WeekDayText>Mon</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[1])} />
+                    <ChartLine style={this.chartLineStyles('tue')} />
                   </ChartLineContainer>
                   <WeekDayText>Tue</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[2])} />
+                    <ChartLine style={this.chartLineStyles('wed')} />
                   </ChartLineContainer>
                   <WeekDayText>Wed</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[3])} />
+                    <ChartLine style={this.chartLineStyles('thu')} />
                   </ChartLineContainer>
                   <WeekDayText>Thu</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[4])} />
+                    <ChartLine style={this.chartLineStyles('fri')} />
                   </ChartLineContainer>
                   <WeekDayText>Fri</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[5])} />
+                    <ChartLine style={this.chartLineStyles('sat')} />
                   </ChartLineContainer>
                   <WeekDayText>Sat</WeekDayText>
                 </ChartBox>
 
                 <ChartBox>
                   <ChartLineContainer>
-                    <ChartLine style={this.chartLineStyles(this.state.weekMoods[6])} />
+                    <ChartLine style={this.chartLineStyles('sun')} />
                   </ChartLineContainer>
                   <WeekDayText>Sun</WeekDayText>
                 </ChartBox>
@@ -127,11 +132,13 @@ export default class HomeScreen extends React.Component {
 
             </WeekOverview>
 
-            {this.state.weekMoods.map((mood, key) => (
+            {this.state.weekMoods.map((entry, key) => (
               <MoodCardSummary
                 onPress={() => this.props.navigation.push('SpecificDay')}
-                reasons={mood.reasons}
-                mood={mood}
+                reasons={entry.reasons}
+                timestamp={entry.date.timestamp}
+                moodColour={this.moodToColour(entry.mood).colour}
+                notes={entry.notes}
                 key={key}
               />
             ))}

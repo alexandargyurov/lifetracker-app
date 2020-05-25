@@ -30,9 +30,7 @@ export default class Moods extends BaseModel {
       WHERE moods.timestamp >= ? ORDER BY moods.timestamp DESC LIMIT 7;
     `
     const params = [moment().day("Monday").format("YYYY-MM-DD")]
-
     const reasons = await this.repository.databaseLayer.executeSql(sql, params).then(({ rows }) => rows)
-    console.log(reasons)
 
     const weeklyMoodsWithReasons = []
 
@@ -42,8 +40,8 @@ export default class Moods extends BaseModel {
       obj.mood = entry.mood
       obj.notes = entry.notes
       obj.date = {
-        day: moment(entry.timestamp).format("ddd"),
-        month: moment(entry.timestamp).format("MMMM"),
+        day: moment(entry.timestamp).format("ddd").toLowerCase(),
+        month: moment(entry.timestamp).format("MMMM").toLowerCase(),
         timestamp: moment(entry.timestamp).format("YYYY-MM-DD")
       }
       obj.reasons = []

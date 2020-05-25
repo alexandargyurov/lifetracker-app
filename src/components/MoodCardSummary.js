@@ -6,58 +6,39 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Small } from './patterns/Texts'
 import Colours from './patterns/Colours';
 
-import MoodReasons from '../models/MoodReasonsModel';
+export function MoodCardSummary(props) {
+  return (
+    <TouchableOpacity onPress={props.onPress}>
+      <Card>
+        <CardLeftBorder>
+          <EmotionBorder borderColour={props.moodColour} />
+        </CardLeftBorder>
 
-export default class MoodCardSummary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+        <CardHeader>
+          <Small bold>{props.timestamp}</Small>
+          {props.note ? <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} /> : null}
+          {/* <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} /> */}
+        </CardHeader>
 
-  async componentDidMount() {
-
-  }
-
-  render() {
-    return (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <Card>
-          <CardLeftBorder>
-            <EmotionBorder />
-          </CardLeftBorder>
-
-          <CardHeader>
-            <Small bold>Wednesday 16th</Small>
-            <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} />
-            <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} />
-          </CardHeader>
-
-          <CardReasons>
+        <CardReasons>
+          {props.reasons.map((reason, key) => (
             <Image
               style={{ width: 30, height: 30 }}
+              key={key}
               source={{
                 uri:
                   "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
-                  "friends" +
+                  reason.name +
                   ".png?alt=media"
               }}
             />
-
-            <Image
-              style={{ width: 30, height: 30, marginLeft: 12 }}
-              source={{
-                uri:
-                  "https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/" +
-                  "family" +
-                  ".png?alt=media"
-              }}
-            />
-          </CardReasons>
-        </Card>
-      </TouchableOpacity>
-    );
-  }
+          ))}
+        </CardReasons>
+      </Card>
+    </TouchableOpacity>
+  );
 }
+
 
 
 const Card = styled.View`
@@ -87,7 +68,7 @@ const CardLeftBorder = styled.View`
 `
 
 const EmotionBorder = styled.View`
-  background-color: ${Colours.green()};
+  background-color: ${props => props.borderColour};
   border-radius: 3px;
   width: 6px;
   height: 100%;
