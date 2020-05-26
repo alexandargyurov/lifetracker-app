@@ -16,8 +16,6 @@ export default class API {
 		await Notes.createTable()
 		await Photos.createTable()
 		console.log('CREATING DB DONE\n')
-
-		await Reasons.seedDefaultReasons()
 	}
 
 	static mergeDatabases = async () => {
@@ -29,6 +27,7 @@ export default class API {
 		await legacyDB.mergeMoodsTable();
 		await legacyDB.mergeMoodReasonsTable();
 		await legacyDB.mergeExtrasTable();
+		await legacyDB.mergeReasonsTable();
 		console.log('MERGING LEGACY DB DONE\n')
 
 	}

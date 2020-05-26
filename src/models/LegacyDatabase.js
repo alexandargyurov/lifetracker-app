@@ -37,7 +37,7 @@ export default class LegacyDatabase {
       tx.executeSql(
         `SELECT * FROM mood_reasons;`,
         [],
-        (_, { rows: { _array } }) => this.updateMoodReasons(_array)
+        (_, { rows: { _array } }) => this.updateMoodReasonsTable(_array)
       );
     });
   }
@@ -71,6 +71,29 @@ export default class LegacyDatabase {
         tx.executeSql(
           `INSERT INTO extras (mood_id, notes) VALUES (?, ?);`,
           [element.mood_id, element.notes]
+        );
+      });
+    });
+  }
+
+  // REASONS //
+
+  async mergeReasonsTable() {
+    this.legacyDB.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM reasons;`,
+        [],
+        (_, { rows: { _array } }) => this.updateReasonsTable(_array)
+      );
+    });
+  }
+
+  async updateReasonsTable(legacyReasons) {
+    legacyReasons.forEach(element => {
+      this.currentDB.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO reasons (label) VALUES (?);`,
+          [element.label]
         );
       });
     });

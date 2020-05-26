@@ -13,7 +13,7 @@ import API from './src/api/Api';
 
 import HomeScreen from './src/screens/HomeScreen'
 import IntroductionScreen from './src/screens/IntroductionScreen'
-import SpecificDaySreen from './src/screens/SpecificDayScreen';
+import SpecificDayScreen from './src/screens/SpecificDayScreen';
 import MoodScreen from './src/screens/MoodScreen';
 import ReasonsSelectorScreen from './src/screens/ReasonsScreen';
 import StatisticsScreen from './src/screens/StatisticsScreen';
@@ -117,7 +117,7 @@ export default class App extends React.Component {
             <Stack.Screen name="Mood" component={MoodScreen} options={{ title: "How did today go?" }} />
             <Stack.Screen name="Extra" component={ExtrasScreen} options={{ title: "Add anything else?" }} initialParams={{ backgroundColor: Colours.purple() }} />
             <Stack.Screen name="Reasons" component={ReasonsSelectorScreen} options={{ title: "Why's that?" }} />
-            <Stack.Screen name="SpecificDay" component={SpecificDaySreen} options={({ navigation }) => ({ headerRight: () => editButton(navigation) })} />
+            <Stack.Screen name="SpecificDay" component={SpecificDayScreen} options={({ navigation }) => ({ title: 'Summary', headerRight: () => editButton(navigation) })} />
             <Stack.Screen name="Introduction" component={IntroductionScreen} />
           </Stack.Navigator>
         </NavigationContainer>

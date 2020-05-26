@@ -1,10 +1,10 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styled from 'styled-components/native'
-
+import { Divider } from 'react-native-paper';
 
 import { Feather } from "@expo/vector-icons";
-import { SubHeader } from '../components/patterns/Texts';
+import { SubHeader, Normal, Small } from '../components/patterns/Texts';
 
 import Colours from '../components/patterns/Colours'
 
@@ -13,20 +13,13 @@ import ReasonsIcon from "../components/ReasonIcon";
 export default class SpecificDayScreen extends React.Component {
 	constructor(props) {
 		super(props);
-		this.database = global.db;
 		this.state = {
-			reasons: [],
 			mood: {},
 			editable: false,
-			showNoteSection: false,
-			showPhotosSection: false,
 			note: ""
 		};
 		this.editReasons = this.editReasons.bind(this);
 		this.removeReason = this.removeReason.bind(this);
-		this.toggleEdit = this.toggleEdit.bind(this);
-		this.renderNoteSection = this.renderNoteSection.bind(this);
-		this.updateReasons = this.updateReasons.bind(this);
 	}
 
 	editReasons() {
@@ -56,23 +49,9 @@ export default class SpecificDayScreen extends React.Component {
 		});
 	};
 
-	componentDidMount() {
-
-	}
-
-	renderReasons(endState) {
-
-	}
-
-	renderNoteSection() {
-		this.setState({ showNoteSection: true, showPhotosSection: true });
-	}
-
 	render() {
 		const { navigation } = this.props;
 		let addButton;
-		let noteSection;
-		let photos;
 		let editButton = (
 			<TouchableOpacity onPress={this.toggleEdit} style={{ width: "15%" }}>
 				<Feather
@@ -97,27 +76,26 @@ export default class SpecificDayScreen extends React.Component {
 		return (
 			<View style={{ flex: 1, backgroundColor: Colours.purple() }}>
 				<ScrollView>
-					<SubHeader lightColour center>
+					<SubHeader lightColour center bold>
 						You were feeling
             <SubHeader bold style={{ color: 'green' }}>
 							{" "}{"great"}{" "}
 						</SubHeader>
-						<SubHeader lightColour>
+						<SubHeader lightColour bold>
 							on {"\n"}
 							{"Wednesday 16th May"}.
             </SubHeader>
 					</SubHeader>
 
 					<Reasons>
-						{this.state.reasons.map((reason, key) => (
+						{this.props.route.params.entry.reasons.map((reason, key) => (
 							<ReasonsIcon
-								reason={reason.label}
-								reasonId={reason.reason_id}
+								reason={reason.name}
+								reasonId={reason.id}
 								reasonCallback={this.removeReason}
 								viewOnly={true}
 								editable={this.state.editable}
 								position={key}
-								reasonsLength={this.state.reasons.length}
 								buttonCallback={this.renderNoteSection}
 								key={key}
 							/>
@@ -125,8 +103,12 @@ export default class SpecificDayScreen extends React.Component {
 						{addButton}
 					</Reasons>
 
-					{/* {noteSection} */}
-					{/* {photos} */}
+					<View>
+						<Normal lightColour bold>Notes:</Normal>
+						<Small lightColour numberOfLines={10}>{this.props.route.params.entry.notes}</Small>
+					</View>
+
+
 				</ScrollView>
 			</View>
 		);

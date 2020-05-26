@@ -130,7 +130,7 @@ export default class HomeScreen extends React.Component {
 
             {this.state.weekMoods.map((entry, key) => (
               <MoodCardSummary
-                onPress={() => this.props.navigation.push('SpecificDay')}
+                onPress={() => this.props.navigation.push('SpecificDay', { entry: entry })}
                 reasons={entry.reasons}
                 timestamp={entry.date.timestamp}
                 moodColour={this.moodToColour(entry.mood).colour}
