@@ -97,6 +97,7 @@ export default class App extends React.Component {
     // API.mergeDatabases()
 
     if (!userExists) {
+      API.resetDB()
       API.initDatabase()
 
       API.updateLastActive()

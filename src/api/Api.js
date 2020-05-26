@@ -9,25 +9,40 @@ import LegacyDatabase from '../models/LegacyDatabase'
 
 export default class API {
 	static initDatabase = async () => {
+		console.log('CREATING DB')
+		await Moods.createTable()
+		await Reasons.createTable()
+		await MoodsReasons.createTable()
+		await Notes.createTable()
+		await Photos.createTable()
+		console.log('CREATING DB DONE\n')
+
+		await Reasons.seedDefaultReasons()
+	}
+
+	static mergeDatabases = async () => {
+		await this.resetDB()
+		await this.initDatabase()
+
+		console.log('MERGING LEGACY DB')
+		let legacyDB = new LegacyDatabase()
+		await legacyDB.mergeMoodsTable();
+		await legacyDB.mergeMoodReasonsTable();
+		await legacyDB.mergeExtrasTable();
+		console.log('MERGING LEGACY DB DONE\n')
+
+	}
+
+	static resetDB = async () => {
 		console.log('RESETTING DB')
 		await Moods.dropTable()
 		await Reasons.dropTable()
 		await MoodsReasons.dropTable()
 		await Notes.dropTable()
 		await Photos.dropTable()
-
-		await Moods.createTable()
-		await Reasons.createTable()
-		await MoodsReasons.createTable()
-		await Notes.createTable()
-		await Photos.createTable()
-
-		await Reasons.seedDefaultReasons()
+		console.log('RESETTING DB DONE\n')
 	}
 
-	static mergeDatabases = async () => {
-		const t = await LegacyDatabase.mergeLegacy()
-	}
 
 	static userExists = async () => {
 		try {

@@ -1,13 +1,79 @@
-import { SQLite } from 'expo-sqlite'
-import DatabaseLayer from 'expo-sqlite-orm/src/DatabaseLayer'
+import * as SQLite from 'expo-sqlite';
+import * as FileSystem from 'expo-file-system';
 
 export default class LegacyDatabase {
-
-
-  static async mergeLegacy() {
-    const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('database.db'))
-    databaseLayer.executeSql('SELECT * from moods;').then(response => {
-      console.log(response)
-    })
+  constructor() {
+    this.legacyDB = SQLite.openDatabase('obmmy.db');
+    this.currentDB = SQLite.openDatabase('databasev100.db');
   }
+
+  // MOODS //
+
+  async mergeMoodsTable() {
+    this.legacyDB.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM moods;`,
+        [],
+        (_, { rows: { _array } }) => this.updateMoodsTable(_array)
+      );
+    });
+  }
+
+  async updateMoodsTable(legacyMoods) {
+    legacyMoods.forEach(element => {
+      this.currentDB.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO moods (mood, timestamp) VALUES (?, ?);`,
+          [element.mood, element.timestamp]
+        );
+      });
+    });
+  }
+
+  // MOOD REASONS //
+
+  async mergeMoodReasonsTable() {
+    this.legacyDB.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM mood_reasons;`,
+        [],
+        (_, { rows: { _array } }) => this.updateMoodReasons(_array)
+      );
+    });
+  }
+
+  async updateMoodReasonsTable(legacyMoodReasons) {
+    legacyMoodReasons.forEach(element => {
+      this.currentDB.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO mood_reasons (mood_id, reason_id) VALUES (?, ?);`,
+          [element.mood_id, element.reason_id]
+        );
+      });
+    });
+  }
+
+  // EXTRAS //
+
+  async mergeExtrasTable() {
+    this.legacyDB.transaction(tx => {
+      tx.executeSql(
+        `SELECT * FROM extras;`,
+        [],
+        (_, { rows: { _array } }) => this.updateMoodReasons(_array)
+      );
+    });
+  }
+
+  async updateMoodReasons(legacyExtras) {
+    legacyExtras.forEach(element => {
+      this.currentDB.transaction(tx => {
+        tx.executeSql(
+          `INSERT INTO extras (mood_id, notes) VALUES (?, ?);`,
+          [element.mood_id, element.notes]
+        );
+      });
+    });
+  }
+
 }
