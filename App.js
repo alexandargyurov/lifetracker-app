@@ -94,9 +94,11 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true })
 
     const userExists = await API.userExists()
+    // API.mergeDatabases()
 
     if (!userExists) {
       API.initDatabase()
+
       API.updateLastActive()
     }
   }

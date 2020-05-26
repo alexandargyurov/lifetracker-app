@@ -52,10 +52,6 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  findDay(day) {
-
-  }
-
   chartLineStyles(chartDay) {
     const entry = this.state.weekMoods.find(element => { return element.date.day == chartDay });
 

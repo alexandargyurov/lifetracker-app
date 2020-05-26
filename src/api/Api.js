@@ -5,6 +5,7 @@ import Reasons from '../models/ReasonsModel'
 import MoodsReasons from '../models/MoodReasonsModel'
 import Notes from '../models/NotesModel'
 import Photos from '../models/PhotosModel'
+import LegacyDatabase from '../models/LegacyDatabase'
 
 export default class API {
 	static initDatabase = async () => {
@@ -20,10 +21,14 @@ export default class API {
 		await MoodsReasons.createTable()
 		await Notes.createTable()
 		await Photos.createTable()
-	
+
 		await Reasons.seedDefaultReasons()
 	}
-		
+
+	static mergeDatabases = async () => {
+		const t = await LegacyDatabase.mergeLegacy()
+	}
+
 	static userExists = async () => {
 		try {
 			const value = await AsyncStorage.getItem('@User:last_active');
@@ -43,7 +48,7 @@ export default class API {
 		} catch (error) {
 			return error
 		}
-	}	
+	}
 }
 
 

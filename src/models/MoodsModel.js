@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 import { BaseModel, types } from 'expo-sqlite-orm'
 import moment from "moment";
-import MoodReasons from './MoodReasonsModel'
+import * as FileSystem from 'expo-file-system';
 
 export default class Moods extends BaseModel {
   constructor(obj) {
@@ -9,7 +9,7 @@ export default class Moods extends BaseModel {
   }
 
   static get database() {
-    return async () => SQLite.openDatabase('lifetrackerV1-testing8.db')
+    return async () => SQLite.openDatabase('databasev100.db')
   }
 
   static get tableName() {
@@ -22,11 +22,11 @@ export default class Moods extends BaseModel {
 
   static async currentWeek() {
     const sql = `
-      SELECT moods.id, moods.mood, moods.timestamp, reasons.label, reasons.id, notes.notes
+      SELECT moods.id, moods.mood, moods.timestamp, reasons.label, reasons.id, extras.notes
       FROM moods
       LEFT JOIN mood_reasons ON moods.id = mood_reasons.mood_id
       LEFT JOIN reasons ON mood_reasons.reason_id = reasons.id
-      LEFT JOIN notes ON moods.id = notes.mood_id
+      LEFT JOIN extras ON moods.id = extras.mood_id
       WHERE moods.timestamp >= ? ORDER BY moods.timestamp DESC LIMIT 7;
     `
     const params = [moment().day("Monday").format("YYYY-MM-DD")]
@@ -54,23 +54,6 @@ export default class Moods extends BaseModel {
         weeklyMoodsWithReasons[indexOfX]['reasons'].push({ id: entry.id, name: entry.label })
       }
     });
-
-    // if (weeklyMoodsWithReasons.length < 7) {
-    //   const days_missing = 7 - weeklyMoodsWithReasons.length
-    //   for (let i = 1; i < days_missing; i++) {
-    //     const obj = Object.create(null)
-    //     const previous_day_timestamp = weeklyMoodsWithReasons[weeklyMoodsWithReasons.length - 1].date.timestamp
-    //     const next_day = moment(previous_day_timestamp).add(1, 'days')
-
-    //     obj.date = {
-    //       day: next_day.format('ddd'),
-    //       month: next_day.format('MMMM'),
-    //       timestamp: next_day.format('YYYY-MM-DD')
-    //     }
-
-    //     weeklyMoodsWithReasons.push(obj)
-    //   }
-    // }
 
     return weeklyMoodsWithReasons
   }

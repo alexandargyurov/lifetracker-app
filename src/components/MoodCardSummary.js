@@ -3,6 +3,8 @@ import { TouchableOpacity, Image } from 'react-native';
 import styled from 'styled-components/native'
 import { FontAwesome5 } from '@expo/vector-icons';
 
+import moment from "moment";
+
 import { Small } from './patterns/Texts'
 import Colours from './patterns/Colours';
 
@@ -15,7 +17,7 @@ export function MoodCardSummary(props) {
         </CardLeftBorder>
 
         <CardHeader>
-          <Small bold>{props.timestamp}</Small>
+          <Small bold>{moment(props.timestamp).format("dddd Do")}</Small>
           {props.note ? <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} /> : null}
           {/* <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} /> */}
         </CardHeader>
