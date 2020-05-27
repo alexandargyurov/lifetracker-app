@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 import { BaseModel, types } from 'expo-sqlite-orm'
 import moment from "moment";
-import * as FileSystem from 'expo-file-system';
+import API from '../api/Api'
 
 export default class Moods extends BaseModel {
   constructor(obj) {
@@ -36,8 +36,13 @@ export default class Moods extends BaseModel {
 
     reasons.forEach(entry => {
       const obj = Object.create(null)
+      mood = API.valueToMood(entry.mood)
       obj.mood_id = entry.id
-      obj.mood = entry.mood
+      obj.mood = {
+        value: entry.mood,
+        feeling: mood.feeling,
+        colour: mood.colour
+      }
       obj.notes = entry.notes
       obj.date = {
         day: moment(entry.timestamp).format("ddd").toLowerCase(),

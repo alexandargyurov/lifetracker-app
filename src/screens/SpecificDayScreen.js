@@ -1,7 +1,6 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styled from 'styled-components/native'
-import { Divider } from 'react-native-paper';
 
 import { Feather } from "@expo/vector-icons";
 import { SubHeader, Normal, Small } from '../components/patterns/Texts';
@@ -76,10 +75,10 @@ export default class SpecificDayScreen extends React.Component {
 		return (
 			<View style={{ flex: 1, backgroundColor: Colours.purple() }}>
 				<ScrollView>
-					<SubHeader lightColour center bold>
+					<SubHeader lightColour center bold style={{ marginTop: 24 }}>
 						You were feeling
-            <SubHeader bold style={{ color: 'green' }}>
-							{" "}{"great"}{" "}
+            <SubHeader bold style={{ color: this.props.route.params.entry.mood.colour }}>
+							{" "}{this.props.route.params.entry.mood.feeling}{" "}
 						</SubHeader>
 						<SubHeader lightColour bold>
 							on {"\n"}
@@ -103,9 +102,9 @@ export default class SpecificDayScreen extends React.Component {
 						{addButton}
 					</Reasons>
 
-					<View>
-						<Normal lightColour bold>Notes:</Normal>
-						<Small lightColour numberOfLines={10}>{this.props.route.params.entry.notes}</Small>
+					<View style={{ margin: 24 }}>
+						<Normal lightColour bold style={{ marginBottom: 8 }}>Notes:</Normal>
+						<Small lightColour>{this.props.route.params.entry.notes}</Small>
 					</View>
 
 
@@ -118,9 +117,9 @@ export default class SpecificDayScreen extends React.Component {
 const Reasons = styled.View`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  padding-left: 10px;
-  padding-right: 10px;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: 12px;
 `;
 
 const AddButton = styled.View`

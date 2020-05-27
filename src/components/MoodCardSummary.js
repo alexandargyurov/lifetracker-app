@@ -18,14 +18,14 @@ export function MoodCardSummary(props) {
 
         <CardHeader>
           <Small bold>{moment(props.timestamp).format("dddd Do")}</Small>
-          {props.note ? <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} /> : null}
+          {props.notes ? <FontAwesome5 name="book" size={16} solid color="#585A79" style={{ marginLeft: 10, marginTop: 2 }} /> : null}
           {/* <FontAwesome5 name="star" size={16} solid color="#585A79" style={{ marginLeft: 8, marginTop: 2 }} /> */}
         </CardHeader>
 
         <CardReasons>
           {props.reasons.map((reason, key) => (
             <Image
-              style={{ width: 30, height: 30 }}
+              style={{ width: 30, height: 30, marginRight: 12 }}
               key={key}
               source={{
                 uri:

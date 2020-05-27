@@ -10,6 +10,8 @@ import * as Animatable from 'react-native-animatable';
 import Moods from '../models/MoodsModel';
 import moment from "moment";
 
+import API from '../api/Api'
+
 export default class MoodScreen extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,27 +24,9 @@ export default class MoodScreen extends React.Component {
 		};
 	}
 
-	moodToColour = (mood) => {
-		if (mood <= 0.1429) {
-			return { colour: "#BC1B05", feeling: "terrible" };
-		} else if (mood <= 0.2857) {
-			return { colour: "#CF4E25", feeling: "bad" };
-		} else if (mood <= 0.4285) {
-			return { colour: "#E19945", feeling: "meh" };
-		} else if (mood <= 0.5714) {
-			return { colour: "#00A8DD", feeling: "okay" };
-		} else if (mood <= 0.7142) {
-			return { colour: "#00D0DD", feeling: "alright" };
-		} else if (mood <= 0.8571) {
-			return { colour: "#00DDB5", feeling: "good" };
-		} else if (mood <= 1) {
-			return { colour: "#00DD66", feeling: "fantastic" };
-		}
-	}
-
 	transitionColour(sliderValue) {
 		const colour = Math.round((sliderValue + Number.EPSILON) * 100)
-		this.setState({ sliderValue: sliderValue, backgroundColour: this.state.gradient[colour], feelingText: this.moodToColour(sliderValue).feeling, previousText: this.moodToColour(sliderValue).feeling })
+		this.setState({ sliderValue: sliderValue, backgroundColour: this.state.gradient[colour], feelingText: API.valueToMood(sliderValue).feeling, previousText: API.valueToMood(sliderValue).feeling })
 		this.props.navigation.setOptions({
 			headerStyle: {
 				backgroundColor: this.state.gradient[colour],
@@ -51,7 +35,7 @@ export default class MoodScreen extends React.Component {
 				elevation: 0
 			}
 		})
-		if (this.state.previousText !== this.moodToColour(sliderValue).feeling) {
+		if (this.state.previousText !== API.valueToMood(sliderValue).feeling) {
 			this.fadeIn()
 		}
 	}

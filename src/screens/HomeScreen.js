@@ -13,6 +13,7 @@ import { Small, Normal } from '../components/patterns/Texts'
 import Colours from '../components/patterns/Colours'
 import NavigationBalls from '../components/NavigationBalls'
 
+
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -34,29 +35,13 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.push('Mood')
   }
 
-  moodToColour = (mood) => {
-    if (mood <= 0.1429) {
-      return { colour: "#BC1B05", feeling: "terrible" };
-    } else if (mood <= 0.2857) {
-      return { colour: "#CF4E25", feeling: "bad" };
-    } else if (mood <= 0.4285) {
-      return { colour: "#E19945", feeling: "meh" };
-    } else if (mood <= 0.5714) {
-      return { colour: "#00A8DD", feeling: "okay" };
-    } else if (mood <= 0.7142) {
-      return { colour: "#00D0DD", feeling: "alright" };
-    } else if (mood <= 0.8571) {
-      return { colour: "#00DDB5", feeling: "good" };
-    } else if (mood <= 1) {
-      return { colour: "#00DD66", feeling: "fantastic" };
-    }
-  }
+
 
   chartLineStyles(chartDay) {
     const entry = this.state.weekMoods.find(element => { return element.date.day == chartDay });
 
     try {
-      return { height: `${(entry.mood * 100)}%`, backgroundColor: this.moodToColour(entry.mood).colour }
+      return { height: `${(entry.mood.value * 100)}%`, backgroundColor: entry.mood.colour }
     } catch {
       return { height: `50%`, backgroundColor: '#E7E7E7' }
     }
@@ -65,6 +50,7 @@ export default class HomeScreen extends React.Component {
   async componentDidMount() {
     const weekMoods = await Moods.currentWeek()
     this.setState({ loaded: true, weekMoods: weekMoods })
+    console.log(weekMoods)
   }
 
   render() {
@@ -133,7 +119,8 @@ export default class HomeScreen extends React.Component {
                 onPress={() => this.props.navigation.push('SpecificDay', { entry: entry })}
                 reasons={entry.reasons}
                 timestamp={entry.date.timestamp}
-                moodColour={this.moodToColour(entry.mood).colour}
+                moodColour={entry.mood.colour}
+                feeling={entry.mood.feeling}
                 notes={entry.notes}
                 key={key}
               />
