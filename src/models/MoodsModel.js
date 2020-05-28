@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite'
 import { BaseModel, types } from 'expo-sqlite-orm'
 import moment from "moment";
-import API from '../api/Api'
+import MoodsAPI from '../api/MoodsApi'
 
 export default class Moods extends BaseModel {
   constructor(obj) {
@@ -16,13 +16,39 @@ export default class Moods extends BaseModel {
     return 'moods'
   }
 
-  static all() {
-    return this.query({ columns: 'id, mood, timestamp' })
+  static async currentYear() {
+    const sql = `
+      SELECT moods.id, moods.mood, moods.timestamp, extras.notes FROM moods
+      LEFT JOIN extras ON moods.id = extras.mood_id
+      WHERE moods.timestamp >= ? ORDER BY moods.timestamp;
+    `
+    const params = [moment().day("Monday").subtract(1, 'years').format("YYYY-MM-DD")]
+    const entries = await this.repository.databaseLayer.executeSql(sql, params).then(({ rows }) => rows)
+
+    const currentYear = []
+
+    entries.forEach(entry => {
+      const obj = Object.create(null)
+      mood = MoodsAPI.valueToMood(entry.mood)
+      obj.mood = {
+        id: entry.id,
+        value: entry.mood,
+        feeling: mood.feeling,
+        colour: mood.colour
+      }
+      obj.notes = entry.notes
+      obj.timestamp = entry.timestamp
+
+      currentYear.push(obj)
+    })
+
+    return currentYear
+
   }
 
   static async currentWeek() {
     const sql = `
-      SELECT moods.id, moods.mood, moods.timestamp, reasons.label, reasons.id, extras.notes
+      SELECT moods.id AS mood_id, moods.mood, moods.timestamp, reasons.label, reasons.id AS reason_id, extras.notes
       FROM moods
       LEFT JOIN mood_reasons ON moods.id = mood_reasons.mood_id
       LEFT JOIN reasons ON mood_reasons.reason_id = reasons.id
@@ -36,9 +62,9 @@ export default class Moods extends BaseModel {
 
     reasons.forEach(entry => {
       const obj = Object.create(null)
-      mood = API.valueToMood(entry.mood)
-      obj.mood_id = entry.id
+      mood = MoodsAPI.valueToMood(entry.mood)
       obj.mood = {
+        id: entry.mood_id,
         value: entry.mood,
         feeling: mood.feeling,
         colour: mood.colour
@@ -50,13 +76,13 @@ export default class Moods extends BaseModel {
         timestamp: moment(entry.timestamp).format("YYYY-MM-DD")
       }
       obj.reasons = []
-      obj.reasons.push({ id: entry.id, name: entry.label })
+      obj.reasons.push({ id: entry.reason_id, name: entry.label })
 
       if (!weeklyMoodsWithReasons.find(element => element.date.timestamp == entry.timestamp)) {
         weeklyMoodsWithReasons.push(obj)
       } else {
         const indexOfX = weeklyMoodsWithReasons.findIndex(element => element.date.timestamp == entry.timestamp)
-        weeklyMoodsWithReasons[indexOfX]['reasons'].push({ id: entry.id, name: entry.label })
+        weeklyMoodsWithReasons[indexOfX]['reasons'].push({ id: entry.reason_id, name: entry.label })
       }
     });
 

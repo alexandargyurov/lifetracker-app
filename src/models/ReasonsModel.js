@@ -24,6 +24,18 @@ export default class Reasons extends BaseModel {
 		return this.query(options)
 	}
 
+	static async getReasonsByMoodId(mood_id) {
+		const sql = `
+			SELECT reasons.id, reasons.label as name FROM reasons 
+			JOIN mood_reasons ON reasons.id = mood_reasons.reason_id 
+			WHERE mood_reasons.mood_id = ?;
+		`
+		const params = [mood_id]
+		const entries = await this.repository.databaseLayer.executeSql(sql, params).then(({ rows }) => rows)
+
+		return entries
+	}
+
 	static async seedDefaultReasons() {
 		const databaseLayer = new DatabaseLayer(async () => SQLite.openDatabase('databasev100.db'), 'reasons')
 		const reasons = [

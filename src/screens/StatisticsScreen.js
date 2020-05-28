@@ -8,26 +8,16 @@ import { DottedCard } from '../components/DottedCard'
 
 import moment from "moment";
 
-
 import Moods from '../models/MoodsModel'
-import MoodsAPI from '../api/Moods'
+import MoodsAPI from '../api/MoodsApi'
 
 import NavigationBalls from '../components/NavigationBalls'
 import { Normal, Tiny } from '../components/patterns/Texts'
 
-const data = {
-  labels: ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"],
-  datasets: [
-    {
-      data: [20, 45, 28, 80, 99, 43]
-    }
-  ]
-};
-
 export default class StatisticsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarDates: {} };
+    this.state = { calendarDates: {}, yearEntries: [] };
   }
 
   specificDay(data, timestamp) {
@@ -42,8 +32,8 @@ export default class StatisticsScreen extends React.Component {
   }
 
   async componentDidMount() {
-    moods = await Moods.all()
-    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
+    moods = await Moods.currentYear()
+    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods), yearEntries: moods })
   }
 
   render() {
@@ -60,7 +50,7 @@ export default class StatisticsScreen extends React.Component {
               hideExtraDays={false}
               markedDates={this.state.calendarDates}
               onDayPress={day => {
-                this.props.navigation.push('SpecificDay', { date: day.dateString });
+                this.props.navigation.push('SpecificDay', { entry: this.state.yearEntries.find(element => { return element.timestamp == day.dateString }) });
               }}
               calendarWidth={Dimensions.get('window').width - 24}
               pagingEnabled={true}

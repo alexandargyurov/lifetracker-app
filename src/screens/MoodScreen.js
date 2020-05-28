@@ -10,7 +10,7 @@ import * as Animatable from 'react-native-animatable';
 import Moods from '../models/MoodsModel';
 import moment from "moment";
 
-import API from '../api/Api'
+import MoodAPI from '../api/MoodsApi'
 
 export default class MoodScreen extends React.Component {
 	constructor(props) {
@@ -26,7 +26,8 @@ export default class MoodScreen extends React.Component {
 
 	transitionColour(sliderValue) {
 		const colour = Math.round((sliderValue + Number.EPSILON) * 100)
-		this.setState({ sliderValue: sliderValue, backgroundColour: this.state.gradient[colour], feelingText: API.valueToMood(sliderValue).feeling, previousText: API.valueToMood(sliderValue).feeling })
+		const mood = MoodAPI.valueToMood(sliderValue)
+		this.setState({ sliderValue: sliderValue, backgroundColour: this.state.gradient[colour], feelingText: mood.feeling, previousText: mood.feeling })
 		this.props.navigation.setOptions({
 			headerStyle: {
 				backgroundColor: this.state.gradient[colour],
@@ -35,7 +36,7 @@ export default class MoodScreen extends React.Component {
 				elevation: 0
 			}
 		})
-		if (this.state.previousText !== API.valueToMood(sliderValue).feeling) {
+		if (this.state.previousText !== mood.feeling) {
 			this.fadeIn()
 		}
 	}

@@ -7,18 +7,27 @@ import { SubHeader, Normal, Small } from '../components/patterns/Texts';
 
 import Colours from '../components/patterns/Colours'
 
-import ReasonsIcon from "../components/ReasonIcon";
+import ReasonsIcon from '../components/ReasonIcon'
+import ReasonsModel from '../models/ReasonsModel'
 
 export default class SpecificDayScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			mood: {},
-			editable: false,
-			note: ""
+			reasons: [],
+			editable: false
 		};
 		this.editReasons = this.editReasons.bind(this);
 		this.removeReason = this.removeReason.bind(this);
+	}
+
+	async componentDidMount() {
+		if (!this.props.route.params.entry.reasons) {
+			const reasons = await ReasonsModel.getReasonsByMoodId(this.props.route.params.entry.mood.id)
+			this.setState({ reasons: reasons })
+		} else {
+			this.setState({ reasons: this.props.route.params.entry.reasons })
+		}
 	}
 
 	editReasons() {
@@ -87,7 +96,7 @@ export default class SpecificDayScreen extends React.Component {
 					</SubHeader>
 
 					<Reasons>
-						{this.props.route.params.entry.reasons.map((reason, key) => (
+						{this.state.reasons.map((reason, key) => (
 							<ReasonsIcon
 								reason={reason.name}
 								reasonId={reason.id}

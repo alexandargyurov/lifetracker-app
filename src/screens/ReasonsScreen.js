@@ -31,7 +31,7 @@ export default class ReasonsScreen extends React.Component {
   }
 
   addReason(reason_id) {
-    MoodReasons.create({ mood_id: this.props.route.params.mood_id, reason_id: reason_id })
+    MoodReasons.create({ mood_id: this.props.route.params.mood.id, reason_id: reason_id })
   }
 
   render() {
