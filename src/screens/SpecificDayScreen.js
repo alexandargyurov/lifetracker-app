@@ -57,6 +57,17 @@ export default class SpecificDayScreen extends React.Component {
 		});
 	};
 
+	noteSection = () => {
+		if (this.props.route.params.entry.notes) {
+			return (
+				<View style={{ margin: 24 }}>
+					<Normal lightColour bold style={{ marginBottom: 8 }}>Notes:</Normal>
+					<Small lightColour>{this.props.route.params.entry.notes}</Small>
+				</View>
+			)
+		}
+	}
+
 	render() {
 		const { navigation } = this.props;
 		let addButton;
@@ -111,10 +122,7 @@ export default class SpecificDayScreen extends React.Component {
 						{addButton}
 					</Reasons>
 
-					<View style={{ margin: 24 }}>
-						<Normal lightColour bold style={{ marginBottom: 8 }}>Notes:</Normal>
-						<Small lightColour>{this.props.route.params.entry.notes}</Small>
-					</View>
+					{this.noteSection()}
 
 
 				</ScrollView>

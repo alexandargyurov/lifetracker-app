@@ -14,6 +14,7 @@ export default class ReasonsScreen extends React.Component {
     super(props);
     this.state = { reasons: [] };
     this.addReason = this.addReason.bind(this);
+    this.removeReason = this.removeReason.bind(this);
   }
 
   async componentDidMount() {
@@ -30,8 +31,13 @@ export default class ReasonsScreen extends React.Component {
     })
   }
 
-  addReason(reason_id) {
-    MoodReasons.create({ mood_id: this.props.route.params.mood_id, reason_id: reason_id })
+  async addReason(reason_id) {
+    await MoodReasons.create({ mood_id: this.props.route.params.mood_id, reason_id: reason_id })
+  }
+
+  async removeReason(reason_id) {
+    const record = await MoodReasons.findBy({ mood_id_eq: this.props.route.params.mood_id, reason_id_eq: reason_id })
+    MoodReasons.destroy(record.id)
   }
 
   render() {
@@ -43,7 +49,8 @@ export default class ReasonsScreen extends React.Component {
               <ReasonIcon
                 reason={reason.label}
                 reasonId={reason.id}
-                reasonCallback={this.addReason}
+                addReasonCallback={this.addReason}
+                removeReasonCallback={this.removeReason}
                 viewOnly={false}
                 selected={false}
                 backgroundColor={this.props.route.params.backgroundColor}

@@ -24,17 +24,17 @@ export default class ReasonIcon extends React.Component {
     if (this.props.viewOnly === false) {
       if (this.state.selected === false) {
         this.setState({ colour: chroma(this.props.backgroundColor).brighten(0.5), selected: true });
-        this.props.reasonCallback(this.props.reasonId);
+        this.props.addReasonCallback(this.props.reasonId);
       } else {
         this.setState({ colour: this.props.backgroundColor, selected: false });
-        this.props.reasonCallback(this.props.reasonId);
+        this.props.removeReasonCallback(this.props.reasonId);
       }
     }
   }
 
   removeReason = () => {
     this.view.fadeOut(250)
-    this.props.reasonCallback(this.props.reasonId);
+    this.props.removeReasonCallback(this.props.reasonId);
   }
 
   buttonCallBack = () => {
