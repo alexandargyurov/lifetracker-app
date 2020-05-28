@@ -1,11 +1,12 @@
 import chroma from 'chroma-js'
+import moment from 'moment'
 
 export default class MoodsAPI {
 	static moodsToCalendar = (data) => {
 		dates = {};
 
 		data.forEach(function (entry) {
-			date = entry.timestamp
+			date = moment(entry.timestamp).format('YYYY-MM-DD')
 			highlight = entry.notes ? chroma(entry.mood.colour).brighten() : entry.mood.colour
 
 			dates[date] = {

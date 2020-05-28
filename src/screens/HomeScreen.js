@@ -18,6 +18,10 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { weekMoods: [], loaded: false };
+    this._unsubscribe = this.props.navigation.addListener('focus', async (d) => {
+      const weekMoods = await Moods.currentWeek()
+      this.setState({ loaded: true, weekMoods: weekMoods })
+    });
   }
 
   specificDay(data, timestamp) {
@@ -36,7 +40,6 @@ export default class HomeScreen extends React.Component {
   }
 
 
-
   chartLineStyles(chartDay) {
     const entry = this.state.weekMoods.find(element => { return element.date.day == chartDay });
 
@@ -51,6 +54,10 @@ export default class HomeScreen extends React.Component {
     const weekMoods = await Moods.currentWeek()
     this.setState({ loaded: true, weekMoods: weekMoods })
     console.log(weekMoods)
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   render() {

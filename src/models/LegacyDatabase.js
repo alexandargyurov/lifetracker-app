@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
+import moment from 'moment'
 
 export default class LegacyDatabase {
   constructor() {
@@ -24,7 +24,7 @@ export default class LegacyDatabase {
       this.currentDB.transaction(tx => {
         tx.executeSql(
           `INSERT INTO moods (mood, timestamp) VALUES (?, ?);`,
-          [element.mood, element.timestamp]
+          [element.mood, moment(element.timestamp).format()]
         );
       });
     });

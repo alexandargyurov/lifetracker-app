@@ -42,7 +42,7 @@ export default class MoodScreen extends React.Component {
 	}
 
 	async submitMood() {
-		mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(Date.now()).format('YYYY-MM-DD') })
+		mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
 		this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour, mood_id: mood.id })
 	}
 

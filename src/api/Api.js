@@ -18,6 +18,10 @@ export default class API {
 		console.log('CREATING DB DONE\n')
 	}
 
+	static seedDatabase = async () => {
+		await Reasons.seedDefaultReasons()
+	}
+
 	static mergeDatabases = async () => {
 		await this.resetDB()
 		await this.initDatabase()

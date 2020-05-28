@@ -95,7 +95,7 @@ export default class ReasonIcon extends React.Component {
 
 const Icon = Animatable.createAnimatableComponent(styled.View`
   display: flex;
-  width: 31%;
+  width: 31.5%;
   padding: 20px;
   margin: 3px;
   align-items: center;
