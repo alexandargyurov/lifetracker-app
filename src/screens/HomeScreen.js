@@ -39,7 +39,6 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.push('Mood')
   }
 
-
   chartLineStyles(chartDay) {
     const entry = this.state.weekMoods.find(element => { return element.date.day == chartDay });
 

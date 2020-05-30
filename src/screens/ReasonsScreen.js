@@ -12,14 +12,24 @@ import MoodReasons from '../models/MoodReasonsModel';
 export default class ReasonsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { reasons: [] };
+    this.state = { reasons: [], edit: false };
     this.addReason = this.addReason.bind(this);
     this.removeReason = this.removeReason.bind(this);
   }
 
   async componentDidMount() {
-    reasons = await Reasons.all()
-    this.setState({ reasons: reasons })
+    const reasons = await Reasons.all()
+    if (this.props.route.params.reasons) {
+      this.props.route.params.reasons.forEach(element => {
+        const foundIndex = reasons.findIndex(reason => { return reason.id == element.id })
+        reasons[foundIndex].selected = true;
+      });
+    }
+
+    this.setState({
+      reasons: reasons,
+      edit: this.props.route.params.edit
+    })
 
     this.props.navigation.setOptions({
       headerStyle: {
@@ -41,6 +51,7 @@ export default class ReasonsScreen extends React.Component {
   }
 
   render() {
+    const buttonTitle = this.state.edit ? "Update" : "Add"
     return (
       <View style={{ flex: 1 }}>
         <ScrollView style={{ backgroundColor: this.props.route.params.backgroundColor }}>
@@ -52,7 +63,7 @@ export default class ReasonsScreen extends React.Component {
                 addReasonCallback={this.addReason}
                 removeReasonCallback={this.removeReason}
                 viewOnly={false}
-                selected={false}
+                selected={reason.selected || false}
                 backgroundColor={this.props.route.params.backgroundColor}
                 key={key}
               />
@@ -61,7 +72,10 @@ export default class ReasonsScreen extends React.Component {
         </ScrollView>
 
         <TouchableOpacity style={{ position: 'absolute', right: 20, bottom: 20 }}>
-          <ButtonOnlyIcon onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.props.route.params.backgroundColor })} />
+          <ButtonOnlyIcon
+            title={buttonTitle}
+            onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.props.route.params.backgroundColor })}
+          />
         </TouchableOpacity>
       </View>
 

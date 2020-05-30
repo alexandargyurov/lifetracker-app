@@ -17,7 +17,7 @@ export default class MoodScreen extends React.Component {
 		super(props);
 		this.state = {
 			backgroundColour: '#00A8DD',
-			sliderValue: 0.5714,
+			sliderValue: 0.5,
 			feelingText: "okay",
 			previousText: "",
 			gradient: chroma.scale(['#BC1B05', "#CF4E25", "#E19945", "#00A8DD", "#00D0DD", "#00DDB5", "#00DD66"]).colors(101)
@@ -42,19 +42,43 @@ export default class MoodScreen extends React.Component {
 	}
 
 	async submitMood() {
-		mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
-		this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour, mood_id: mood.id })
+		if (this.state.edit) {
+			Moods.update({ id: this.props.route.params.mood.id, mood: this.state.sliderValue })
+			this.props.navigation.push('Reasons', {
+				backgroundColor: this.state.backgroundColour,
+				mood_id: this.props.route.params.mood.id,
+				reasons: this.props.route.params.reasons,
+				edit: true
+			})
+		} else {
+			console.log("no fuck u")
+			mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
+			this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour, mood_id: mood.id, edit: false })
+		}
 	}
 
-	componentDidMount() {
+	updateNavigationHeader(colour) {
 		this.props.navigation.setOptions({
 			headerStyle: {
-				backgroundColor: this.state.backgroundColour,
+				backgroundColor: this.state.backgroundColour || colour,
 				shadowColor: 'transparent',
 				shadowOpacity: 0,
 				elevation: 0
 			}
 		})
+	}
+
+	componentDidMount() {
+		try {
+			this.transitionColour(this.props.route.params.mood.value)
+			this.props.navigation.setOptions({ title: "How did the day go?" })
+			this.setState({
+				feelingText: this.props.route.params.mood.feeling,
+				edit: true
+			})
+		} catch {
+			this.updateNavigationHeader()
+		}
 	}
 
 	fadeIn = () => this.view.fadeIn()
@@ -75,7 +99,7 @@ export default class MoodScreen extends React.Component {
 						thumbStyle={{ width: 34, height: 34, borderRadius: 99 }}
 						minimumValue={0}
 						maximumValue={1}
-						value={0.5}
+						value={this.state.sliderValue}
 						onValueChange={(value) => this.transitionColour(value)}
 						minimumTrackTintColor="#FFEBE1"
 						maximumTrackTintColor="#FFEBE1"

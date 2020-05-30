@@ -21,7 +21,7 @@ import AccountScreen from './src/screens/AccountScreen';
 import ExtrasScreen from './src/screens/ExtrasScreen';
 import Colours from './src/components/patterns/Colours'
 
-import Reasons from './src/models/ReasonsModel'
+import Modal from 'react-native-modal';
 
 import {
   Roboto_300Light,
@@ -47,7 +47,8 @@ const screenOptions = {
     elevation: 0
   },
   headerBackTitleStyle: {
-    display: 'none'
+    display: 'none',
+    marginLeft: 16
   },
   headerTintColor: 'white',
 }
@@ -56,14 +57,6 @@ const accountScreenButton = (navigation) => {
   return (
     <TouchableOpacity onPress={() => navigation.push('Account')} style={{ padding: 10, marginLeft: 8 }} >
       <FontAwesome5 name="user-circle" size={24} color={Colours.light()} />
-    </TouchableOpacity>
-  )
-}
-
-const editButton = (navigation) => {
-  return (
-    <TouchableOpacity onPress={() => console.log('edit me!')} style={{ padding: 10, marginRight: 8 }} >
-      <FontAwesome5 name="edit" size={20} color={Colours.light()} />
     </TouchableOpacity>
   )
 }
@@ -77,8 +70,21 @@ function TabStack() {
   )
 }
 
+function WrapperComponent() {
+  return (
+    <View>
+      <Modal isVisible={true}>
+        <View style={{ flex: 1 }}>
+          <Text>I am the modal content!</Text>
+        </View>
+      </Modal>
+    </View>
+  )
+}
+
 export default class App extends React.Component {
   constructor(props) {
+
     super(props);
     this.state = { fontLoaded: false };
   }
@@ -118,7 +124,7 @@ export default class App extends React.Component {
             <Stack.Screen name="Mood" component={MoodScreen} options={{ title: "How did today go?" }} />
             <Stack.Screen name="Extra" component={ExtrasScreen} options={{ title: "Add anything else?" }} initialParams={{ backgroundColor: Colours.purple() }} />
             <Stack.Screen name="Reasons" component={ReasonsSelectorScreen} options={{ title: "Why's that?" }} />
-            <Stack.Screen name="SpecificDay" component={SpecificDayScreen} options={({ navigation }) => ({ title: 'Summary', headerRight: () => editButton(navigation) })} />
+            <Stack.Screen name="SpecificDay" component={SpecificDayScreen} options={({ navigation }) => ({ title: 'Summary' })} />
             <Stack.Screen name="Introduction" component={IntroductionScreen} />
           </Stack.Navigator>
         </NavigationContainer>

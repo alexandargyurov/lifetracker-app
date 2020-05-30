@@ -12,7 +12,6 @@ export default class ReasonIcon extends React.Component {
 
   constructor(props) {
     super(props);
-    this.buttonCallBack = this.buttonCallBack.bind(this)
     this.state = {
       display: "flex",
       colour: "",
@@ -37,14 +36,8 @@ export default class ReasonIcon extends React.Component {
     this.props.removeReasonCallback(this.props.reasonId);
   }
 
-  buttonCallBack = () => {
-    if (this.props.reasonsLength == this.props.position + 1) {
-      this.props.buttonCallback()
-    }
-  }
-
   componentDidMount() {
-    if (this.props.selected) this.setState({ colour: "#4E506F" });
+    if (this.props.selected) this.setState({ colour: chroma(this.props.backgroundColor).brighten(0.5) });
   }
 
   render() {
@@ -64,7 +57,6 @@ export default class ReasonIcon extends React.Component {
       <Icon
         animation="fadeIn"
         easing="ease-in-out"
-        onAnimationEnd={endState => this.buttonCallBack()}
         delay={this.props.position * 250}
         ref={this.handleViewRef}
         style={{
