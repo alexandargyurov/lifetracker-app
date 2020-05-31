@@ -1,5 +1,6 @@
 import chroma from 'chroma-js'
 import moment from 'moment'
+import ExtrasModel from '../models/ExtrasModel'
 
 export default class MoodsAPI {
 	static moodsToCalendar = (data) => {
@@ -44,5 +45,14 @@ export default class MoodsAPI {
 		} else if (mood <= 1) {
 			return { colour: "#00DD66", feeling: "fantastic" };
 		}
+	}
+
+	static updateNote = async (mood_id, note) => {
+		const extra = await ExtrasModel.findBy({ mood_id_eq: mood_id })
+		ExtrasModel.update({ id: extra.id, notes: note })
+	}
+
+	static createNote = (mood_id, note) => {
+		ExtrasModel.create({ mood_id: mood_id, notes: note })
 	}
 }

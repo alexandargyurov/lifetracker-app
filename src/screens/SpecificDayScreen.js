@@ -11,8 +11,9 @@ import ReasonsIcon from '../components/ReasonIcon'
 import ReasonsModel from '../models/ReasonsModel'
 import * as Animatable from "react-native-animatable";
 
-import ModalTest from '../components/Modal'
-import ExtrasModel from '../models/ExtrasModel'
+import NotesModal from '../components/NotesModal'
+import MoodAPI from '../api/MoodsApi'
+import moment from 'moment'
 
 export default class SpecificDayScreen extends React.Component {
 	constructor(props) {
@@ -39,7 +40,12 @@ export default class SpecificDayScreen extends React.Component {
 		this.props.navigation.setOptions({
 			headerRight: () => {
 				return (
-					<TouchableOpacity onPress={() => this.props.navigation.navigate('Mood', { mood: this.props.route.params.entry.mood, reasons: this.state.reasons })} style={{ padding: 10, marginRight: 8 }} >
+					<TouchableOpacity style={{ padding: 10, marginRight: 8 }}
+						onPress={() => this.props.navigation.navigate('Mood', {
+							mood: this.props.route.params.entry.mood,
+							reasons: this.state.reasons,
+							notes: this.props.route.params.entry.notes
+						})} >
 						<Feather name="edit" size={20} color={Colours.light()} />
 					</TouchableOpacity>
 				)
@@ -49,12 +55,9 @@ export default class SpecificDayScreen extends React.Component {
 
 	saveNote = async (notes) => {
 		if (this.props.route.params.entry.notes !== null) {
-			console.log("Updating")
-			const extra = await ExtrasModel.findBy({ mood_id_eq: this.props.route.params.entry.mood.id })
-			ExtrasModel.update({ id: extra.id, notes: notes })
+			MoodAPI.updateNote(this.props.route.params.entry.mood.id, notes)
 		} else {
-			console.log("Creating")
-			ExtrasModel.create({ mood_id: this.props.route.params.entry.mood.id, notes: notes })
+			MoodAPI.createNote(this.props.route.params.entry.mood.id, notes)
 		}
 
 		this.props.route.params.entry.notes = notes
@@ -82,6 +85,7 @@ export default class SpecificDayScreen extends React.Component {
 			);
 		}
 
+		console.log(this.props.route.params.entry)
 		return (
 			<View style={{ flex: 1, backgroundColor: Colours.purple() }}>
 				<ScrollView>
@@ -92,7 +96,7 @@ export default class SpecificDayScreen extends React.Component {
 						</SubHeader>
 						<SubHeader lightColour bold>
 							on {"\n"}
-							{"Wednesday 16th May"}.
+							{moment(this.props.route.params.entry.timestamp).format("dddd Do MMM")}.
             </SubHeader>
 					</SubHeader>
 
@@ -126,7 +130,7 @@ export default class SpecificDayScreen extends React.Component {
 						{this.noteSection()}
 					</View>
 
-					<ModalTest
+					<NotesModal
 						toggle={this.state.showModal}
 						notes={this.props.route.params.entry.notes}
 						closeModal={() => this.setState({ showModal: false })}

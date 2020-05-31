@@ -2,9 +2,9 @@ import React from "react";
 import { Image, View, TouchableOpacity } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import styled from 'styled-components/native'
-import Colours from '../components/patterns/Colours'
 import { DottedCard } from '../components/DottedCard'
 
+import MoodsAPI from '../api/MoodsApi'
 import NotesModal from "../components/NotesModal";
 import { ButtonWithIcon } from '../components/patterns/Buttons'
 import { Small } from '../components/patterns/Texts'
@@ -29,33 +29,24 @@ const imageStyles = {
 export default class ExtrasScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.closeModal = this.closeModal.bind(this);
-    this.updateNote = this.updateNote.bind(this);
-    this.buttonSubmit = this.buttonSubmit.bind(this);
     this.state = {
-      value: "",
-      noteModalVisible: false,
-      photosNumber: null,
-      mood_id: 0,
-      note: null
+      showModal: false,
+      note: this.props.route.params.notes
     };
   }
 
-  updateNote(note) {
-    this.setState({ note: note });
-  }
-
-  closeModal(modal) {
-    if (modal == "note") {
-      this.setState({ noteModalVisible: false });
+  saveNote(notes) {
+    if (this.props.route.params.edit) {
+      MoodsAPI.updateNote(this.props.route.params.mood_id, notes)
+    } else {
+      MoodsAPI.createNote(this.props.route.params.mood_id, notes)
     }
-  }
 
-  buttonSubmit() {
-    console.log("Submit")
+    this.setState({ showModal: false, note: notes })
   }
 
   componentDidMount() {
+    console.log(this.props.route.params)
     this.props.navigation.setOptions({
       headerStyle: {
         backgroundColor: this.props.route.params.backgroundColor,
@@ -64,10 +55,6 @@ export default class ExtrasScreen extends React.Component {
         elevation: 0
       }
     })
-  }
-
-  addImageCount(numOfImages) {
-    this.setState({ photosNumber: numOfImages });
   }
 
   notesSection() {
@@ -88,39 +75,12 @@ export default class ExtrasScreen extends React.Component {
     }
   }
 
-  photoSection() {
-    if (this.state.photosNumber) {
-      return (
-        <View>
-          {photosImage("https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media")}
-          <Small>Photos</Small>
-          <Small style={{ textAlign: 'center' }}>{this.state.photosNumber} photos added</Small>
-        </View>
-      );
-    } else {
-      return (
-        <View>
-          {photosImage("https://firebasestorage.googleapis.com/v0/b/life-tracker-app-c52bf.appspot.com/o/photos.png?alt=media")}
-          <Small bold lightColour>Photos</Small>
-        </View>
-      );
-    }
-  }
-
   render() {
-
-
     return (
       <View style={{ flex: 1, backgroundColor: this.props.route.params.backgroundColor }}>
-        <TouchableOpacity onPress={() => { this.setState({ noteModalVisible: true }) }}>
+        <TouchableOpacity onPress={() => { this.setState({ showModal: true }) }}>
           <DottedCard style={{ height: 150 }}>
             {this.notesSection()}
-          </DottedCard>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => { }}>
-          <DottedCard style={{ height: 150 }}>
-            {this.photoSection()}
           </DottedCard>
         </TouchableOpacity>
 
@@ -130,14 +90,12 @@ export default class ExtrasScreen extends React.Component {
 
         <KeyboardAwareScrollView>
           <NotesModal
-            moodId={this.state.mood_id}
-            showModal={this.state.noteModalVisible}
-            textPlaceholder={this.state.value}
-            closeModal={this.closeModal}
-            updateNote={this.updateNote}
+            toggle={this.state.showModal}
+            notes={this.state.note}
+            closeModal={() => this.setState({ showModal: false })}
+            saveNote={(notes) => this.saveNote(notes)}
           />
         </KeyboardAwareScrollView>
-
       </View>
     );
   }

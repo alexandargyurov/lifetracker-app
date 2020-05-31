@@ -1,95 +1,65 @@
-import React from "react";
-import { Modal, TextInput, Text, TouchableOpacity } from "react-native";
+import React from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import Modal from 'react-native-modal';
 import styled from 'styled-components/native'
+import { SubHeader } from './patterns/Texts'
+import Colours from './patterns/Colours'
+import { PrimaryButton, SecondaryButton } from './patterns/Buttons'
 
 class NotesModal extends React.Component {
   constructor(props) {
-    super(props);
-    this.saveNote = this.saveNote.bind(this);
-    this.state = {
-      value: this.props.textPlaceholder
-    };
-  }
-
-  saveNote() {
-    console.log("save meee")
+    super(props)
+    this.state = { value: this.props.notes }
   }
 
   render() {
     return (
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={this.props.showModal}
-        onRequestClose={() => {
-          this.props.closeModal('note');
-        }}
-      >
-        <ModalView>
-          <ModalMedium>
-            <Text style={{ textAlign: "center" }}>Notes</Text>
+      <View style={{ flex: 1 }}>
+        <Modal isVisible={this.props.toggle} animationIn="pulse">
+          <SubHeader lightColour bold style={{ textAlign: "center", marginBottom: 8 }}>Notes</SubHeader>
+          <ModalView>
             <TextInput
               style={{
                 width: "100%",
-                height: "70%",
-                borderColor: "#1b4751",
-                borderWidth: 0.5,
-                borderRadius: 2,
+                height: "60%",
+                borderRadius: 8,
                 textAlignVertical: "top",
-                padding: 10,
-                marginBottom: 20
               }}
               onChangeText={text => this.setState({ value: text })}
               value={this.state.value}
+              placeholder="Tap here to start writing..."
               multiline
               numberOfLines={4}
               maxLength={1000}
             />
 
-            <TouchableOpacity
-              onPress={() => {
-                this.props.closeModal('note');
-              }}
-              style={{ marginLeft: "50%" }}
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                this.saveNote();
-                this.props.updateNote(this.state.value);
-                this.props.closeModal('note');
-              }}
-            >
-              <Text>Save</Text>
-            </TouchableOpacity>
-          </ModalMedium>
-        </ModalView>
-      </Modal>
+            <ModalButtonContainer>
+              <SecondaryButton title="Cancel" onPress={() => this.props.closeModal()} />
+              <SecondaryButton bold title="Save" onPress={() => this.props.saveNote(this.state.value)} />
+            </ModalButtonContainer>
+          </ModalView>
+        </Modal>
+      </View>
     );
   }
 }
 
-export default NotesModal;
-
-export const ModalView = styled.View`
-  flex: 1;
+const ModalView = styled.View`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #00000080;
-`;
-
-export const ModalMedium = styled.View`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-around;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  width: 80%;
-  height: 250px;
+  background-color: ${Colours.light()};
+  border-radius: 12px;
+  height: 40%;
+  padding: 24px;
+  padding-bottom: 2px;
 `;
+
+const ModalButtonContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+`
+
+export default NotesModal;

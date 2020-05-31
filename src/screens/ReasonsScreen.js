@@ -72,7 +72,12 @@ export default class ReasonsScreen extends React.Component {
         <TouchableOpacity style={{ position: 'absolute', right: 20, bottom: 20 }}>
           <ButtonOnlyIcon
             title={buttonTitle}
-            onPress={() => this.props.navigation.push('Extra', { backgroundColor: this.props.route.params.backgroundColor })}
+            onPress={() => this.props.navigation.push('Extra', {
+              backgroundColor: this.props.route.params.backgroundColor,
+              mood_id: this.props.route.params.mood_id,
+              edit: this.props.route.params.edit,
+              notes: this.props.route.params.notes
+            })}
           />
         </TouchableOpacity>
       </View>

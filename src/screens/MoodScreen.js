@@ -48,11 +48,16 @@ export default class MoodScreen extends React.Component {
 				backgroundColor: this.state.backgroundColour,
 				mood_id: this.props.route.params.mood.id,
 				reasons: this.props.route.params.reasons,
-				edit: true
+				edit: true,
+				notes: this.props.route.params.notes
 			})
 		} else {
 			mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
-			this.props.navigation.push('Reasons', { backgroundColor: this.state.backgroundColour, mood_id: mood.id, edit: false })
+			this.props.navigation.push('Reasons', {
+				backgroundColor: this.state.backgroundColour,
+				mood_id: mood.id,
+				edit: false
+			})
 		}
 	}
 
