@@ -100,7 +100,7 @@ export default class AccountScreen extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
         <TouchableOpacity style={{ width: '100%', padding: 20 }} onPress={() => null}>
-          <SubHeader>Notifications - (Coming soon)</SubHeader>
+          <SubHeader>Notifications - (WIP)</SubHeader>
           <Description>Receive daily reminders to write how your day went. Currently in development.</Description>
         </TouchableOpacity>
 
