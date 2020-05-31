@@ -24,19 +24,8 @@ export default class HomeScreen extends React.Component {
     });
   }
 
-  specificDay(data, timestamp) {
-    if (data.length != 0) {
-      this.props.navigation.push("Day", {
-        moodId: data[0]["id"],
-        date: moment(timestamp).format("dddd Do MMMM")
-      });
-    } else {
-      this.setState({ modalVisible: true, dateSelected: timestamp });
-    }
-  }
-
   newEntryPress() {
-    this.props.navigation.push('Mood')
+    this.props.navigation.push('Mood', { updateCalendar: () => null })
   }
 
   chartLineStyles(chartDay) {
@@ -121,7 +110,7 @@ export default class HomeScreen extends React.Component {
 
             {this.state.weekMoods.map((entry, key) => (
               <MoodCardSummary
-                onPress={() => this.props.navigation.push('SpecificDay', { entry: entry })}
+                onPress={() => this.props.navigation.push('SpecificDay', { entry: entry, updateCalendar: () => null })}
                 reasons={entry.reasons}
                 timestamp={entry.date.timestamp}
                 moodColour={entry.mood.colour}

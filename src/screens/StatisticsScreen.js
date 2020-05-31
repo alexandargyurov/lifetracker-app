@@ -10,6 +10,7 @@ import moment from "moment";
 
 import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/MoodsApi'
+import Modal from '../components/Modal'
 
 import NavigationBalls from '../components/NavigationBalls'
 import { Normal, Tiny } from '../components/patterns/Texts'
@@ -17,23 +18,45 @@ import { Normal, Tiny } from '../components/patterns/Texts'
 export default class StatisticsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { calendarDates: {}, yearEntries: [] };
+    this.refreshCalendar = React.createRef();
+    this.state = {
+      calendarDates: {},
+      updateCalendar: false,
+      yearEntries: [],
+      showModal: false,
+      selectedDay: null
+    };
   }
 
-  specificDay(data, timestamp) {
-    if (data.length != 0) {
-      this.props.navigation.push("Day", {
-        moodId: data[0]["id"],
-        date: moment(timestamp).format("dddd Do MMMM")
-      });
+  pushToMood = (date) => {
+    this.setState({ showModal: false })
+    this.props.navigation.push('Mood', {
+      date: date.dateString,
+      updateCalendar: () => this.updateCalendar()
+    })
+  }
+
+  pushOrModal = (day) => {
+    const entry = this.state.yearEntries.find(element => { return moment(element.date.timestamp).format('YYYY-MM-DD') == day.dateString })
+
+    if (entry) {
+      this.props.navigation.push('SpecificDay', {
+        entry: entry,
+        updateCalendar: () => this.updateCalendar()
+      })
     } else {
-      this.setState({ modalVisible: true, dateSelected: timestamp });
+      this.setState({ showModal: true, selectedDay: day })
     }
   }
 
   async componentDidMount() {
     moods = await Moods.currentYear()
     this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods), yearEntries: moods })
+  }
+
+  async updateCalendar() {
+    moods = await Moods.currentYear()
+    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
   }
 
   render() {
@@ -49,11 +72,7 @@ export default class StatisticsScreen extends React.Component {
               firstDay={1}
               hideExtraDays={false}
               markedDates={this.state.calendarDates}
-              onDayPress={day => {
-                this.props.navigation.push('SpecificDay', {
-                  entry: this.state.yearEntries.find(element => { return moment(element.timestamp).format('YYYY-MM-DD') == day.dateString })
-                });
-              }}
+              onDayPress={(day) => this.pushOrModal(day)}
               calendarWidth={Dimensions.get('window').width - 24}
               pagingEnabled={true}
               scrollEnabled={true}
@@ -68,6 +87,11 @@ export default class StatisticsScreen extends React.Component {
             <Tiny lightColour light>Get to see data about your emotions and feelings</Tiny>
           </DottedCard>
 
+          <Modal
+            toggle={this.state.showModal}
+            cancelResponse={() => this.setState({ showModal: false })}
+            confirmResponse={() => this.pushToMood(this.state.selectedDay)}
+          />
 
           <NavigationBalls second />
 

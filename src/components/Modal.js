@@ -2,9 +2,9 @@ import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from 'styled-components/native'
-import { SubHeader } from './patterns/Texts'
+import { SubHeader, Small } from './patterns/Texts'
 import Colours from './patterns/Colours'
-import { PrimaryButton, SecondaryButton } from './patterns/Buttons'
+import { SecondaryButton } from './patterns/Buttons'
 
 class CustomModal extends React.Component {
   constructor(props) {
@@ -16,30 +16,17 @@ class CustomModal extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <Modal isVisible={this.props.toggle} animationIn="pulse">
-          <SubHeader lightColour bold style={{ textAlign: "center", marginBottom: 8 }}>Notes</SubHeader>
+          <SubHeader lightColour bold style={{ textAlign: "center", marginBottom: 8 }}>Add an record?</SubHeader>
           <ModalView>
-            <TextInput
-              style={{
-                width: "100%",
-                height: "60%",
-                borderRadius: 8,
-                textAlignVertical: "top",
-              }}
-              onChangeText={text => this.setState({ value: text })}
-              value={this.state.value}
-              placeholder="Tap here to start writing..."
-              multiline
-              numberOfLines={4}
-              maxLength={1000}
-            />
+            <Small style={{ width: '100%' }}>You don't have a record for this day, would you like to add one?</Small>
 
             <ModalButtonContainer>
-              <SecondaryButton title="Cancel" onPress={() => this.props.closeModal()} />
-              <SecondaryButton bold title="Save" onPress={() => this.props.saveNote(this.state.value)} />
+              <SecondaryButton title="Cancel" onPress={() => this.props.cancelResponse()} />
+              <SecondaryButton bold title="Save" onPress={() => this.props.confirmResponse(this.state.value)} />
             </ModalButtonContainer>
           </ModalView>
         </Modal>
-      </View>
+      </View >
     );
   }
 }
@@ -51,7 +38,7 @@ const ModalView = styled.View`
   justify-content: space-around;
   background-color: ${Colours.light()};
   border-radius: 12px;
-  height: 40%;
+  height: 20%;
   padding: 24px;
   padding-bottom: 2px;
 `;

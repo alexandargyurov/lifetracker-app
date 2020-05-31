@@ -36,7 +36,7 @@ export default class ExtrasScreen extends React.Component {
   }
 
   saveNote(notes) {
-    if (this.props.route.params.edit) {
+    if (this.props.route.params.notes !== null && this.props.route.params.edit) {
       MoodsAPI.updateNote(this.props.route.params.mood_id, notes)
     } else {
       MoodsAPI.createNote(this.props.route.params.mood_id, notes)
@@ -46,7 +46,6 @@ export default class ExtrasScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.route.params)
     this.props.navigation.setOptions({
       headerStyle: {
         backgroundColor: this.props.route.params.backgroundColor,
@@ -85,7 +84,13 @@ export default class ExtrasScreen extends React.Component {
         </TouchableOpacity>
 
         <ButtonContainer>
-          <ButtonWithIcon onPress={() => this.props.navigation.navigate('Home')} title={'Done'} faIcon={'chevron-right'} faSize={16} />
+          <ButtonWithIcon onPress={() => {
+            this.props.route.params.updateCalendar()
+            this.props.navigation.navigate('Home')
+          }}
+            title={'Done'}
+            faIcon={'chevron-right'}
+            faSize={16} />
         </ButtonContainer>
 
         <KeyboardAwareScrollView>

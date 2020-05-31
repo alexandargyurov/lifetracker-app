@@ -44,7 +44,8 @@ export default class SpecificDayScreen extends React.Component {
 						onPress={() => this.props.navigation.navigate('Mood', {
 							mood: this.props.route.params.entry.mood,
 							reasons: this.state.reasons,
-							notes: this.props.route.params.entry.notes
+							notes: this.props.route.params.entry.notes,
+							updateCalendar: this.props.route.params.updateCalendar
 						})} >
 						<Feather name="edit" size={20} color={Colours.light()} />
 					</TouchableOpacity>
@@ -61,6 +62,7 @@ export default class SpecificDayScreen extends React.Component {
 		}
 
 		this.props.route.params.entry.notes = notes
+		this.props.route.params.updateCalendar()
 		this.setState({ showModal: false })
 	}
 
@@ -85,7 +87,6 @@ export default class SpecificDayScreen extends React.Component {
 			);
 		}
 
-		console.log(this.props.route.params.entry)
 		return (
 			<View style={{ flex: 1, backgroundColor: Colours.purple() }}>
 				<ScrollView>
@@ -96,7 +97,7 @@ export default class SpecificDayScreen extends React.Component {
 						</SubHeader>
 						<SubHeader lightColour bold>
 							on {"\n"}
-							{moment(this.props.route.params.entry.timestamp).format("dddd Do MMM")}.
+							{moment(this.props.route.params.entry.date.timestamp).format("dddd Do MMM")}.
             </SubHeader>
 					</SubHeader>
 

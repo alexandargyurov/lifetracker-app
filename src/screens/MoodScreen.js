@@ -43,18 +43,25 @@ export default class MoodScreen extends React.Component {
 
 	async submitMood() {
 		if (this.state.edit) {
-			Moods.update({ id: this.props.route.params.mood.id, mood: this.state.sliderValue })
+			Moods.update({ id: this.props.route.params.mood.id, mood: this.state.sliderValue, })
 			this.props.navigation.push('Reasons', {
 				backgroundColor: this.state.backgroundColour,
 				mood_id: this.props.route.params.mood.id,
 				reasons: this.props.route.params.reasons,
-				edit: true,
-				notes: this.props.route.params.notes
+				notes: this.props.route.params.notes,
+				updateCalendar: this.props.route.params.updateCalendar,
+				edit: true
 			})
 		} else {
-			mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
+			try {
+				mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).format() })
+			} catch {
+				mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
+			}
+
 			this.props.navigation.push('Reasons', {
 				backgroundColor: this.state.backgroundColour,
+				updateCalendar: this.props.route.params.updateCalendar,
 				mood_id: mood.id,
 				edit: false
 			})

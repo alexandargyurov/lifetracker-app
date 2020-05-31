@@ -100,7 +100,7 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true })
 
     const userExists = await API.userExists()
-    // API.mergeDatabases()
+    //API.mergeDatabases()
 
     if (!userExists) {
       await API.resetDB()

@@ -7,7 +7,7 @@ export default class MoodsAPI {
 		dates = {};
 
 		data.forEach(function (entry) {
-			date = moment(entry.timestamp).format('YYYY-MM-DD')
+			date = moment(entry.date.timestamp).format('YYYY-MM-DD')
 			highlight = entry.notes ? chroma(entry.mood.colour).brighten() : entry.mood.colour
 
 			dates[date] = {

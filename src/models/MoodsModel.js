@@ -38,7 +38,9 @@ export default class Moods extends BaseModel {
         colour: mood.colour
       }
       obj.notes = entry.notes
-      obj.timestamp = entry.timestamp
+      obj.date = {
+        timestamp: entry.timestamp
+      }
 
       currentYear.push(obj)
     })
