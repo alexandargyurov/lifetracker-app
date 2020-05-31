@@ -86,7 +86,7 @@ export default class App extends React.Component {
   constructor(props) {
 
     super(props);
-    this.state = { fontLoaded: false };
+    this.state = { loaded: false };
   }
 
   async componentDidMount() {
@@ -97,8 +97,6 @@ export default class App extends React.Component {
       'Bold': Roboto_700Bold
     })
 
-    this.setState({ fontsLoaded: true })
-
     const userExists = await API.userExists()
     //API.mergeDatabases()
 
@@ -106,13 +104,14 @@ export default class App extends React.Component {
       await API.resetDB()
       await API.initDatabase()
       await API.seedDatabase()
-
       await API.updateLastActive()
     }
+
+    this.setState({ loaded: true })
   }
 
   render() {
-    if (this.state.fontsLoaded) {
+    if (this.state.loaded) {
       return (
         <NavigationContainer>
           <StatusBar barStyle="light-content" backgroundColor={Colours.purple()} />

@@ -10,6 +10,8 @@ import moment from "moment";
 
 import Moods from '../models/MoodsModel'
 import MoodsAPI from '../api/MoodsApi'
+import API from '../api/Api'
+
 import Modal from '../components/Modal'
 
 import NavigationBalls from '../components/NavigationBalls'
@@ -18,10 +20,15 @@ import { Normal, Tiny } from '../components/patterns/Texts'
 export default class StatisticsScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.refreshCalendar = React.createRef();
+    this._unsubscribe = this.props.navigation.addListener('focus', async () => {
+      const needsUpdating = await API.doesCalendarNeedUpdating()
+      if (needsUpdating) {
+        API.resetCalendarUpdate()
+        this.updateCalendar()
+      }
+    });
     this.state = {
       calendarDates: {},
-      updateCalendar: false,
       yearEntries: [],
       showModal: false,
       selectedDay: null
@@ -31,8 +38,7 @@ export default class StatisticsScreen extends React.Component {
   pushToMood = (date) => {
     this.setState({ showModal: false })
     this.props.navigation.push('Mood', {
-      date: date.dateString,
-      updateCalendar: () => this.updateCalendar()
+      date: date.dateString
     })
   }
 
@@ -41,8 +47,7 @@ export default class StatisticsScreen extends React.Component {
 
     if (entry) {
       this.props.navigation.push('SpecificDay', {
-        entry: entry,
-        updateCalendar: () => this.updateCalendar()
+        entry: entry
       })
     } else {
       this.setState({ showModal: true, selectedDay: day })
@@ -50,13 +55,16 @@ export default class StatisticsScreen extends React.Component {
   }
 
   async componentDidMount() {
+    await this.updateCalendar()
+  }
+
+  updateCalendar = async () => {
     moods = await Moods.currentYear()
     this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods), yearEntries: moods })
   }
 
-  async updateCalendar() {
-    moods = await Moods.currentYear()
-    this.setState({ calendarDates: MoodsAPI.moodsToCalendar(moods) })
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   render() {

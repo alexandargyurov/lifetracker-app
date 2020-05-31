@@ -49,7 +49,6 @@ export default class MoodScreen extends React.Component {
 				mood_id: this.props.route.params.mood.id,
 				reasons: this.props.route.params.reasons,
 				notes: this.props.route.params.notes,
-				updateCalendar: this.props.route.params.updateCalendar,
 				edit: true
 			})
 		} else {
@@ -61,7 +60,6 @@ export default class MoodScreen extends React.Component {
 
 			this.props.navigation.push('Reasons', {
 				backgroundColor: this.state.backgroundColour,
-				updateCalendar: this.props.route.params.updateCalendar,
 				mood_id: mood.id,
 				edit: false
 			})

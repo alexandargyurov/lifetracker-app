@@ -76,8 +76,7 @@ export default class ReasonsScreen extends React.Component {
               backgroundColor: this.props.route.params.backgroundColor,
               mood_id: this.props.route.params.mood_id,
               edit: this.props.route.params.edit,
-              notes: this.props.route.params.notes,
-              updateCalendar: this.props.route.params.updateCalendar
+              notes: this.props.route.params.notes
             })}
           />
         </TouchableOpacity>

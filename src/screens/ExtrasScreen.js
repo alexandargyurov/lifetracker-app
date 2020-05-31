@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import { DottedCard } from '../components/DottedCard'
 
 import MoodsAPI from '../api/MoodsApi'
+import API from '../api/Api'
 import NotesModal from "../components/NotesModal";
 import { ButtonWithIcon } from '../components/patterns/Buttons'
 import { Small } from '../components/patterns/Texts'
@@ -41,7 +42,6 @@ export default class ExtrasScreen extends React.Component {
     } else {
       MoodsAPI.createNote(this.props.route.params.mood_id, notes)
     }
-
     this.setState({ showModal: false, note: notes })
   }
 
@@ -74,6 +74,11 @@ export default class ExtrasScreen extends React.Component {
     }
   }
 
+  navigateHome = async () => {
+    const x = await API.setCalendarToUpdate()
+    this.props.navigation.navigate('Home')
+  }
+
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: this.props.route.params.backgroundColor }}>
@@ -84,10 +89,7 @@ export default class ExtrasScreen extends React.Component {
         </TouchableOpacity>
 
         <ButtonContainer>
-          <ButtonWithIcon onPress={() => {
-            this.props.route.params.updateCalendar()
-            this.props.navigation.navigate('Home')
-          }}
+          <ButtonWithIcon onPress={async () => this.navigateHome()}
             title={'Done'}
             faIcon={'chevron-right'}
             faSize={16} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import styled from 'styled-components/native'
 
-import moment from "moment";
+import MoodsAPI from '../api/MoodsApi'
 
 import Moods from '../models/MoodsModel'
 import { AppLoading } from 'expo';
@@ -24,8 +24,9 @@ export default class HomeScreen extends React.Component {
     });
   }
 
+
   newEntryPress() {
-    this.props.navigation.push('Mood', { updateCalendar: () => null })
+    this.props.navigation.push('Mood')
   }
 
   chartLineStyles(chartDay) {
@@ -110,7 +111,7 @@ export default class HomeScreen extends React.Component {
 
             {this.state.weekMoods.map((entry, key) => (
               <MoodCardSummary
-                onPress={() => this.props.navigation.push('SpecificDay', { entry: entry, updateCalendar: () => null })}
+                onPress={() => this.props.navigation.push('SpecificDay', { entry: entry })}
                 reasons={entry.reasons}
                 timestamp={entry.date.timestamp}
                 moodColour={entry.mood.colour}

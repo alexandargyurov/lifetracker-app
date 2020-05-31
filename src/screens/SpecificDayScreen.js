@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import styled from 'styled-components/native'
 
 import { Feather } from "@expo/vector-icons";
@@ -13,6 +13,8 @@ import * as Animatable from "react-native-animatable";
 
 import NotesModal from '../components/NotesModal'
 import MoodAPI from '../api/MoodsApi'
+import API from '../api/Api'
+
 import moment from 'moment'
 
 export default class SpecificDayScreen extends React.Component {
@@ -44,8 +46,7 @@ export default class SpecificDayScreen extends React.Component {
 						onPress={() => this.props.navigation.navigate('Mood', {
 							mood: this.props.route.params.entry.mood,
 							reasons: this.state.reasons,
-							notes: this.props.route.params.entry.notes,
-							updateCalendar: this.props.route.params.updateCalendar
+							notes: this.props.route.params.entry.notes
 						})} >
 						<Feather name="edit" size={20} color={Colours.light()} />
 					</TouchableOpacity>
@@ -61,8 +62,8 @@ export default class SpecificDayScreen extends React.Component {
 			MoodAPI.createNote(this.props.route.params.entry.mood.id, notes)
 		}
 
+		await API.setCalendarToUpdate()
 		this.props.route.params.entry.notes = notes
-		this.props.route.params.updateCalendar()
 		this.setState({ showModal: false })
 	}
 

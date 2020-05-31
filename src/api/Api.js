@@ -1,3 +1,4 @@
+import React from 'react'
 import { AsyncStorage } from 'react-native';
 
 import Moods from '../models/MoodsModel'
@@ -68,6 +69,36 @@ export default class API {
 		}
 	}
 
+	static doesCalendarNeedUpdating = async () => {
+		try {
+			const value = await AsyncStorage.getItem('@Calendar:toUpdate');
+			if (value !== null) {
+				if (value === 'true') {
+					return true
+				} else {
+					return false
+				}
+			}
+		} catch (error) {
+			console.warn(error)
+		}
+	}
+
+	static setCalendarToUpdate = async () => {
+		try {
+			await AsyncStorage.setItem('@Calendar:toUpdate', 'true');
+		} catch (error) {
+			console.warn(error)
+		}
+	}
+
+	static resetCalendarUpdate = async () => {
+		try {
+			await AsyncStorage.setItem('@Calendar:toUpdate', 'false');
+		} catch (error) {
+			console.warn(error)
+		}
+	}
 }
 
 
