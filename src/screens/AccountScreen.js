@@ -99,22 +99,22 @@ export default class AccountScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={this.onSubmit}>
-          <SubHeader>Notifications</SubHeader>
-          <Description>Receive daily reminders to write how your day went.</Description>
+        <TouchableOpacity style={{ width: '100%', padding: 20 }} onPress={() => null}>
+          <SubHeader>Notifications - (Coming soon)</SubHeader>
+          <Description>Receive daily reminders to write how your day went. Currently in development.</Description>
         </TouchableOpacity>
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
         <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/database.db')}>
           <SubHeader>Export Data</SubHeader>
-          <Description>Copy and save your data</Description>
+          <Description>Copy and save a copy of your data</Description>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => this.showWarningModal()}>
+        {/* <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => this.showWarningModal()}>
           <SubHeader>Import Data</SubHeader>
           <Description>Import previously exported data</Description>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 

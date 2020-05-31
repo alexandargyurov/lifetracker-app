@@ -28,7 +28,8 @@ export default class API {
 		await this.initDatabase()
 
 		console.log('MERGING LEGACY DB')
-		let legacyDB = new LegacyDatabase()
+		const dbName = await AsyncStorage.getItem("@database")
+		const legacyDB = new LegacyDatabase(dbName)
 		await legacyDB.mergeMoodsTable();
 		await legacyDB.mergeMoodReasonsTable();
 		await legacyDB.mergeExtrasTable();
@@ -47,6 +48,18 @@ export default class API {
 		console.log('RESETTING DB DONE\n')
 	}
 
+	static legacyUser = async () => {
+		try {
+			const value = await AsyncStorage.getItem('@database');
+			if (value === null) {
+				return false
+			} else {
+				return true
+			}
+		} catch (error) {
+			return error
+		}
+	}
 
 	static userExists = async () => {
 		try {

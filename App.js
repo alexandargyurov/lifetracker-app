@@ -98,7 +98,14 @@ export default class App extends React.Component {
     })
 
     const userExists = await API.userExists()
-    //API.mergeDatabases()
+    const legacyUser = await API.legacyUser()
+
+    if (legacyUser) {
+      await API.resetDB()
+      await API.initDatabase()
+      await API.mergeDatabases()
+      await API.updateLastActive()
+    }
 
     if (!userExists) {
       await API.resetDB()

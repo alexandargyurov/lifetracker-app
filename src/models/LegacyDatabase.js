@@ -1,9 +1,10 @@
+import { AsyncStorage } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import moment from 'moment'
 
 export default class LegacyDatabase {
-  constructor() {
-    this.legacyDB = SQLite.openDatabase('obmmy.db');
+  constructor(dbName) {
+    this.legacyDB = SQLite.openDatabase(dbName);
     this.currentDB = SQLite.openDatabase('databasev100.db');
   }
 
