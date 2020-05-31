@@ -1,18 +1,16 @@
 {
   "expo": {
+    "scheme": "lifetracker",
     "name": "Life Tracker",
+    "description": "The all-in-one app to track your day-to-day life. Record your mood, take notes, link photos and even keep a voice a diary.",
     "slug": "life-tracker",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "githubUrl": "https://github.com/alexandargyurov/lifetracker-app",
     "platforms": [
       "ios",
       "android"
     ],
-    "androidStatusBar": {
-      "backgroundColor": "#fef1e0",
-      "barStyle": "dark-content"
-    },
-    "version": "0.2.2",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -20,6 +18,8 @@
       "resizeMode": "cover",
       "backgroundColor": "#C7EECA"
     },
+    "facebookAutoInitEnabled": false,
+    "facebookAdvertiserIDCollectionEnabled": false,
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -27,37 +27,14 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "10",
+      "buildNumber": "11",
       "bundleIdentifier": "com.alexandargyurov.lifetracker",
-      "supportsTablet": false,
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-6414919472390529~2221508850",
-        "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.410790811034-b38njme8u8cr1mq2ihnl7tg8soue68it"
-        }
-      }
+      "supportsTablet": false
     },
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": [
-        "js",
-        "jsx",
-        "css"
-      ]
-    },
-    "description": "The all-in-one app to track your day-to-day life. Record your mood, take notes, link photos and even keep a voice a diary. View a heatmap of your feelings and notice your trends on what factors are effecting your mood.",
-    "githubUrl": "https://github.com/alexandargyurov/lifetracker-app",
     "android": {
-      "config": {
-        "googleMobileAdsAppId": "ca-app-pub-6414919472390529~5965312748",
-        "googleSignIn": {
-          "certificateHash": "B4A9ABD02BE60F9A279B6F54AD33E7A1380C099A"
-        }
-      },
       "package": "com.alexandargyurov.lifetracker",
-      "googleServicesFile": "./google-services.json",
       "permissions": [],
-      "versionCode": 10
+      "versionCode": 11
     }
   }
 }
