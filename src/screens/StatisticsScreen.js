@@ -79,6 +79,7 @@ export default class StatisticsScreen extends React.Component {
               markingType={"custom"}
               firstDay={1}
               hideExtraDays={false}
+              hideArrows={false}
               markedDates={this.state.calendarDates}
               onDayPress={(day) => this.pushOrModal(day)}
               calendarWidth={Dimensions.get('window').width - 24}
@@ -128,6 +129,7 @@ export const theme = {
   calendarBackground: "#FEF1E0",
   dayTextColor: "#1B4751",
   monthTextColor: "#1B4751",
+  arrowColor: Colours.purple(),
   textDayFontSize: 16,
   textMonthFontSize: 16,
   textDayHeaderFontSize: 14,
