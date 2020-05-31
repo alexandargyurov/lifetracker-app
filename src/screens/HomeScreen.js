@@ -18,7 +18,7 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = { weekMoods: [], loaded: false };
-    this._unsubscribe = this.props.navigation.addListener('focus', async (d) => {
+    this._unsubscribe = this.props.navigation.addListener('focus', async () => {
       const weekMoods = await Moods.currentWeek()
       this.setState({ loaded: true, weekMoods: weekMoods })
     });
@@ -52,7 +52,6 @@ export default class HomeScreen extends React.Component {
   async componentDidMount() {
     const weekMoods = await Moods.currentWeek()
     this.setState({ loaded: true, weekMoods: weekMoods })
-    console.log(weekMoods)
   }
 
   componentWillUnmount() {

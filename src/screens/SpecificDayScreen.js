@@ -12,6 +12,7 @@ import ReasonsModel from '../models/ReasonsModel'
 import * as Animatable from "react-native-animatable";
 
 import ModalTest from '../components/Modal'
+import ExtrasModel from '../models/ExtrasModel'
 
 export default class SpecificDayScreen extends React.Component {
 	constructor(props) {
@@ -21,11 +22,9 @@ export default class SpecificDayScreen extends React.Component {
 			editable: false,
 			showModal: false
 		};
-		this.editReasons = this.editReasons.bind(this);
-		this.removeReason = this.removeReason.bind(this);
 	}
 
-	async componentDidMount() {
+	componentDidMount = async () => {
 		if (!this.props.route.params.entry.reasons) {
 			const reasons = await ReasonsModel.getReasonsByMoodId(this.props.route.params.entry.mood.id)
 			this.setState({ reasons: reasons })
@@ -36,7 +35,7 @@ export default class SpecificDayScreen extends React.Component {
 		this.addEditButtonToHeader()
 	}
 
-	addEditButtonToHeader() {
+	addEditButtonToHeader = () => {
 		this.props.navigation.setOptions({
 			headerRight: () => {
 				return (
@@ -48,32 +47,19 @@ export default class SpecificDayScreen extends React.Component {
 		})
 	}
 
-	editReasons() {
-		this.props.navigation.push("Reasons", {
-			moodId: this.state.mood_id,
-			viewOnly: false,
-			edit: true,
-			selected: this.state.reasons,
-			reasonsCallback: this.updateReasons
-		});
-	}
+	saveNote = async (notes) => {
+		if (this.props.route.params.entry.notes !== null) {
+			console.log("Updating")
+			const extra = await ExtrasModel.findBy({ mood_id_eq: this.props.route.params.entry.mood.id })
+			ExtrasModel.update({ id: extra.id, notes: notes })
+		} else {
+			console.log("Creating")
+			ExtrasModel.create({ mood_id: this.props.route.params.entry.mood.id, notes: notes })
+		}
 
-	updateReasons() {
-		this.toggleEdit();
-		this.renderReasons(true);
+		this.props.route.params.entry.notes = notes
+		this.setState({ showModal: false })
 	}
-
-	toggleEdit() {
-		this.setState({ editable: !this.state.editable });
-	}
-
-	removeReason = reasonId => {
-		this.state.reasons.filter(function (reason) {
-			if (reason.reason_id == reasonId) {
-				reason.selected = false;
-			}
-		});
-	};
 
 	noteSection = () => {
 		if (this.props.route.params.entry.notes) {
@@ -115,8 +101,6 @@ export default class SpecificDayScreen extends React.Component {
 							<ReasonsIcon
 								reason={reason.name}
 								reasonId={reason.id}
-								reasonCallback={() => console.log("what what how?")}
-								removeReasonCallback={() => console.log("remove me")}
 								viewOnly={true}
 								editable={this.state.editable}
 								position={key}
@@ -126,12 +110,10 @@ export default class SpecificDayScreen extends React.Component {
 						{addButton}
 					</Reasons>
 
-
 					<View style={{ margin: 24 }}>
-
 						<NotesHeader>
 							<Normal lightColour bold style={{ width: '80%' }}>Notes:</Normal>
-							<TouchableOpacity onPress={this.toggleEdit} style={{ width: "15%" }}>
+							<TouchableOpacity onPress={() => this.setState({ showModal: true })} style={{ width: "15%" }}>
 								<Feather
 									name="edit"
 									size={18}
@@ -144,7 +126,12 @@ export default class SpecificDayScreen extends React.Component {
 						{this.noteSection()}
 					</View>
 
-					<ModalTest toggle={this.state.showModal} closeModal={() => this.setState({ showModal: false })} />
+					<ModalTest
+						toggle={this.state.showModal}
+						notes={this.props.route.params.entry.notes}
+						closeModal={() => this.setState({ showModal: false })}
+						saveNote={(notes) => this.saveNote(notes)}
+					/>
 				</ScrollView>
 			</View>
 		);

@@ -4,9 +4,7 @@ import ReasonIcon from '../components/ReasonIcon'
 import { TouchableOpacity } from "react-native";
 import Reasons from '../models/ReasonsModel'
 import styled from 'styled-components/native'
-import { FontAwesome5 } from '@expo/vector-icons';
 import { ButtonOnlyIcon } from '../components/patterns/Buttons'
-import Colours from '../components/patterns/Colours'
 import MoodReasons from '../models/MoodReasonsModel';
 
 export default class ReasonsScreen extends React.Component {

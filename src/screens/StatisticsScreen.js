@@ -50,7 +50,9 @@ export default class StatisticsScreen extends React.Component {
               hideExtraDays={false}
               markedDates={this.state.calendarDates}
               onDayPress={day => {
-                this.props.navigation.push('SpecificDay', { entry: this.state.yearEntries.find(element => { return moment(element.timestamp).format('YYYY-MM-DD') == day.dateString }) });
+                this.props.navigation.push('SpecificDay', {
+                  entry: this.state.yearEntries.find(element => { return moment(element.timestamp).format('YYYY-MM-DD') == day.dateString })
+                });
               }}
               calendarWidth={Dimensions.get('window').width - 24}
               pagingEnabled={true}

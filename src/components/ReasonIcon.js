@@ -2,7 +2,6 @@ import React from "react";
 import styled from 'styled-components/native'
 import { Image, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { Ionicons } from "@expo/vector-icons";
 import chroma from 'chroma-js'
 
 import { Smaller } from '../components/patterns/Texts'
@@ -31,28 +30,11 @@ export default class ReasonIcon extends React.Component {
     }
   }
 
-  removeReason = () => {
-    this.view.fadeOut(250)
-    this.props.removeReasonCallback(this.props.reasonId);
-  }
-
   componentDidMount() {
     if (this.props.selected) this.setState({ colour: chroma(this.props.backgroundColor).brighten(0.5) });
   }
 
   render() {
-    let removeButton;
-
-    if (this.props.viewOnly && this.props.editable) {
-      removeButton = (
-        <RemoveButton animation="fadeIn">
-          <TouchableOpacity onPress={this.removeReason}>
-            <Ionicons name="md-close-circle" size={28} color="red" />
-          </TouchableOpacity>
-        </RemoveButton>
-      );
-    }
-
     return (
       <Icon
         animation="fadeIn"
@@ -79,7 +61,6 @@ export default class ReasonIcon extends React.Component {
             {this.props.reason.replace("-", " ").replace("-", " ")}
           </Smaller>
         </TouchableOpacity>
-        {removeButton}
       </Icon>
     );
   }
@@ -94,9 +75,4 @@ const Icon = Animatable.createAnimatableComponent(styled.View`
   justify-content: center;
 `);
 
-const RemoveButton = Animatable.createAnimatableComponent(styled.View`
-  position: absolute;
-  right: 0px;
-  top: 0px;
-`);
 

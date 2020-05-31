@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import Moods from '../models/MoodsModel'
 import Reasons from '../models/ReasonsModel'
 import MoodsReasons from '../models/MoodReasonsModel'
-import Notes from '../models/NotesModel'
+import Notes from '../models/ExtrasModel'
 import Photos from '../models/PhotosModel'
 import LegacyDatabase from '../models/LegacyDatabase'
 

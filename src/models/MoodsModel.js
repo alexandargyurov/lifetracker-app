@@ -43,19 +43,8 @@ export default class Moods extends BaseModel {
       currentYear.push(obj)
     })
 
-    // console.log("Year: ", currentYear)
     return currentYear
-
   }
-
-  //   const sql = `
-  //   SELECT moods.id AS mood_id, moods.mood, moods.timestamp, reasons.label, reasons.id AS reason_id, extras.notes
-  //   FROM ( SELECT * FROM moods ORDER BY timestamp DESC ) AS moods
-  //   LEFT JOIN mood_reasons ON moods.id = mood_reasons.mood_id
-  //   LEFT JOIN reasons ON mood_reasons.reason_id = reasons.id
-  //   LEFT JOIN extras ON moods.id = extras.mood_id
-  //   WHERE moods.timestamp >= ? GROUP BY date('YYYY-MM-DD') LIMIT 7;
-  // `
 
   static async currentWeek() {
     const sql = `
@@ -64,9 +53,9 @@ export default class Moods extends BaseModel {
       LEFT JOIN mood_reasons ON moods.id = mood_reasons.mood_id
       LEFT JOIN reasons ON mood_reasons.reason_id = reasons.id
       LEFT JOIN extras ON moods.id = extras.mood_id
-      WHERE moods.timestamp >= ? ORDER BY moods.timestamp DESC LIMIT 7;
+      WHERE moods.timestamp >= ? ORDER BY moods.timestamp DESC;
     `
-    const params = [moment().day("Monday").format('YYYY-MM-DD')]
+    const params = [moment().isoWeekday(1).format('YYYY-MM-DD')]
     const reasons = await this.repository.databaseLayer.executeSql(sql, params).then(({ rows }) => rows)
 
     const weeklyMoodsWithReasons = []
