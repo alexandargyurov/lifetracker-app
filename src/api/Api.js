@@ -61,6 +61,15 @@ export default class API {
 		}
 	}
 
+	static removeLegacyUser = async () => {
+		try {
+			await AsyncStorage.removeItem('@database');
+		} catch (error) {
+			return error
+		}
+	}
+
+
 	static userExists = async () => {
 		try {
 			const value = await AsyncStorage.getItem('@User:last_active');
