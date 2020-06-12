@@ -35,6 +35,9 @@
       "package": "com.alexandargyurov.lifetracker",
       "permissions": [],
       "versionCode": 11
+    },
+    "notification": {
+      "icon": "./assets/icon.png"
     }
   }
 }

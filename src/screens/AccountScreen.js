@@ -1,16 +1,18 @@
 import React from 'react';
-import { TouchableOpacity, View, Alert } from 'react-native';
+import { TouchableOpacity, View, Alert, Switch } from 'react-native';
 import styled from 'styled-components/native'
 import Colours from '../components/patterns/Colours'
+import moment from 'moment'
 
-import { Asset } from 'expo-asset';
 import { Divider } from 'react-native-paper';
 
 import * as WebBrowser from 'expo-web-browser';
 
+import { AsyncStorage } from 'react-native';
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
+
 
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -23,9 +25,10 @@ const github_link = "https://github.com/alexandargyurov/lifetracker-app"
 export default class AccountScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { switch: false }
   }
 
-  sendNotification(e) {
+  sendNotification() {
     if (Constants.platform.android) {
       Notifications.createChannelAndroidAsync('life-tracker-reminder', {
         name: 'Life Tracker Reminder',
@@ -33,11 +36,9 @@ export default class AccountScreen extends React.Component {
       });
     }
 
-    const imageURI = Asset.fromModule(require('../../assets/icon.png')).uri;
-
     const localNotification = {
       title: 'How did today go?',
-      body: 'Write down how your day went so you can keep track of your feelings and moods.',
+      body: 'Write down how your day went so you can keep track of your feelings and moods!',
       ios: {
         sound: true
       },
@@ -46,8 +47,10 @@ export default class AccountScreen extends React.Component {
       }
     };
 
+    const time = moment().startOf('day').add(20, 'h')
     const schedulingOptions = {
-      time: (new Date()).getTime() + 5000
+      time: (new Date(time)).getTime(),
+      repeat: 'day'
     }
 
     Notifications.scheduleLocalNotificationAsync(
@@ -55,20 +58,49 @@ export default class AccountScreen extends React.Component {
     );
   }
 
-  handleNotification() {
-    console.warn('ok! got your notif');
-  }
+  async notificationHandler() {
 
-  async componentDidMount() {
+
     let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
     if (Constants.isDevice && result.status === 'granted') {
       console.log('Notification permissions granted.')
     }
 
-    // If we want to do something with the notification when the app
-    // is active, we need to listen to notification events and 
-    // handle them in a callback
+    if (this.state.switch === false) {
+      console.log("start")
+      this.setState({ switch: true })
+      await AsyncStorage.setItem('@User:notifications', 'true');
+
+      this.sendNotification()
+
+    } else if (this.state.switch === true) {
+      console.log("stop")
+      this.setState({ switch: false })
+      await AsyncStorage.removeItem('@User:notifications');
+
+      Notifications.cancelAllScheduledNotificationsAsync()
+    }
+  }
+
+  handleNotification() {
+    console.warn('ok! got your notif');
+  }
+
+  async componentDidMount() {
+    try {
+      const value = await AsyncStorage.getItem('@User:notifications');
+      if (value === null) {
+        this.setState({ switch: false })
+      } else {
+        this.setState({ switch: true })
+      }
+    } catch (error) {
+      return error
+    }
+
+
+
     Notifications.addListener(this.handleNotification);
   }
 
@@ -113,10 +145,18 @@ export default class AccountScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <TouchableOpacity style={{ width: '100%', padding: 20 }} onPress={() => this.sendNotification()}>
-          <SubHeader>Notifications - (WIP)</SubHeader>
-          <Description>Receive daily reminders to write how your day went. Currently in development.</Description>
-        </TouchableOpacity>
+
+        <View style={{ width: '100%', padding: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ width: '70%' }}>
+            <SubHeader>Notifications</SubHeader>
+            <Description>Receive daily reminders to write how your day went. Everyday at 8PM.</Description>
+          </View>
+
+          <Switch
+            value={this.state.switch}
+            onValueChange={v => this.notificationHandler()}
+          />
+        </View>
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
