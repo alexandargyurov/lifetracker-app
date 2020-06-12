@@ -53,7 +53,8 @@ export default class MoodScreen extends React.Component {
 			})
 		} else {
 			try {
-				mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).format() })
+				const mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).format() })
+				console.log(mood)
 			} catch {
 				mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
 			}
@@ -86,6 +87,8 @@ export default class MoodScreen extends React.Component {
 				edit: true
 			})
 		} catch {
+			this.props.navigation.setOptions({ title: "How did the day go?" })
+		} finally {
 			this.updateNavigationHeader()
 		}
 	}

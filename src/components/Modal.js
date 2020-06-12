@@ -9,7 +9,6 @@ import { SecondaryButton } from './patterns/Buttons'
 class CustomModal extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { value: this.props.notes }
   }
 
   render() {
@@ -21,8 +20,8 @@ class CustomModal extends React.Component {
             <Small style={{ width: '100%' }}>You don't have a record for this day, would you like to add one?</Small>
 
             <ModalButtonContainer>
-              <SecondaryButton title="Cancel" onPress={() => this.props.cancelResponse()} />
-              <SecondaryButton bold title="Save" onPress={() => this.props.confirmResponse(this.state.value)} />
+              <SecondaryButton bold title="Yes" onPress={() => this.props.confirmResponse(this.props.selectedDay)} />
+              <SecondaryButton title="No" onPress={() => this.props.cancelResponse()} />
             </ModalButtonContainer>
           </ModalView>
         </Modal>

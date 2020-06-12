@@ -38,7 +38,8 @@ export default class StatisticsScreen extends React.Component {
   pushToMood = (date) => {
     this.setState({ showModal: false })
     this.props.navigation.push('Mood', {
-      date: date.dateString
+      date: date.dateString,
+      valie: 0.5
     })
   }
 
@@ -98,6 +99,7 @@ export default class StatisticsScreen extends React.Component {
 
           <Modal
             toggle={this.state.showModal}
+            selectedDay={this.state.selectedDay}
             cancelResponse={() => this.setState({ showModal: false })}
             confirmResponse={() => this.pushToMood(this.state.selectedDay)}
           />
