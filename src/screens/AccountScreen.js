@@ -160,7 +160,7 @@ export default class AccountScreen extends React.Component {
 
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
-        <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/database.db')}>
+        <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/databasev100.db')}>
           <SubHeader>Export Data</SubHeader>
           <Description>Copy and save your data locally</Description>
         </TouchableOpacity>
