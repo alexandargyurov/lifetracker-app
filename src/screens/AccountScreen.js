@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Alert } from 'react-native';
 import styled from 'styled-components/native'
 import Colours from '../components/patterns/Colours'
 
+import { Asset } from 'expo-asset';
 import { Divider } from 'react-native-paper';
 
 import * as WebBrowser from 'expo-web-browser';
@@ -24,18 +25,31 @@ export default class AccountScreen extends React.Component {
     super(props);
   }
 
-  onSubmit(e) {
+  sendNotification(e) {
+    if (Constants.platform.android) {
+      Notifications.createChannelAndroidAsync('life-tracker-reminder', {
+        name: 'Life Tracker Reminder',
+        sound: true,
+      });
+    }
+
+    const imageURI = Asset.fromModule(require('../../assets/icon.png')).uri;
+
     const localNotification = {
-      title: 'done',
-      body: 'done!'
+      title: 'How did today go?',
+      body: 'Write down how your day went so you can keep track of your feelings and moods.',
+      ios: {
+        sound: true
+      },
+      android: {
+        channelId: 'life-tracker-reminder'
+      }
     };
 
     const schedulingOptions = {
-      time: (new Date()).getTime() + 10000
+      time: (new Date()).getTime() + 5000
     }
 
-    // Notifications show only when app is not active.
-    // (ie. another app being used or device's screen is locked)
     Notifications.scheduleLocalNotificationAsync(
       localNotification, schedulingOptions
     );
@@ -99,7 +113,7 @@ export default class AccountScreen extends React.Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: Colours.purple() }}>
-        <TouchableOpacity style={{ width: '100%', padding: 20 }} onPress={() => null}>
+        <TouchableOpacity style={{ width: '100%', padding: 20 }} onPress={() => this.sendNotification()}>
           <SubHeader>Notifications - (WIP)</SubHeader>
           <Description>Receive daily reminders to write how your day went. Currently in development.</Description>
         </TouchableOpacity>
@@ -108,7 +122,7 @@ export default class AccountScreen extends React.Component {
 
         <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/database.db')}>
           <SubHeader>Export Data</SubHeader>
-          <Description>Copy and save a copy of your data</Description>
+          <Description>Copy and save your data locally</Description>
         </TouchableOpacity>
 
         {/* <TouchableOpacity style={{ width: '70%', padding: 20 }} onPress={() => this.showWarningModal()}>
