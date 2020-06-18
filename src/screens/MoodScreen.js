@@ -53,17 +53,24 @@ export default class MoodScreen extends React.Component {
 			})
 		} else {
 			try {
+				// If clicked on calendar
 				const mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).format() })
-				console.log(mood)
+				this.props.navigation.push('Reasons', {
+					backgroundColor: this.state.backgroundColour,
+					mood_id: mood.id,
+					edit: false
+				})
 			} catch {
-				mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
+				// If clicked on new entry
+				const mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment().format() })
+				this.props.navigation.push('Reasons', {
+					backgroundColor: this.state.backgroundColour,
+					mood_id: mood.id,
+					edit: false
+				})
 			}
 
-			this.props.navigation.push('Reasons', {
-				backgroundColor: this.state.backgroundColour,
-				mood_id: mood.id,
-				edit: false
-			})
+
 		}
 	}
 
