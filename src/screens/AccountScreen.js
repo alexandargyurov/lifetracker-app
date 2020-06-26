@@ -185,10 +185,9 @@ export default class AccountScreen extends React.Component {
         <Divider style={{ marginLeft: 20, marginRight: 20, backgroundColor: '#FFF1EA', height: 1.5 }} />
 
         <TouchableOpacity style={{ width: '80%', padding: 20 }} onPress={() => WebBrowser.openBrowserAsync(github_link)}>
-          <TinyText>Version: v1.0.2</TinyText>
+          <TinyText>Version: v1.0.3</TinyText>
           <TinyText>License: GPL v3.0</TinyText>
         </TouchableOpacity>
-
       </View >
 
 

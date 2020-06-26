@@ -54,7 +54,7 @@ export default class MoodScreen extends React.Component {
 		} else {
 			try {
 				// If clicked on calendar
-				const mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).format() })
+				const mood = await Moods.create({ mood: this.state.sliderValue, timestamp: moment(this.props.route.params.date).add(1, 'h').format() })
 				this.props.navigation.push('Reasons', {
 					backgroundColor: this.state.backgroundColour,
 					mood_id: mood.id,
