@@ -1,8 +1,6 @@
 # Life Tracker
 
-Life Tracker is a mobile app that helps you keep track of how you're feeling each day. Read more here: [https://lifetracker.dev](https://lifetracker.dev)
-
-![alt text](https://life-tracker-app-c52bf.firebaseapp.com/img/ios-mockup.png)
+Life Tracker is a mobile app that helps you keep track of how you're feeling each day. Read more here: [https://alexandar.me/lifetracker](https://alexandar.me/lifetracker)
 
 ## Getting Started
 
